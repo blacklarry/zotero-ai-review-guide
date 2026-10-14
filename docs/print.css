@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+@page { margin: 15mm; }
+
+@media print {
+  :root {
+    --paper: #fff;
+    --white: #fff;
+    --ink: #111;
+    --text: #222;
+    --muted: #444;
+    --green: #111;
+    --deep: #111;
+    --soft: #fff;
+    --line: #bbb;
+  }
+
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    outline: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #222;
+    font-size: 10.5pt;
+    line-height: 1.6;
+  }
+
+  .header, .sidebar, .sidebar-overlay, .skip-link, .footer,
+  .breadcrumb, .lesson-aside, .lesson-navigation, .case-nav,
+  .case-next, .example-actions, .prompt-toolbar, .prompt-card-bottom,
+  .hero-art, .hero-actions, .feedback-entry, .toast, dialog,
+  button, .btn, .banner-link, .icon {
+    display: none !important;
+  }
+
+  main, #app {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chapter-layout, .prompt-grid, .resource-grid, .course-grid,
+  .source-list, .hero, .prompt-banner, .intro-strip {
+    display: block;
+  }
+
+  .page-intro { padding: 0 0 5mm; margin-bottom: 6mm; }
+  .page-intro h1, .hero h1 { font-size: 22pt; line-height: 1.4; }
+  .page-meta { flex-wrap: wrap; }
+  .lesson-step { margin-left: 0; padding-left: 9mm; padding-bottom: 5mm; }
+  .lesson-step-number { left: 0; }
+  .worked-example { margin: 6mm 0; padding: 4mm; }
+  .paper-example { padding-top: 4mm; margin-top: 4mm; }
+  .prompt-library-card, .resource-card, .course-card { margin-bottom: 5mm; }
+  .prompt-library-card, .prompt-box, .worked-example,
+  .paper-example, .lesson-step, .correction-row, .faq details,
+  .evidence-details details, .operation-trouble {
+    overflow: visible;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  h1, h2, h3, h4, summary, .prompt-box-head,
+  .prompt-library-card header {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .paper-example > .prompt-type {
+    display: block;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  p, li, pre { orphans: 3; widows: 3; }
+
+  pre, .prompt-preview, .prompt-box pre, .worked-note {
+    max-height: none;
+    height: auto;
+    overflow: visible;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 10pt;
+    line-height: 1.65;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .prompt-preview { margin: 0 4mm 4mm; }
+
+  .table-wrap {
+    overflow: visible;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+  table, .evidence-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+  th, td, .worked-example th, .worked-example td {
+    padding: 2mm;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 9pt;
+    line-height: 1.55;
+    color: #222;
+    background: #fff;
+    border: 1px solid #bbb;
+  }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  tr:last-child td { border: 1px solid #bbb; }
+
+  /* print.js 临时展开 details，打印结束后恢复屏幕上的展开状态。 */
+  summary { list-style: none; cursor: default; }
+  summary::marker, summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: none; }
+  .faq details p { padding-right: 0; }
+  .evidence-details dl > div, .field-guide > div {
+    display: block;
+    padding: 2mm 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .evidence-details dd, .field-guide dd { margin-top: 1mm; }
+
+  figure, .operation-guide figure {
+    padding: 2mm;
+    margin: 4mm 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .operation-guide img {
+    width: auto;
+    max-width: 100%;
+    max-height: 200mm;
+    height: auto;
+    object-fit: contain;
+  }
+  .operation-guide figcaption { margin-top: 2mm; }
+  .check-item { break-inside: avoid; page-break-inside: avoid; }
+
+  a { color: #111; text-decoration: underline; overflow-wrap: anywhere; }
+  .lesson-sources a, .source-link { min-height: 0; }
+  .lesson-sources a[href^="http"]::after,
+  .paper-example a[href^="http"]::after,
+  .operation-guide figcaption a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    font-weight: normal;
+  }
+}

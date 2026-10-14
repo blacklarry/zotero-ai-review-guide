@@ -58,3 +58,6 @@
 .feedback-entry .btn{margin-top:16px}
 .feedback-entry textarea:focus-visible{outline:3px solid #728d67;outline-offset:3px}
 @media(max-width:550px){.worked-example{padding:18px 15px;margin:24px 0}.worked-example h2{font-size:18px}.evidence-details dl>div,.field-guide>div{grid-template-columns:1fr;gap:4px}.case-nav{gap:8px 12px}.review-paragraph{padding:15px;font-size:13px}.operation-guide figure{padding:8px}.example-actions .btn{width:100%}}
+
+.footer{align-items:center;flex-wrap:wrap}.noscript{margin:20px 30px 30px calc(var(--sidebar) + 48px);padding:20px;border:1px solid var(--line);border-radius:6px;background:var(--soft);font-size:14px}.noscript a{text-decoration:underline}
+@media(max-width:760px){.noscript{margin:20px}}

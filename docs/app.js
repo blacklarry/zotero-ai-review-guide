@@ -2,7 +2,14 @@
   'use strict';
   const data = window.GUIDE_DATA;
   const app = document.querySelector('#app');
-  if (!data?.chapters?.length) {
+  const study = window.GUIDE_STUDY;
+  const operations = window.GUIDE_OPERATIONS;
+  const extras = window.GUIDE_EXTRAS;
+  if (!app) return;
+  if (!data?.chapters?.length || !Array.isArray(data.prompts) || !Array.isArray(data.sources) ||
+      !study?.matrixColumns?.length || !Array.isArray(study.matrixRows) ||
+      !Array.isArray(operations?.groups) || !Array.isArray(operations.compatibility) || !Array.isArray(operations.versionSources) ||
+      typeof extras?.chapter !== 'function' || typeof extras.resources !== 'function' || typeof extras.caseText !== 'function') {
     app.innerHTML = '<div class="page-intro"><h1>教程内容暂时未能加载</h1><p>请刷新页面重试，或先查看 <a href="https://www.zotero.org/support/">Zotero 官方文档</a>。</p></div>';
     return;
   }
@@ -32,7 +39,7 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('visible'), 3200);
   }
-  const crumb = label => `<div class="breadcrumb"><a href="#home">${icon('book')} 研读手册</a><span class="slash">/</span><span>Zotero + AI</span><span class="slash">/</span><strong>${esc(label)}</strong></div>`;
+  const crumb = label => `<nav class="breadcrumb" aria-label="面包屑导航"><a href="#home">${icon('book')} 研读手册</a><span class="slash">/</span><span>Zotero + AI</span><span class="slash">/</span><strong aria-current="page">${esc(label)}</strong></nav>`;
   function updateNavigation() {
     document.querySelector('#chapter-nav').innerHTML = data.chapters.map(ch => `<a class="chapter-link ${currentRoute === `chapter/${ch.id}` ? 'active' : ''} ${completed.includes(ch.id) ? 'done' : ''}" href="#chapter/${ch.id}" ${currentRoute === `chapter/${ch.id}` ? 'aria-current="page"' : ''}><span class="chapter-number">${completed.includes(ch.id) ? icon('check') : String(ch.id).padStart(2,'0')}</span><span>${esc(ch.title)}</span></a>`).join('');
     document.querySelectorAll('[data-route]').forEach(a => {
@@ -43,8 +50,11 @@
     document.querySelectorAll('[data-top]').forEach(a => {
       const active = a.dataset.top === currentRoute || (a.dataset.top === 'home' && currentRoute.startsWith('chapter/'));
       a.classList.toggle('active',active);
+      if (active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
-    document.querySelector('#progress-label').textContent = `${completed.length} / 6`;
+    const progressLabel = document.querySelector('#progress-label');
+    const progressText = `${completed.length} / 6`;
+    if (progressLabel.textContent !== progressText) progressLabel.textContent = progressText;
     document.querySelector('#progress-fill').style.width = `${completed.length / 6 * 100}%`;
     document.querySelector('#progress-note').textContent = completed.length === 6 ? '六章已完成，把方法用在你的研究中。' : '每读完一章，离综述更近一步。';
   }
@@ -154,9 +164,11 @@
     document.querySelector('#sidebar').classList.remove('is-open');
     document.querySelector('.sidebar-overlay').hidden=true;
     document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');
+    document.querySelector('.menu-toggle').setAttribute('aria-label','打开学习目录');
   }
   const searchDialog=document.querySelector('#search-dialog');
   const searchInput=document.querySelector('#search-input');
+  let searchReturnFocus = null;
   const searchItems=[
     {title:'教程概览',type:'学习路径',body:'Zotero AI 文献综述 教程 六步 入门',href:'#home'},
     ...data.chapters.map(ch=>({title:ch.title,type:`第 ${ch.id} 章`,body:[ch.lead,ch.subtitle,...ch.steps.map(s=>s.title+' '+s.body)].join(' '),href:`#chapter/${ch.id}`})),
@@ -168,7 +180,20 @@
     const matches=searchItems.filter(s=>!query||`${s.title} ${s.body}`.toLowerCase().includes(query));
     document.querySelector('#search-results').innerHTML=matches.length?matches.map(s=>`<a class="search-result" href="${s.href}" data-search-result><span><b>${esc(s.title)}</b><small>${esc(s.type)}</small></span>${icon('arrow')}</a>`).join(''):'<p class="search-empty">没有找到相关内容。试试“引用”“批注”或“主题”。</p>';
   }
-  function openSearch(){if(!searchDialog.open)searchDialog.showModal();searchInput.value='';search();searchInput.focus();}
+  function openSearch(trigger = document.activeElement) {
+    if (!searchDialog.open) {
+      searchReturnFocus = trigger;
+      searchDialog.showModal();
+    }
+    searchInput.value='';search();searchInput.focus();
+  }
+  function closeSearch({restoreFocus = true} = {}) {
+    if (!searchDialog.open) return;
+    const target = searchReturnFocus;
+    searchReturnFocus = null;
+    searchDialog.close();
+    if (restoreFocus && target?.isConnected) target.focus({preventScroll:true});
+  }
   document.addEventListener('click',event=>{
     const el=event.target.closest('button,a');
     if (!el) return;
@@ -178,17 +203,18 @@
     else if (el.hasAttribute('data-filter')) { promptFilter=el.dataset.filter;history.replaceState({...history.state,promptFilter},'','#prompts');const y=scrollY;route({focus:false,scroll:false});window.scrollTo(0,y);const active=[...document.querySelectorAll('[data-filter]')].find(b=>b.dataset.filter===promptFilter);active?.focus({preventScroll:true}); }
     else if (el.hasAttribute('data-download')) download(el.dataset.download);
     else if (el.hasAttribute('data-complete')) { const id=Number(el.dataset.complete);const wasDone=completed.includes(id);completed=wasDone?completed.filter(n=>n!==id):[...completed,id];saveProgress();route({focus:false,scroll:false});document.querySelector('[data-complete]')?.focus({preventScroll:true});toast(wasDone?'已撤销本章完成标记。':completed.length===6?'六章全部完成，开始把方法用在你的研究中。':'已记录本章进度，继续下一步。'); }
-    else if(el.hasAttribute('data-search'))openSearch();
-    else if(el.hasAttribute('data-close-search'))searchDialog.close();
-    else if(el.hasAttribute('data-search-result')){searchDialog.close();if(location.hash===el.getAttribute('href')){event.preventDefault();route();}}
+    else if(el.hasAttribute('data-search'))openSearch(el);
+    else if(el.hasAttribute('data-close-search'))closeSearch();
+    else if(el.hasAttribute('data-search-result')){closeSearch({restoreFocus:false});if(location.hash===el.getAttribute('href')){event.preventDefault();route();}}
     else if(el.getAttribute('href')?.startsWith('#prompts/') && location.hash===el.getAttribute('href')){event.preventDefault();route();}
-    else if(el.classList.contains('menu-toggle')){const open=document.querySelector('#sidebar').classList.toggle('is-open');document.querySelector('.sidebar-overlay').hidden=!open;el.setAttribute('aria-expanded',String(open));}
+    else if(el.classList.contains('menu-toggle')){const open=document.querySelector('#sidebar').classList.toggle('is-open');document.querySelector('.sidebar-overlay').hidden=!open;el.setAttribute('aria-expanded',String(open));el.setAttribute('aria-label',open?'关闭学习目录':'打开学习目录');}
     else if(el.classList.contains('sidebar-overlay'))closeMenu();
   });
   document.addEventListener('change',e=>{if(e.target.matches('[data-check]')){checked[e.target.dataset.check]=e.target.checked;saveProgress();}});
-  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}if(e.key==='Escape')closeMenu();});
+  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}if(e.key==='Escape'&&!searchDialog.open)closeMenu();});
   searchInput.addEventListener('input',search);
-  searchDialog.addEventListener('click',e=>{if(e.target===searchDialog){const r=searchDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)searchDialog.close();}});
+  searchDialog.addEventListener('cancel',e=>{e.preventDefault();closeSearch();});
+  searchDialog.addEventListener('click',e=>{if(e.target===searchDialog){const r=searchDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSearch();}});
   window.addEventListener('hashchange',()=>route());
   route({focus:false,scroll:false});
 })();

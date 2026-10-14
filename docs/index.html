@@ -5,13 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#234f46">
   <meta name="description" content="用 Zotero 管理文献，用 AI 辅助证据提取与主题综合。六步中文教程，附可复制提示词、文献矩阵和引用核查清单。">
+  <link rel="canonical" href="https://blacklarry.github.io/zotero-ai-review-guide/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="研读手册">
+  <meta property="og:url" content="https://blacklarry.github.io/zotero-ai-review-guide/">
+  <meta property="og:title" content="研读手册 · Zotero + AI 文献综述教程">
+  <meta property="og:description" content="六步中文实操指南：真实论文案例、批注笔记、证据矩阵、综述成品与引用核查。">
+  <meta property="og:image" content="https://blacklarry.github.io/zotero-ai-review-guide/assets/og-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="研读手册：Zotero + AI，六步完成有据可循的文献综述">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="研读手册 · Zotero + AI 文献综述教程">
+  <meta name="twitter:description" content="六步中文实操指南，附真实论文案例、操作截图和可下载模板。">
+  <meta name="twitter:image" content="https://blacklarry.github.io/zotero-ai-review-guide/assets/og-preview.png">
+  <meta name="twitter:image:alt" content="研读手册：Zotero + AI，六步完成有据可循的文献综述">
   <title>研读手册 · Zotero + AI 文献综述教程</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="print.css" media="print">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Zotero + AI 文献综述教程",
+    "description": "从文献收集、证据提取到主题比较、综述写作和引用核查的六步中文入门教程，附真实论文案例与可下载模板。",
+    "url": "https://blacklarry.github.io/zotero-ai-review-guide/",
+    "provider": {"@type": "Organization", "name": "研读手册", "url": "https://blacklarry.github.io/zotero-ai-review-guide/"},
+    "inLanguage": "zh-CN",
+    "educationalLevel": "入门",
+    "isAccessibleForFree": true,
+    "coursePrerequisites": "准备 Zotero 桌面应用、浏览器 Connector 和一篇有权使用的论文全文。无需编程基础。"
+  }
+  </script>
   <script src="content.js" defer></script>
   <script src="study-data.js" defer></script>
   <script src="tutorial.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="print.js" defer></script>
 </head>
 <body>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -38,10 +70,10 @@
   </defs></svg>
   <a class="skip-link" href="#main">跳到主要内容</a>
   <header class="header">
-    <a class="brand" href="#home" aria-label="研读手册首页"><span class="brand-symbol"><svg class="icon"><use href="#i-book"/></svg></span><span>研读手册<small>RESEARCH NOTES</small></span></a>
+    <a class="brand" href="#home" aria-label="研读手册首页"><span class="brand-symbol"><svg class="icon"><use href="#i-book"/></svg></span><span>研读手册<small lang="en">RESEARCH NOTES</small></span></a>
     <div class="header-divider"></div><span class="header-caption">把阅读，变成研究。</span>
     <nav class="top-nav" aria-label="主要导航"><a href="#home" data-top="home">学习路径</a><a href="#prompts" data-top="prompts">提示词库</a><a href="#resources" data-top="resources">资源下载</a></nav>
-    <button class="search-trigger" data-search aria-label="搜索教程"><svg class="icon"><use href="#i-search"/></svg><span>搜索教程</span><kbd>Ctrl K</kbd></button>
+    <button class="search-trigger" type="button" data-search aria-label="搜索教程（Ctrl 或 Command + K）" title="快捷键：Ctrl / Command + K" aria-keyshortcuts="Control+K Meta+K"><svg class="icon"><use href="#i-search"/></svg><span>搜索教程</span><kbd>Ctrl K</kbd></button>
     <button class="menu-toggle icon-button" aria-label="打开学习目录" aria-expanded="false" aria-controls="sidebar"><svg class="icon"><use href="#i-menu"/></svg></button>
   </header>
   <button class="sidebar-overlay" aria-label="关闭学习目录" hidden></button>
@@ -53,10 +85,10 @@
     <div class="side-heading tools-heading">随手可用的工具</div>
     <a class="side-link" href="#prompts" data-route="prompts"><svg class="icon"><use href="#i-spark"/></svg>AI 提示词库<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
     <a class="side-link" href="#resources" data-route="resources"><svg class="icon"><use href="#i-download"/></svg>模板与资源<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
-    <div class="sidebar-bottom"><div class="progress-top"><span>我的学习进度</span><strong id="progress-label">0 / 6</strong></div><div class="progress-track"><span id="progress-fill"></span></div><p id="progress-note">每读完一章，离综述更近一步。</p><span class="local-note">进度保存在当前浏览器</span></div>
+    <div class="sidebar-bottom"><div class="progress-top"><span>我的学习进度</span><strong id="progress-label" aria-live="polite" aria-atomic="true">0 / 6</strong></div><div class="progress-track"><span id="progress-fill"></span></div><p id="progress-note">每读完一章，离综述更近一步。</p><span class="local-note">进度保存在当前浏览器</span></div>
     <a class="official-link" href="https://www.zotero.org/support/" target="_blank" rel="noopener noreferrer">Zotero 官方文档<svg class="icon"><use href="#i-up"/></svg></a>
   </aside>
-  <main id="main" tabindex="-1"><div id="app"></div><footer class="footer"><span><svg class="icon"><use href="#i-book"/></svg> 研读手册 <span class="footer-dot">·</span> 让每个观点，都有出处。</span><span>独立中文教程 · 非 Zotero 官方出品<br>内容核验：2026-10-14 · <a href="#resources">适用版本与纠错</a></span></footer></main>
+  <main id="main" tabindex="-1"><div id="app"><section class="page-intro"><div class="eyebrow">研读手册 · 中文实操指南</div><h1>Zotero + AI 文献综述教程</h1><p>从文献收集与整理、精读和证据提取，到主题比较、综述写作与引用核查，六步建立有据可循的阅读流程。附两篇真实论文的完整案例、五条证据填写样例、官方操作截图与可下载模板。</p></section></div><footer class="footer"><span><svg class="icon"><use href="#i-book"/></svg> 研读手册 <span class="footer-dot">·</span> 让每个观点，都有出处。</span><span>独立中文教程 · 非 Zotero 官方出品<br>内容核验：2026-10-14 · <a href="#resources">适用版本与纠错</a> · <a href="https://github.com/blacklarry/zotero-ai-review-guide/issues/new" target="_blank" rel="noopener noreferrer">反馈问题 ↗</a></span><button class="copy-btn" type="button" data-print>打印当前页面</button></footer></main>
   <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-dialog-head"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" id="search-title" for="search-input">搜索教程、提示词与资源</label><input id="search-input" type="search" placeholder="搜索教程、提示词与资源…" autocomplete="off"><button class="icon-button" data-close-search aria-label="关闭搜索"><svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-hint">点击结果前往对应内容 <kbd>Esc 关闭</kbd></div></dialog>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
   <noscript><p class="noscript">请启用 JavaScript 以查看交互教程。你也可以直接阅读 <a href="https://www.zotero.org/support/">Zotero 官方文档</a>。</p></noscript>
