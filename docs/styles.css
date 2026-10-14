@@ -61,3 +61,52 @@
 
 .footer{align-items:center;flex-wrap:wrap}.noscript{margin:20px 30px 30px calc(var(--sidebar) + 48px);padding:20px;border:1px solid var(--line);border-radius:6px;background:var(--soft);font-size:14px}.noscript a{text-decoration:underline}
 @media(max-width:760px){.noscript{margin:20px}}
+
+/* 提高屏幕阅读字号，打印版沿用独立的字号与分页规则。 */
+@media screen {
+  body{font-size:16px}
+  .header-caption,.top-nav a,.search-trigger{font-size:14px}
+  .side-link,.chapter-link{font-size:15px}
+  .course-label{font-size:14px}
+  .side-heading,.course-label span,.local-note,.official-link,.eyebrow,.breadcrumb,.section-counter{font-size:12px}
+  .progress-top,.progress-top strong,.sidebar-bottom p{font-size:13px}
+  .hero-description,.page-intro>p{font-size:16px;line-height:1.9}
+  .hero-meta{font-size:12px;flex-wrap:wrap;gap:10px 16px}
+  .hero-meta span,.output-box .eyebrow,.worked-example>.eyebrow,.card-complete,.banner-example .example-top{font-size:12px}
+  .intro-item b{font-size:15px}
+  .intro-item span{font-size:13px;line-height:1.8}
+  .section-heading p,.course-card p,.resource-teaser p{font-size:14px;line-height:1.85}
+  .course-card h3,.resource-card h2,.prompt-library-card h2{font-size:18px}
+  .card-step,.banner-label,.resource-format,.chip,.prompt-type{font-size:12px}
+  .card-bottom{font-size:12px;gap:8px;flex-wrap:wrap}
+  .card-link,.banner-link{font-size:13px}
+  .prompt-banner p,.banner-example p,.resource-card p,.prompt-library-card p{font-size:15px;line-height:1.9}
+  .btn,.resource-card .btn,.worked-example .btn,.filter-btn,.prompt-box-head{font-size:14px}
+  .copy-btn{font-size:13px;min-height:40px;flex-shrink:0}
+  .prompt-box-head>span{min-width:0;flex:1}
+  .filter-btn{min-height:44px}
+  .lesson-step p{font-size:17px;line-height:1.9}
+  .lesson-step h2,.lesson-checklist h2{font-size:20px}
+  .page-meta,.lesson-sources,.chapter-jump,.output-box p,.next-chapter{font-size:13px}
+  .page-meta{flex-wrap:wrap}
+  .output-box h3{font-size:16px}
+  .callout,.check-item,.faq summary,.faq details p{font-size:15px;line-height:1.9}
+  .callout strong{font-size:14px}
+  .prompt-preview,.prompt-box pre,.worked-note{font-size:15px;line-height:1.85}
+  .prompt-preview{max-height:280px;overflow-wrap:anywhere}
+  .prompt-card-bottom{font-size:12px;gap:12px;flex-wrap:wrap}
+  .source-link b{font-size:15px}
+  .source-link small{font-size:13px}
+  .worked-example p,.practice-steps{font-size:16px;line-height:1.9}
+  .review-paragraph{font-size:17px;line-height:2}
+  .worked-example h3{font-size:17px}
+  .worked-example h4{font-size:15px}
+  .worked-example .case-scope,.worked-example .evidence-location,.operation-guide figcaption{font-size:13px}
+  .paper-example blockquote,.evidence-details summary,.operation-trouble summary,.feedback-entry summary{font-size:15px}
+  .worked-example th,.worked-example td,.evidence-details dl>div,.field-guide>div{font-size:14px}
+  table{font-size:14px}
+  .case-nav,.example-actions,.case-next,.table-caption,.feedback-entry label{font-size:14px}
+  .feedback-entry input,.feedback-entry textarea,.search-dialog-head input{font-size:16px}
+  .search-result b{font-size:15px}
+  .search-result small,.search-empty,.search-hint,.footer{font-size:12px}
+}
