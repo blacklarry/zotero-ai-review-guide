@@ -34,6 +34,27 @@
   let selectedPromptId = null;
   let currentRoute = 'start';
   let toastTimer;
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let routeAnimation = null;
+  function cancelRouteAnimation() {
+    routeAnimation?.cancel();
+    routeAnimation = null;
+  }
+  function animateRoute() {
+    if (motionPreference.matches || typeof app.animate !== 'function') return;
+    const animation = app.animate([
+      {opacity:0,transform:'translateY(6px)'},
+      {opacity:1,transform:'translateY(0)'}
+    ], {duration:260,easing:'cubic-bezier(.22,1,.36,1)'});
+    routeAnimation = animation;
+    animation.onfinish = animation.oncancel = () => {
+      if (routeAnimation === animation) routeAnimation = null;
+    };
+  }
+  motionPreference.addEventListener('change',event => {
+    if (event.matches) cancelRouteAnimation();
+  });
+  window.addEventListener('beforeprint',cancelRouteAnimation);
   const saveProgress = () => {
     try { localStorage.setItem('research-notes-progress', JSON.stringify({completed,checked})); }
     catch { toast('浏览器暂不可保存进度，本次会话内仍可使用。'); }
@@ -94,7 +115,8 @@
   function renderResources() {
     return `${crumb('模板与资源')}<header class="page-intro"><div class="eyebrow">YOUR RESEARCH TOOLKIT</div><h1>让每一次阅读，都有积累。</h1><p>下载可编辑的轻量模板，把它们放进你的研究流程。你可以用 Excel 打开文献矩阵，用文本编辑器修改提示词和核查清单。</p><div class="page-meta"><span>${icon('download')} 直接下载，无需填写信息</span><span>${icon('file')} 通用格式，自由修改</span></div></header><div class="resource-grid">${workbuddy.resourceCard(icon)}${codex.resourceCard(icon)}<article class="resource-card"><div class="resource-format">${icon('grid')} CSV / 文献整理</div><h2>文献证据矩阵</h2><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button><button class="btn btn-secondary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button></article><article class="resource-card"><div class="resource-format">${icon('shield')} TXT / 提交前核查</div><h2>综述质量检查清单</h2><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-secondary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-format">${icon('spark')} TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2><p>一次带走六组提示词。覆盖证据提取、主题比较、结构规划与引用核查，按需要替换研究背景。</p><button class="btn btn-secondary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>从官方文档，找到操作细节</h2><p>教程中的 Zotero 操作以官方文档为依据。界面名称可能随语言或版本变化。</p></div><span class="section-counter">OFFICIAL REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
   }
-  function route({focus = true,scroll = true} = {}) {
+  function route({focus = true,scroll = true,animate = scroll} = {}) {
+    cancelRouteAnimation();
     let hash = location.hash.slice(1) || 'start';
     let promptId = '';
     try { if (hash.startsWith('prompts/')) promptId = decodeURIComponent(hash.slice(8)); }
@@ -126,6 +148,7 @@
       if (scroll) window.scrollTo({top:0,behavior:'instant'});
       if (focus) document.querySelector('#main').focus({preventScroll:true});
     }
+    if (animate) animateRoute();
   }
   async function copy(text, message = '提示词已复制，粘贴后替换你的研究材料。') {
     try {
@@ -227,5 +250,5 @@
   searchDialog.addEventListener('cancel',e=>{e.preventDefault();closeSearch();});
   searchDialog.addEventListener('click',e=>{if(e.target===searchDialog){const r=searchDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSearch();}});
   window.addEventListener('hashchange',()=>route());
-  route({focus:false,scroll:false});
+  route({focus:false,scroll:false,animate:true});
 })();
