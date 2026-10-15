@@ -7,12 +7,14 @@
   const extras = window.GUIDE_EXTRAS;
   const workbuddy = window.GUIDE_WORKBUDDY;
   const codex = window.GUIDE_CODEX;
+  const entry = window.GUIDE_START;
   if (!app) return;
   if (!data?.chapters?.length || !Array.isArray(data.prompts) || !Array.isArray(data.sources) ||
       !study?.matrixColumns?.length || !Array.isArray(study.matrixRows) ||
       !Array.isArray(operations?.groups) || !Array.isArray(operations.compatibility) || !Array.isArray(operations.versionSources) ||
       typeof workbuddy?.render !== 'function' || typeof workbuddy.resourceCard !== 'function' || !workbuddy.copyTexts || !workbuddy.copyLabels ||
       typeof codex?.render !== 'function' || typeof codex.resourceCard !== 'function' || !codex.copyTexts || !codex.copyLabels ||
+      typeof entry?.render !== 'function' ||
       typeof extras?.chapter !== 'function' || typeof extras.resources !== 'function' || typeof extras.caseText !== 'function') {
     app.innerHTML = '<div class="page-intro"><h1>教程内容暂时未能加载</h1><p>请刷新页面重试，或先查看 <a href="https://www.zotero.org/support/">Zotero 官方文档</a>。</p></div>';
     return;
@@ -30,7 +32,7 @@
   const promptCategories = ['全部','精读提取','主题综合','写作核查'];
   let promptFilter = '全部';
   let selectedPromptId = null;
-  let currentRoute = 'home';
+  let currentRoute = 'start';
   let toastTimer;
   const saveProgress = () => {
     try { localStorage.setItem('research-notes-progress', JSON.stringify({completed,checked})); }
@@ -43,7 +45,7 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('visible'), 3200);
   }
-  const crumb = label => `<nav class="breadcrumb" aria-label="面包屑导航"><a href="#home">${icon('book')} 研读手册</a><span class="slash">/</span><span>Zotero + AI</span><span class="slash">/</span><strong aria-current="page">${esc(label)}</strong></nav>`;
+  const crumb = label => `<nav class="breadcrumb" aria-label="面包屑导航"><a href="#start">${icon('book')} 研读手册</a><span class="slash">/</span><span>Zotero + AI</span><span class="slash">/</span><strong aria-current="page">${esc(label)}</strong></nav>`;
   function updateNavigation() {
     document.querySelector('#chapter-nav').innerHTML = data.chapters.map(ch => `<a class="chapter-link ${currentRoute === `chapter/${ch.id}` ? 'active' : ''} ${completed.includes(ch.id) ? 'done' : ''}" href="#chapter/${ch.id}" ${currentRoute === `chapter/${ch.id}` ? 'aria-current="page"' : ''}><span class="chapter-number">${completed.includes(ch.id) ? icon('check') : String(ch.id).padStart(2,'0')}</span><span>${esc(ch.title)}</span></a>`).join('');
     document.querySelectorAll('[data-route]').forEach(a => {
@@ -93,16 +95,16 @@
     return `${crumb('模板与资源')}<header class="page-intro"><div class="eyebrow">YOUR RESEARCH TOOLKIT</div><h1>让每一次阅读，都有积累。</h1><p>下载可编辑的轻量模板，把它们放进你的研究流程。你可以用 Excel 打开文献矩阵，用文本编辑器修改提示词和核查清单。</p><div class="page-meta"><span>${icon('download')} 直接下载，无需填写信息</span><span>${icon('file')} 通用格式，自由修改</span></div></header><div class="resource-grid">${workbuddy.resourceCard(icon)}${codex.resourceCard(icon)}<article class="resource-card"><div class="resource-format">${icon('grid')} CSV / 文献整理</div><h2>文献证据矩阵</h2><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button><button class="btn btn-secondary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button></article><article class="resource-card"><div class="resource-format">${icon('shield')} TXT / 提交前核查</div><h2>综述质量检查清单</h2><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-secondary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-format">${icon('spark')} TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2><p>一次带走六组提示词。覆盖证据提取、主题比较、结构规划与引用核查，按需要替换研究背景。</p><button class="btn btn-secondary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>从官方文档，找到操作细节</h2><p>教程中的 Zotero 操作以官方文档为依据。界面名称可能随语言或版本变化。</p></div><span class="section-counter">OFFICIAL REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
   }
   function route({focus = true,scroll = true} = {}) {
-    let hash = location.hash.slice(1) || 'home';
+    let hash = location.hash.slice(1) || 'start';
     let promptId = '';
     try { if (hash.startsWith('prompts/')) promptId = decodeURIComponent(hash.slice(8)); }
     catch { /* 无效编码按未知路由处理。 */ }
     const prompt = data.prompts.find(p => p.id === promptId);
     const isPromptRoute = hash === 'prompts' || Boolean(prompt);
     const chapter = data.chapters.find(ch => `chapter/${ch.id}` === hash);
-    if (!chapter && !isPromptRoute && !['home','resources','workbuddy','codex'].includes(hash)) {
-      history.replaceState(null,'','#home');
-      hash = 'home';
+    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex'].includes(hash)) {
+      history.replaceState(null,'','#start');
+      hash = 'start';
     }
     currentRoute = isPromptRoute ? 'prompts' : hash;
     selectedPromptId = prompt?.id || null;
@@ -111,9 +113,9 @@
       promptFilter = prompt?.category || (promptCategories.includes(savedFilter) ? savedFilter : '全部');
       history.replaceState({...history.state,promptFilter},'',location.href);
     }
-    const title = chapter?.title || ({home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入'})[currentRoute];
+    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
-    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : renderHome();
+    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : renderHome();
     updateNavigation();
     closeMenu();
     if (prompt) {
@@ -174,6 +176,7 @@
   const searchInput=document.querySelector('#search-input');
   let searchReturnFocus = null;
   const searchItems=[
+    {title:'选择接入：WorkBuddy 或 Codex',type:'开始使用',body:'入口 文献助手 Zotero 接入 选择 跳过 直接阅读 教程',href:'#start'},
     {title:'教程概览',type:'学习路径',body:'Zotero AI 文献综述 教程 六步 入门',href:'#home'},
     {title:'WorkBuddy 接入 Zotero 本地文献检索',type:'工具接入',body:'WorkBuddy MCP Skill 技能 安装 下载 uv uvx 本地 API 信任 连接 检索 全文 引用键 citekey 排障',href:'#workbuddy'},
     {title:'Codex 接入 Zotero 本地文献检索',type:'工具接入',body:'Codex MCP Skill 技能 TOML config.toml CLI 安装 下载 uv uvx 本地 API 自助安装 检索 全文 引用键 citekey 排障',href:'#codex'},
@@ -214,7 +217,7 @@
     else if(el.hasAttribute('data-search'))openSearch(el);
     else if(el.hasAttribute('data-close-search'))closeSearch();
     else if(el.hasAttribute('data-search-result')){closeSearch({restoreFocus:false});if(location.hash===el.getAttribute('href')){event.preventDefault();route();}}
-    else if(el.getAttribute('href')?.startsWith('#prompts/') && location.hash===el.getAttribute('href')){event.preventDefault();route();}
+    else if(el.getAttribute('href')?.startsWith('#') && location.hash===el.getAttribute('href') && event.button===0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();route();}
     else if(el.classList.contains('menu-toggle')){const open=document.querySelector('#sidebar').classList.toggle('is-open');document.querySelector('.sidebar-overlay').hidden=!open;el.setAttribute('aria-expanded',String(open));el.setAttribute('aria-label',open?'关闭学习目录':'打开学习目录');}
     else if(el.classList.contains('sidebar-overlay'))closeMenu();
   });

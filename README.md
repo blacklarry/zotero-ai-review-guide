@@ -14,6 +14,8 @@
 
 新增 [Codex 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#codex)：TOML 与 CLI 配置、可选中文技能、自助安装指令，以及本机/远程运行边界和实际工具验证。专用公开包位于 `docs/downloads/codex-zotero/`。
 
+网站默认先展示“选择接入”页：可进入 WorkBuddy 或 Codex 接入教程，也可选择“跳过，直接阅读教程”。品牌与侧栏可返回选择页；已有章节、提示词和接入教程的深链接仍可直接访问，不记录接入选择。
+
 页面上的模拟 AI 错误用于演示人工核查，不是一次真实模型测试。论文内容与位置已对照原文核验，软件步骤按 Zotero 官方文档核验，未声称完成本机 Zotero / Word 全流程实测。
 
 ## 发布与维护
