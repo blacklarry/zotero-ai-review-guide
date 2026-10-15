@@ -11,6 +11,25 @@
 
 包中没有文献条目、PDF、检索结果、账号凭据或 API 密钥，也没有某台电脑的安装路径。
 
+## 让 WorkBuddy 自助安装
+
+大部分安装步骤可交给 WorkBuddy 按本教程执行，包括检查依赖、下载接入包、备份并合并 MCP 配置、安装技能和验证连接。将下面指令复制到 WorkBuddy 对话中：
+
+```text
+请读取以下文字版教程，在当前电脑完成 Zotero 接入 WorkBuddy 的安装与配置。
+教程：https://blacklarry.github.io/zotero-ai-review-guide/downloads/workbuddy-zotero/README.md
+安装包：https://blacklarry.github.io/zotero-ai-review-guide/downloads/workbuddy-zotero/zotero-workbuddy-kit.zip
+先检查 Zotero 是否运行、本地 API 是否开启，以及 uv/uvx 是否可用；缺少依赖时按教程准备。
+下载并解压接入包。按当前电脑的实际用户目录定位 WorkBuddy 配置与技能目录，不照搬其他电脑的路径。
+修改前备份已有 mcp.json，合并 zotero 配置并保留其他连接器；安装中文技能。已有同名配置或技能先核对，内容一致时复用，存在冲突时报告后再处理。
+遇到首次“信任”、权限确认或需要我手动操作的步骤时，说明具体操作并等待我完成，再继续。不要替我点击信任或修改授权记录。
+最后在工具可用时调用 collections 验证连接；若需要重启或新建对话才能验证，明确说明。报告实际安装位置、修改内容和验证结果，不把配置已保存等同于连接成功。
+```
+
+首次“信任”需要用户亲自确认；写入工作空间外的 WorkBuddy 配置和技能目录、安装依赖或执行受控操作时，也可能需要用户授权。遇到确认提示时，按 WorkBuddy 说明检查具体操作并完成授权后再继续。[官方权限与安全沙箱说明](https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Permission-Modes)
+
+尚未完成完整自动安装流程实测。实际安装位置、是否需要重启及连接验证结果应由 WorkBuddy 如实报告，以 `collections` 的实际调用结果判断连接状态。
+
 ## 1. 准备 Zotero 与 uv
 
 安装并保持 Zotero 8 或更高版本运行。在 Zotero「设置 → 高级」中启用“允许此计算机上的其他应用程序与 Zotero 通信”或对应的本地 API 选项；界面名称可能随版本和语言变化。[上游要求](https://github.com/statzhero/zotero-fulltext#quick-start)

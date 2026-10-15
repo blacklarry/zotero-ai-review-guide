@@ -1,0 +1,8 @@
+[mcp_servers.zotero]
+command = "uvx"
+args = ["zotero-fulltext==0.5.1"]
+
+[mcp_servers.zotero.env]
+ZOTERO_API_BASE_URL = "http://127.0.0.1:23119/api"
+ZOTERO_LIBRARY_TYPE = "user"
+ZOTERO_LIBRARY_ID = "0"

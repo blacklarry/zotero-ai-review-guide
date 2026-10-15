@@ -10,7 +10,9 @@
 
 六章学习路径、六组 AI 提示词、两篇真实论文的完整案例、五条证据的 15 字段填写样例、三组 Zotero 官方操作截图，以及 Word 插件排障。
 
-新增 [WorkBuddy 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#workbuddy)：通用 Zotero MCP 配置、中文检索技能、安装包下载、首次信任授权与排障。公开下载文件位于 `docs/downloads/workbuddy-zotero/`，只包含配置、技能和说明；未包含本机路径、用户文献或凭据。
+新增 [WorkBuddy 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#workbuddy)：通用 Zotero MCP 配置、中文检索技能、安装包下载、可复制的自助安装指令、首次信任授权与排障。公开下载文件位于 `docs/downloads/workbuddy-zotero/`，只包含配置、技能和说明；未包含本机路径、用户文献或凭据。
+
+新增 [Codex 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#codex)：TOML 与 CLI 配置、可选中文技能、自助安装指令，以及本机/远程运行边界和实际工具验证。专用公开包位于 `docs/downloads/codex-zotero/`。
 
 页面上的模拟 AI 错误用于演示人工核查，不是一次真实模型测试。论文内容与位置已对照原文核验，软件步骤按 Zotero 官方文档核验，未声称完成本机 Zotero / Word 全流程实测。
 
