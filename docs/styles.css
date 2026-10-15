@@ -63,6 +63,17 @@
 @media(max-width:760px){.noscript{margin:20px}}
 
 /* 提高屏幕阅读字号，打印版沿用独立的字号与分页规则。 */
+/* WorkBuddy 接入沿用教程的内容卡片与排版。 */
+.resource-grid .resource-card:last-child:nth-child(even){grid-column:auto}
+.workbuddy-downloads{padding:24px;border:1px solid var(--line);border-radius:7px;background:var(--soft);margin-bottom:24px}
+.workbuddy-downloads h2,.workbuddy-sources h2{font-size:22px;margin:0 0 10px;color:var(--ink)}
+.workbuddy-downloads p,.workbuddy-sources p,.workbuddy-sources li{font-size:16px;line-height:1.9}
+.workbuddy-downloads .example-actions{align-items:center;margin-bottom:0}
+.workbuddy-content code,.workbuddy-sources code{overflow-wrap:anywhere;font-size:.9em}
+.workbuddy-content .prompt-box pre{font-family:var(--mono,Consolas,monospace);font-size:14px}
+.workbuddy-content .prompt-box:has([data-copy-workbuddy="verify"]) pre,.workbuddy-content .prompt-box:has([data-copy-workbuddy="search"]) pre,.workbuddy-content .prompt-box:has([data-copy-workbuddy="read"]) pre{font-family:var(--sans);font-size:15px}
+.workbuddy-sources{border-top:1px solid var(--line);padding-top:24px;margin-top:28px}
+@media(max-width:550px){.workbuddy-downloads{padding:20px}.workbuddy-downloads .example-actions .btn{width:100%}.workbuddy-content .prompt-box-head{flex-wrap:wrap}.workbuddy-content .prompt-box-head>span{flex-basis:100%}.workbuddy-downloads h2,.workbuddy-sources h2{font-size:20px}}
 @media screen {
   body{font-size:16px}
   .header-caption,.top-nav a,.search-trigger{font-size:14px}
