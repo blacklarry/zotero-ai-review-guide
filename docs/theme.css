@@ -124,24 +124,24 @@
   .entry-skip:hover { background: var(--soft); border-color: var(--deep); }
   .entry-skip-area p { color: var(--muted); font-size: 13px; }
   .entry-grid { gap: 24px; }
-  .entry-card { padding: 30px; transition: border-color 220ms var(--ease), box-shadow 220ms var(--ease), transform 220ms var(--ease); }
+  .entry-card { padding: 30px; transition: background-color 220ms var(--ease), border-color 220ms var(--ease), box-shadow 220ms var(--ease), transform 220ms var(--ease); }
   .entry-card-top { margin-bottom: 24px; }
   .entry-platform { color: var(--muted); font-size: 13px; }
-  .entry-card h2 { font-family: var(--sans); font-size: 28px; font-weight: 600; letter-spacing: -.02em; }
+  .entry-card h2 { font: 600 32px/1.3 var(--serif); letter-spacing: normal; }
   .entry-card-description { font-size: 16px; color: var(--text); margin-bottom: 22px; }
   .entry-features { color: var(--muted); font-size: 13px; margin-bottom: 24px; gap: 8px 18px; }
   .entry-card-action {
-    color: var(--green);
-    background: transparent;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    padding: 18px 0 0;
-    min-height: 48px;
+    color: var(--paper);
+    background: var(--green);
+    border-top: 0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    min-height: 44px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
   }
   .entry-card-action .icon { transition: transform 220ms var(--ease); }
-  .entry-card:active .entry-card-action { background: transparent; }
+  .entry-card:active .entry-card-action { background: var(--deep); }
 
   .hero { background: var(--soft); border: 0; border-radius: 18px; padding: 40px; gap: 24px; }
   .hero h1 { font-size: clamp(34px, 3.6vw, 48px); color: var(--ink); letter-spacing: 0; }
@@ -239,7 +239,8 @@
   @keyframes dialog-enter { from { opacity: 0; transform: translateY(6px) scale(.99); } to { opacity: 1; transform: none; } }
 
   @media (hover: hover) and (pointer: fine) {
-    .course-card:hover, .entry-card:hover { transform: translateY(-2px); background: var(--white); border-color: #b9cbb2; box-shadow: var(--shadow); }
+    .course-card:hover { transform: translateY(-2px); background: var(--white); border-color: #b9cbb2; box-shadow: var(--shadow); }
+    .entry-card:hover { transform: translateY(-2px); background: var(--soft); border-color: var(--green); box-shadow: none; }
     .entry-card:hover .entry-card-action .icon { transform: translateX(3px); }
     .btn-primary:hover { background: var(--deep); box-shadow: 0 4px 12px #233e3412; }
     .completion-btn.is-done:hover { background: var(--soft); color: var(--green); box-shadow: none; }
@@ -310,7 +311,7 @@
     .entry-skip-area { margin: 22px 0 28px; gap: 8px; }
     .entry-card { padding: 24px; }
     .entry-card-top { margin-bottom: 20px; }
-    .entry-card h2 { font-size: 26px; }
+    .entry-card h2 { font-size: 30px; }
     .entry-features { gap: 8px 14px; }
     .hero { padding: 28px 24px; border-radius: var(--radius); }
     .hero h1 { font-size: 36px; }
