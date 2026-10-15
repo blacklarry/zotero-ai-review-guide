@@ -43,12 +43,12 @@
   border-radius: 6px;
   color: var(--green);
   display: inline-flex;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   gap: 10px;
   justify-content: center;
   min-height: 44px;
-  padding: 10px 16px;
+  padding: 12px 22px;
   text-align: center;
   transition: background-color 180ms ease-out;
 }

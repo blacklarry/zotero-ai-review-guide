@@ -120,7 +120,8 @@
   .entry-page { padding: 6px 0 28px; }
   .entry-intro { max-width: 780px; }
   .entry-skip-area { gap: 10px 18px; margin: 24px 0 34px; }
-  .entry-skip { background: var(--soft); border-color: transparent; border-radius: 9px; font-size: 14px; font-weight: 500; }
+  .entry-skip { background: var(--white); border-color: var(--green); border-radius: 9px; padding: 12px 22px; font-size: 14px; font-weight: 600; }
+  .entry-skip:hover { background: var(--soft); border-color: var(--deep); }
   .entry-skip-area p { color: var(--muted); font-size: 13px; }
   .entry-grid { gap: 24px; }
   .entry-card { padding: 30px; transition: border-color 220ms var(--ease), box-shadow 220ms var(--ease), transform 220ms var(--ease); }
@@ -165,6 +166,21 @@
   .chip { border-color: var(--line); background: transparent; border-radius: 6px; color: var(--muted); }
 
   .chapter-layout { gap: 36px; }
+  .chapter-pager { display: flex; gap: 8px 28px; align-items: center; flex-wrap: wrap; }
+  .prev-chapter { display: inline-flex; gap: 10px; align-items: center; font-size: 13px; color: var(--green); min-height: 44px; }
+  .prev-chapter .icon { width: 16px; height: 16px; transform: scaleX(-1); }
+  .path-figure, .flow-figure { margin: 0 0 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 20px; }
+  .path-figure img, .flow-figure img { display: block; width: 100%; height: auto; }
+  .path-figure img { max-width: 480px; margin-inline: auto; }
+  .flow-figure { container: evidence-flow / inline-size; }
+  .flow-scroll { overflow-x: auto; border-radius: 6px; }
+  .flow-scroll:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+  .flow-figure figcaption { font-size: 13px; color: var(--muted); margin-top: 12px; text-align: center; }
+  .diagram-hint { display: none; }
+  @container evidence-flow (max-width: 740px) {
+    .flow-figure img { width: 900px; min-width: 900px; }
+    .diagram-hint { display: block; margin-top: 6px; }
+  }
   .lesson-step { padding-bottom: 36px; border-color: var(--line); }
   .lesson-step h2, .lesson-checklist h2 { font-size: 21px; line-height: 1.6; }
   .lesson-step p { color: var(--text); font-size: 17px; line-height: 1.95; }
@@ -328,6 +344,11 @@
     .lesson-step { padding-left: 28px; padding-bottom: 32px; }
     .lesson-step h2, .lesson-checklist h2 { font-size: 20px; }
     .lesson-step p { font-size: 16px; }
+    .chapter-pager { flex-direction: column; align-items: stretch; gap: 8px; }
+    .prev-chapter, .next-chapter { justify-content: space-between; font-size: 14px; }
+    .path-figure, .flow-figure { padding: 14px; }
+    .flow-figure img { width: 900px; min-width: 900px; }
+    .diagram-hint { display: block; margin-top: 6px; }
     .worked-example { padding-top: 28px; margin-block: 30px; }
     .worked-example h2, .workbuddy-downloads h2, .workbuddy-sources h2 { font-size: 22px; }
     .workbuddy-downloads { padding: 24px; }

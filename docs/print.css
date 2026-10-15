@@ -35,7 +35,7 @@
   .header, .sidebar, .sidebar-overlay, .skip-link, .footer,
   .breadcrumb, .lesson-aside, .lesson-navigation, .case-nav,
   .case-next, .example-actions, .prompt-toolbar, .prompt-card-bottom,
-  .hero-art, .hero-actions, .feedback-entry, .toast, dialog,
+  .hero-art, .hero-actions, .feedback-entry, .toast, dialog, .diagram-hint,
   button, .btn, .banner-link, .icon {
     display: none !important;
   }
@@ -140,7 +140,7 @@
     break-inside: avoid;
     page-break-inside: avoid;
   }
-  .operation-guide img {
+  .operation-guide img, .path-figure img, .flow-figure img {
     width: auto;
     max-width: 100%;
     max-height: 200mm;

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="340" viewBox="0 0 1680 340" role="img" aria-labelledby="evidence-flow-title evidence-flow-desc">
+  <title id="evidence-flow-title">从文献来源到综述成品的证据流</title>
+  <desc id="evidence-flow-desc">文献全文经过 PDF 批注、条目笔记、证据矩阵和主题比较，形成有据成文的综述成品。证据矩阵包含 15 个字段，用于统一证据记录。每一步都保留出处，AI 输出回到原文核查。</desc>
+  <defs>
+    <marker id="evidence-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" fill="#2c604d"/>
+    </marker>
+  </defs>
+  <style>
+    .heading { fill: #61746a; font-family: Georgia, "Times New Roman", serif; font-size: 28px; letter-spacing: 2.5px; }
+    .label { fill: #233e34; font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-size: 29px; font-weight: 700; text-anchor: middle; }
+    .detail { fill: #61746a; font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-size: 21px; text-anchor: middle; }
+    .node { fill: #fffefa; stroke: #2c604d; stroke-width: 2.6px; }
+    .arrow { fill: none; stroke: #2c604d; stroke-width: 2.8px; marker-end: url(#evidence-arrow); }
+  </style>
+  <rect width="1680" height="340" fill="#f8f7f2"/>
+  <text class="heading" x="60" y="56">SOURCE → EVIDENCE → INSIGHT</text>
+
+  <path class="arrow" d="M260 181H292"/>
+  <path class="arrow" d="M542 181H574"/>
+  <path class="arrow" d="M824 181H856"/>
+  <path class="arrow" d="M1106 181H1138"/>
+  <path class="arrow" d="M1388 181H1420"/>
+
+  <rect class="node" x="16" y="98" width="244" height="168" rx="18"/>
+  <text class="label" x="138" y="168">文献全文</text>
+  <text class="detail" x="138" y="212">Zotero 文献库</text>
+
+  <rect class="node" x="298" y="98" width="244" height="168" rx="18"/>
+  <text class="label" x="420" y="168">PDF 批注</text>
+  <text class="detail" x="420" y="212">高亮 + 评论</text>
+
+  <rect class="node" x="580" y="98" width="244" height="168" rx="18"/>
+  <text class="label" x="702" y="168">条目笔记</text>
+  <text class="detail" x="702" y="212">从批注生成</text>
+
+  <rect x="862" y="98" width="244" height="168" rx="18" fill="#2c604d"/>
+  <text class="label" x="984" y="168" style="fill: #f8f7f2">证据矩阵</text>
+  <text class="detail" x="984" y="212" style="fill: #e2ece4; font-size: 19px">15 字段 · 统一证据记录</text>
+
+  <rect class="node" x="1144" y="98" width="244" height="168" rx="18"/>
+  <text class="label" x="1266" y="168">主题比较</text>
+  <text class="detail" x="1266" y="212">共识 · 分歧 · 边界</text>
+
+  <rect class="node" x="1426" y="98" width="244" height="168" rx="18"/>
+  <text class="label" x="1548" y="168">综述成品</text>
+  <text class="detail" x="1548" y="212">有据成文</text>
+
+  <text class="detail" x="840" y="324">每一步都保留出处，AI 输出回到原文核查</text>
+</svg>

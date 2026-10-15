@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="760" viewBox="0 0 480 760" role="img" aria-labelledby="six-steps-title six-steps-desc">
+  <title id="six-steps-title">文献研读的六步学习路径</title>
+  <desc id="six-steps-desc">从明确问题与准备、收集与整理文献，到精读与证据提取、主题归纳与比较、搭建结构与写作，最后完成引用与质量核查。第三步以深绿色突出。</desc>
+  <style>
+    .heading { fill: #61746a; font-family: Georgia, "Times New Roman", serif; font-size: 18px; letter-spacing: 2.6px; }
+    .step { fill: #233e34; font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-size: 24px; font-weight: 700; }
+    .detail { fill: #61746a; font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-size: 16px; }
+    .number { fill: #2c604d; font-family: Georgia, "Times New Roman", serif; font-size: 25px; text-anchor: middle; }
+  </style>
+  <rect width="480" height="760" fill="#f8f7f2"/>
+  <text class="heading" x="34" y="44">THE LEARNING PATH / 06</text>
+  <path d="M62 134V656" fill="none" stroke="#dde4da" stroke-width="2.5" stroke-dasharray="7 7"/>
+
+  <circle cx="62" cy="100" r="34" fill="#f8f7f2" stroke="#2c604d" stroke-width="2.4"/>
+  <text class="number" x="62" y="108">01</text>
+  <text class="step" x="120" y="95">明确问题与准备</text>
+  <text class="detail" x="120" y="123">收窄研究边界，准备工具与检索计划</text>
+
+  <circle cx="62" cy="218" r="34" fill="#f8f7f2" stroke="#2c604d" stroke-width="2.4"/>
+  <text class="number" x="62" y="226">02</text>
+  <text class="step" x="120" y="213">收集与整理文献</text>
+  <text class="detail" x="120" y="241">导入真实文献，用分类和标签建一个干净的库</text>
+
+  <circle cx="62" cy="336" r="34" fill="#2c604d"/>
+  <text class="number" x="62" y="344" style="fill: #f8f7f2; font-weight: 700">03</text>
+  <text class="step" x="120" y="331">精读与证据提取</text>
+  <text class="detail" x="120" y="359">批注变成笔记，让每个结论都有出处</text>
+
+  <circle cx="62" cy="454" r="34" fill="#f8f7f2" stroke="#2c604d" stroke-width="2.4"/>
+  <text class="number" x="62" y="462">04</text>
+  <text class="step" x="120" y="449">主题归纳与比较</text>
+  <text class="detail" x="120" y="477">跨文献寻找共识、分歧与适用条件</text>
+
+  <circle cx="62" cy="572" r="34" fill="#f8f7f2" stroke="#2c604d" stroke-width="2.4"/>
+  <text class="number" x="62" y="580">05</text>
+  <text class="step" x="120" y="567">搭建结构与写作</text>
+  <text class="detail" x="120" y="595">从证据到论点，写出有比较、有评述的综述</text>
+
+  <circle cx="62" cy="690" r="34" fill="#f8f7f2" stroke="#2c604d" stroke-width="2.4"/>
+  <text class="number" x="62" y="698">06</text>
+  <text class="step" x="120" y="685">引用与质量核查</text>
+  <text class="detail" x="120" y="713">逐项核查引用、证据与论证边界</text>
+</svg>
