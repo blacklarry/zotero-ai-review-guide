@@ -3,6 +3,8 @@
 从文献收集、证据提取到主题比较、综述写作和引用核查的中文入门网站。
 
 - 在线阅读：https://blacklarry.github.io/zotero-ai-review-guide/
+- GitHub 仓库：https://github.com/blacklarry/zotero-ai-review-guide
+- Gitee 国内仓库：https://gitee.com/larry_17/zotero-ai-review-guide
 - 反馈与纠错：https://github.com/blacklarry/zotero-ai-review-guide/issues
 - 内容核验日期：2026-10-14
 
@@ -25,6 +27,8 @@
 ## 发布与维护
 
 网站是 HTML、CSS 和 JavaScript 静态文件，位于 `docs/`。GitHub Pages 配置为从 `main` 分支的 `/docs` 发布；修改并推送该目录后会自动更新网站。`.nojekyll` 使 GitHub 直接发布静态文件。
+
+GitHub 与 Gitee 并列保留项目源码；国内仓库地址不是网站托管地址，在线阅读仍使用上面的 GitHub Pages 链接。本地远程名 `origin` 对应 GitHub，`gitee` 对应国内仓库，更新后分别推送 `main` 分支即可同步。
 
 本地预览（Python 3）：
 
