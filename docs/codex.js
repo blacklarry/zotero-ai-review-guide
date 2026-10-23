@@ -15,6 +15,20 @@
       '配置后重启相应 Codex 客户端并新建对话；工具可用时调用 collections 验证连接。codex mcp list 只证明服务已注册，不证明连接成功。若重启或新会话需我完成，明确说明。',
       '报告实际安装位置、修改内容和验证结果；不要把配置保存、技能出现或命令返回成功等同于文献库连接成功。'
     ].join('\n'),
+    installDomestic: [
+      '请在当前电脑完成 Zotero 接入 Codex 的安装与配置，教程和接入包优先从 Gitee 国内仓库取得。',
+      '仓库：https://gitee.com/larry_17/zotero-ai-review-guide.git',
+      '先确认这次任务的 MCP 服务在 Zotero 所在电脑及同一系统运行；远程机器、WSL、容器或云端的 127.0.0.1 不能直接代表我的本机 Zotero。',
+      '先检查 Git 是否可用。在新建的独立临时目录克隆上述仓库，不重置、覆盖或清理我已有的项目目录。没有 Git 时，可尝试通过 Gitee 仓库网页下载 ZIP 并解压；无法取得文件时报告实际错误，不自行切换来源。',
+      '进入本次取得的仓库 docs/downloads/codex-zotero，先读取本地 README.md，再使用同目录的 zotero-codex-kit.zip；技能包为 zotero-local-codex-skill.zip。核对文件实际存在，不猜测 Gitee raw 或附件下载地址。',
+      '本地 README 中如仍含 GitHub 下载链接，使用本次从 Gitee 取得的本地 README 安装步骤与本地 ZIP，不再按其中 GitHub 下载链接重新下载。',
+      '检查 Zotero 是否运行、本地 API 是否开启，以及 uv/uvx 是否可用；缺少依赖时按教程准备。国内版仅更换教程与接入包来源，uv、Python 与 zotero-fulltext 等依赖仍可能需要访问各自下载源；网络失败时说明具体依赖和错误，不声称已安装成功。解压本地接入包。',
+      '定位当前 Codex 主机实际生效的 config.toml（默认 ~/.codex/config.toml，CODEX_HOME 或项目配置可能改变位置）。修改前备份，仅合并 mcp_servers.zotero 及其 env，保留其他配置。已有同名 MCP 先核查，内容一致时复用，冲突时报告后再处理；不要重复添加 TOML 表。',
+      '如需中文阅读流程，可将包内 skills/zotero-local 安装到用户 ~/.agents/skills/；先检查已有同名技能，避免重复安装或覆盖。MCP 必需，技能可选。',
+      '遇到权限确认、信任提示或需要我手动操作的步骤时，说明具体操作并等待我处理；不绕过审批，不更改安全策略。',
+      '配置后重启相应 Codex 客户端并新建对话；工具可用时调用 collections 验证连接。codex mcp list 只证明服务已注册，不证明连接成功。若重启或新会话需我完成，明确说明。',
+      '报告实际文件来源、安装位置、修改内容和验证结果；不要把配置保存、技能出现或命令返回成功等同于文献库连接成功。'
+    ].join('\n'),
     config,
     cli: 'codex mcp add zotero --env ZOTERO_API_BASE_URL=http://127.0.0.1:23119/api --env ZOTERO_LIBRARY_TYPE=user --env ZOTERO_LIBRARY_ID=0 -- uvx zotero-fulltext==0.5.1\ncodex mcp list',
     runtime: 'uv --version\nuvx --version',
@@ -22,18 +36,27 @@
     search: '查找我的 Zotero 文献库中与高光谱和种子活力有关的论文，列出标题、作者、年份、引用键、条目 key，以及实际返回的 DOI 或来源链接。只使用本地库真实检索结果，没有命中时如实说明。',
     read: '读取引用键为 [替换为检索结果中的 citekey] 的论文，提取研究问题、方法和局限。每条结论附原文证据和工具返回的段落定位；结果截断时说明已读范围，段落编号不能当作 PDF 页码。'
   };
-  const copyLabels = {install: '安装指令', config: 'TOML 配置', cli: 'CLI 命令', runtime: '检测命令', verify: '连接验证提示词', search: '检索提示词', read: '阅读提示词'};
+  const copyLabels = {install: 'GitHub 版安装指令', installDomestic: '国内版安装指令', config: 'TOML 配置', cli: 'CLI 命令', runtime: '检测命令', verify: '连接验证提示词', search: '检索提示词', read: '阅读提示词'};
   function resourceCard(icon) {
     return `<article class="resource-card"><div class="resource-card-icon">${icon('link')}</div><span class="resource-format">Codex · MCP + 可选 Skill</span><h2>Zotero 接入 Codex</h2><p>用桌面本机任务或同机 CLI 查阅已有文献。附 TOML、CLI 配置与中文证据阅读技能。</p><a class="btn btn-secondary" href="#codex">查看 Codex 接入教程 ${icon('arrow')}</a><div class="example-actions"><a href="${base}zotero-codex-kit.zip" download>下载完整包</a><a href="${base}zotero-local-codex-skill.zip" download>仅下载技能</a></div></article>`;
   }
   function render({icon, esc, crumb}) {
-    const copyBlock = (id, label) => `<section class="prompt-box"><div class="prompt-box-head"><span>${icon('copy')} ${esc(label)}</span><button type="button" class="copy-btn" data-copy-codex="${id}">复制${id === 'install' ? '安装指令' : id === 'config' ? '配置' : ['runtime','cli'].includes(id) ? '命令' : '提示词'}</button></div><pre>${esc(copyTexts[id])}</pre></section>`;
+    const copyBlock = (id, label) => {
+      const isInstall = ['install', 'installDomestic'].includes(id);
+      const preAttrs = isInstall ? ` tabindex="0" aria-label="完整${id === 'install' ? ' GitHub 版' : '国内版'}安装指令"` : '';
+      return `<section class="prompt-box"><div class="prompt-box-head"><span>${icon('copy')} ${esc(label)}</span><button type="button" class="copy-btn" data-copy-codex="${id}">复制${isInstall ? '安装指令' : id === 'config' ? '配置' : ['runtime', 'cli'].includes(id) ? '命令' : '提示词'}</button></div><pre${preAttrs}>${esc(copyTexts[id])}</pre></section>`;
+    };
+    const installPrompts = `<div class="install-prompt-switcher" data-install-switcher>
+      <div class="install-source-tabs" role="tablist" aria-label="安装指令下载来源"><button type="button" class="install-source-tab" id="cx-install-tab-github" data-install-source="github" role="tab" aria-controls="cx-install-panel-github" aria-selected="true" tabindex="0">GitHub 版</button><button type="button" class="install-source-tab" id="cx-install-tab-domestic" data-install-source="domestic" role="tab" aria-controls="cx-install-panel-domestic" aria-selected="false" tabindex="-1">国内版 · Gitee</button></div>
+      <div class="install-source-panel" id="cx-install-panel-github" role="tabpanel" aria-labelledby="cx-install-tab-github"><p class="install-source-note">从 GitHub Pages 读取教程与接入包，适合可正常访问本站下载的环境。</p>${copyBlock('install', '复制到本机 Codex · GitHub 版安装指令')}</div>
+      <div class="install-source-panel" id="cx-install-panel-domestic" role="tabpanel" aria-labelledby="cx-install-tab-domestic" hidden><p class="install-source-note">从 Gitee 仓库取得本地教程与接入包。仅更换文件来源，运行依赖仍需按实际网络情况下载。</p>${copyBlock('installDomestic', '复制到本机 Codex · 国内版安装指令')}</div>
+    </div>`;
     return `${crumb('Codex 接入')}
-      <header class="page-intro"><div class="eyebrow">ZOTERO × CODEX</div><h1>让 Codex 查阅你的文献库。</h1><p>把本机 Zotero 接入 Codex，按自然语言检索已有论文、核对引用键并读取索引正文。MCP 提供真实工具，中文 Skill 可选安装。</p><div class="page-meta"><span>${icon('shield')} 五个只读工具</span><span>${icon('file')} 配置与技能 · v1.0.0</span><span>${icon('check')} 说明核验：2026-10-15</span></div></header>
-      <section class="workbuddy-downloads" aria-labelledby="cx-download-title"><h2 id="cx-download-title">下载 Codex 专用接入包</h2><p>完整包包含 TOML 配置片段、中文技能、单技能 ZIP 与文字说明。已有 Zotero MCP 时，可只下载技能。</p><div class="example-actions"><a class="btn btn-primary" href="${base}zotero-codex-kit.zip" download>下载完整接入包 ${icon('download')}</a><a class="btn btn-secondary" href="${base}zotero-local-codex-skill.zip" download>仅下载中文技能 ${icon('download')}</a><a href="${base}README.md" download>文字版说明 ${icon('file')}</a></div></section>
+      <header class="page-intro"><div class="eyebrow">ZOTERO × CODEX</div><h1>让 Codex 查阅你的文献库。</h1><p>把本机 Zotero 接入 Codex，按自然语言检索已有论文、核对引用键并读取索引正文。MCP 提供真实工具，中文 Skill 可选安装。</p><div class="page-meta"><span>${icon('shield')} 五个只读工具</span><span>${icon('file')} 配置与技能 · v1.0.0</span><span>${icon('check')} 说明更新：2026-10-23</span></div></header>
+      <section class="workbuddy-downloads integration-downloads" aria-labelledby="cx-download-title"><div class="integration-download-head"><span class="integration-kicker">接入文件 · 选择获取方式</span><h2 id="cx-download-title">下载 Codex 专用接入包</h2><p>完整包包含 TOML 配置片段、中文技能、单技能 ZIP 与文字说明。已有 Zotero MCP 时，可只下载技能。</p></div><div class="integration-download-actions"><a class="btn btn-primary" href="${base}zotero-codex-kit.zip" download>下载完整接入包 ${icon('download')}</a><a class="btn btn-secondary" href="${base}zotero-local-codex-skill.zip" download>仅下载中文技能 ${icon('download')}</a><a class="btn btn-secondary" href="${base}README.md" download>文字版说明 ${icon('file')}</a></div><div class="integration-repos"><span class="integration-repo-label">仓库入口</span><a href="https://github.com/blacklarry/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">GitHub 仓库 ${icon('link')}</a><a href="https://gitee.com/larry_17/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">Gitee 国内仓库 ${icon('link')}</a><p class="integration-repo-note">Gitee 仓库中进入 <code>docs/downloads/codex-zotero/</code> 获取相同类型的文件；版本以各仓库实际内容为准。</p></div></section>
       <div class="callout"><strong>${icon('info')} 先确认 MCP 在哪里运行</strong>本文用于 Zotero 所在电脑的桌面本机任务或同一系统内的 Codex CLI。<code>127.0.0.1</code> 指向 MCP 进程所在系统；远程 SSH、WSL、容器或云端任务不能据此直接访问 Windows 本机 Zotero。请先核对运行位置与连通性，再选择本机任务。网站不读取你的库；工具返回内容会进入 Codex 对话，由所选模型处理。</div>
       <article class="workbuddy-content">
-        <section class="worked-example" aria-labelledby="cx-auto"><div class="eyebrow">可选方式 / 交给 Codex 执行</div><h2 id="cx-auto">复制指令，让 Codex 自助安装</h2><p>在本机 Codex 新对话中粘贴下面指令，它已包含可读取的文字教程和安装包地址。安装过程中仍按当前权限提示处理；需要重启时，完成重启后继续验证。</p>${copyBlock('install', '复制到本机 Codex · 自助安装指令')}<p class="case-scope">本页已核对官方配置文档和 CLI 命令格式；未完成此自助安装指令与新会话调用的端到端实测。请以实际连接结果为准，也可按下面四步操作。</p></section>
+        <section class="worked-example" aria-labelledby="cx-auto"><div class="eyebrow">可选方式 / 交给 Codex 执行</div><h2 id="cx-auto">复制指令，让 Codex 自助安装</h2><p>先选择 GitHub 版或国内版，再将完整指令粘贴到本机 Codex 新对话中。两版使用不同的教程与接入包来源；安装过程中按当前权限提示处理，需要重启时，完成重启后继续验证。</p>${installPrompts}<p class="case-scope">本页已核对官方配置文档和 CLI 命令格式；未完成此自助安装指令与新会话调用的端到端实测。请以实际连接结果为准，也可按下面四步操作。</p></section>
         <section class="worked-example" aria-labelledby="cx-prepare"><div class="eyebrow">STEP 01 / 准备环境</div><h2 id="cx-prepare">打开 Zotero，检查 uv / uvx</h2><ol class="practice-steps"><li>使用 Zotero 8 或更高版本，保持程序运行。在“设置 → 高级”启用“允许此计算机上的其他应用程序与 Zotero 通信”。</li><li>选择运行在这台电脑及同一系统的 Codex 客户端，在终端检查下面两条命令。无法识别时，按 <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener noreferrer">uv 官方安装说明</a> 安装后重新打开终端与客户端。</li><li>服务固定为 <code>zotero-fulltext==0.5.1</code>，要求 Python 3.11+，uv 可管理运行环境；首次启动通常需要联网下载包。当前个人本地库配置不需要 Zotero 云端 API 密钥。</li></ol>${copyBlock('runtime', '终端 · 检查 uv / uvx')}</section>
         <section class="worked-example" aria-labelledby="cx-connect"><div class="eyebrow">STEP 02 / 配置 MCP</div><h2 id="cx-connect">选择 TOML 或 CLI，配置一个服务</h2><p>默认用户配置文件为 <code>~/.codex/config.toml</code>。同一 Codex 主机的桌面、CLI 与 IDE 客户端共享配置；设置了 <code>CODEX_HOME</code> 或项目级配置时，先核对实际生效位置。写入前备份原文件，保留其他服务；已有 <code>zotero</code> 时先核查，不盲目覆盖。</p><h3>方式 A：合并 TOML 配置片段</h3><p>将下方两个表合并到 <code>config.toml</code>。不要用下载片段替换整份配置，也不要重复添加同名 TOML 表。</p>${copyBlock('config', 'mcp-config.toml · 合并到 Codex 配置')}<a href="${base}mcp-config.toml" download>下载 TOML 配置片段 ${icon('download')}</a><h3>方式 B：已安装 Codex CLI 时注册</h3><p>先备份配置并核对没有同名服务，再在 Zotero 所在电脑的终端执行下方命令。TOML 与 CLI 两种方式选一种即可；无需额外的 <code>codex mcp login</code>。</p>${copyBlock('cli', 'Codex CLI · 注册本地 stdio 服务')}<p class="case-scope"><code>codex mcp list</code> 只列出已注册配置，不证明工具已连通。保存配置后重启相应客户端并新建对话；桌面设置如提供 MCP 服务开关，确认 <code>zotero</code> 已启用。权限或信任提示由用户按实际提示处理。</p></section>
         <section class="worked-example" aria-labelledby="cx-skill"><div class="eyebrow">STEP 03 / 可选中文技能</div><h2 id="cx-skill">让 Codex 按证据阅读流程选工具</h2><ol class="practice-steps"><li>解压 <a href="${base}zotero-local-codex-skill.zip" download>单技能 ZIP</a>，得到 <code>zotero-local/SKILL.md</code>；完整包内也有 <code>skills/zotero-local</code>。</li><li>按当前官方目录，将 <code>zotero-local</code> 放进用户 <code>~/.agents/skills/</code>，或项目的 <code>.agents/skills/</code>。用户目录适用于多个项目；项目目录适用于该仓库。</li><li>先检查已有同名技能。若旧环境已从 <code>.codex/skills</code> 加载该技能，先核查实际发现结果，不重复安装。Codex 自动检测技能变化，未显示时重启。</li></ol><p>仅有 MCP 也可直接请求检索。安装技能后，Codex 可根据描述自动选用；CLI 或 IDE 中也可用 <code>$zotero-local</code> 明确调用。技能本身不会替你注册 MCP。</p></section>

@@ -198,6 +198,27 @@
   .workbuddy-downloads { background: var(--white); border-radius: var(--radius); padding: 28px; }
   .workbuddy-downloads p, .workbuddy-sources p, .workbuddy-sources li { font-size: 16px; color: var(--text); }
   .workbuddy-downloads .example-actions { gap: 12px 18px; }
+  .integration-downloads { padding: 28px 30px; border-top: 3px solid var(--green); }
+  .integration-kicker { display: block; margin-bottom: 8px; color: var(--green); font-size: 12px; font-weight: 600; letter-spacing: .8px; }
+  .integration-download-head { max-width: 72ch; }
+  .integration-download-head p { margin-bottom: 0; }
+  .integration-download-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .integration-download-actions .btn { min-height: 48px; padding: 11px 18px; justify-content: center; gap: 10px; }
+  .integration-repos { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .integration-repo-label { margin-right: 4px; font-size: 13px; color: var(--muted); }
+  .integration-repos a { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-size: 14px; text-decoration: none; }
+  .integration-repos a[href^="https://gitee.com"] { border-color: #c5d3bc; background: var(--soft); }
+  .integration-repos a:hover { border-color: var(--green); background: var(--soft); }
+  .integration-repos .integration-repo-note { flex-basis: 100%; margin: 0; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+  .install-prompt-switcher { margin-top: 24px; }
+  .install-prompt-switcher [role="tablist"] { display: inline-flex; gap: 4px; max-width: 100%; padding: 5px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-muted); }
+  .install-source-tab { min-height: 44px; padding: 9px 18px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; }
+  .install-source-tab[aria-selected="true"] { border-color: var(--line); background: var(--white); color: var(--green); font-weight: 600; box-shadow: 0 2px 5px #233e3408; }
+  .install-source-panel { margin-top: 16px; }
+  .install-source-panel[hidden] { display: none; }
+  .install-source-panel .install-source-note { margin: 0 0 14px; font-size: 14px; color: var(--muted); }
+  .install-source-panel .prompt-box { margin: 0; }
+  .workbuddy-content .install-source-panel .prompt-box pre { max-height: 420px; overflow-y: auto; font-family: var(--sans); font-size: 15px; line-height: 1.95; overflow-wrap: anywhere; }
   .callout { border: 0; border-left: 3px solid #a3b895; border-radius: 0 10px 10px 0; padding: 18px 22px; background: var(--soft); color: var(--text); font-size: 15px; }
   .callout strong { color: var(--green); font-size: 15px; }
   .prompt-box, .table-wrap { border-color: var(--line); border-radius: 12px; }
@@ -354,6 +375,15 @@
     .worked-example h2, .workbuddy-downloads h2, .workbuddy-sources h2 { font-size: 22px; }
     .workbuddy-downloads { padding: 24px; }
     .workbuddy-downloads .example-actions { gap: 12px; }
+    .integration-downloads { padding: 22px; }
+    .integration-download-actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .integration-download-actions .btn { width: 100%; }
+    .integration-repos { gap: 8px; }
+    .integration-repo-label { flex-basis: 100%; }
+    .integration-repos a { flex: 1 1 130px; justify-content: center; padding-inline: 10px; }
+    .install-prompt-switcher [role="tablist"] { display: flex; }
+    .install-source-tab { flex: 1; padding-inline: 10px; font-size: 13px; }
+    .workbuddy-content .install-source-panel .prompt-box pre { max-height: 380px; padding: 18px; }
     .callout { padding: 16px 18px; }
     .prompt-box-head { flex-wrap: wrap; padding: 12px 16px; gap: 8px 12px; }
     .prompt-box-head > span { min-width: 160px; }

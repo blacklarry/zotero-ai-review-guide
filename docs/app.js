@@ -191,6 +191,19 @@
     const anchor=document.createElement('a');anchor.href=url;anchor.download=name;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
     toast('下载已开始：'+name);
   }
+  function selectInstallSource(tab, {focus = false} = {}) {
+    const switcher = tab.closest('[data-install-switcher]');
+    if (!switcher) return;
+    switcher.querySelectorAll('[data-install-source]').forEach(item => {
+      const selected = item === tab;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    switcher.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+      panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+    });
+    if (focus) tab.focus();
+  }
   function closeMenu() {
     document.querySelector('#sidebar').classList.remove('is-open');
     document.querySelector('.sidebar-overlay').hidden=true;
@@ -238,6 +251,7 @@
     else if (el.hasAttribute('data-copy-workbuddy')) { const key=el.dataset.copyWorkbuddy;if(Object.hasOwn(workbuddy.copyTexts,key))copy(workbuddy.copyTexts[key],workbuddy.copyLabels[key]+'已复制。'); }
     else if (el.hasAttribute('data-copy-codex')) { const key=el.dataset.copyCodex;if(Object.hasOwn(codex.copyTexts,key))copy(codex.copyTexts[key],codex.copyLabels[key]+'已复制。'); }
     else if (el.hasAttribute('data-copy-knowledge')) { const key=el.dataset.copyKnowledge;if(Object.hasOwn(knowledge.copyTexts,key))copy(knowledge.copyTexts[key],knowledge.copyLabels[key]+'已复制。'); }
+    else if (el.hasAttribute('data-install-source')) selectInstallSource(el);
     else if (el.hasAttribute('data-filter')) { promptFilter=el.dataset.filter;history.replaceState({...history.state,promptFilter},'','#prompts');const y=scrollY;route({focus:false,scroll:false});window.scrollTo(0,y);const active=[...document.querySelectorAll('[data-filter]')].find(b=>b.dataset.filter===promptFilter);active?.focus({preventScroll:true}); }
     else if (el.hasAttribute('data-download')) download(el.dataset.download);
     else if (el.hasAttribute('data-complete')) { const id=Number(el.dataset.complete);const wasDone=completed.includes(id);completed=wasDone?completed.filter(n=>n!==id):[...completed,id];saveProgress();route({focus:false,scroll:false});document.querySelector('[data-complete]')?.focus({preventScroll:true});toast(wasDone?'已撤销本章完成标记。':completed.length===6?'六章全部完成，开始把方法用在你的研究中。':'已记录本章进度，继续下一步。'); }
@@ -249,7 +263,15 @@
     else if(el.classList.contains('sidebar-overlay'))closeMenu();
   });
   document.addEventListener('change',e=>{if(e.target.matches('[data-check]')){checked[e.target.dataset.check]=e.target.checked;saveProgress();}});
-  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}if(e.key==='Escape'&&!searchDialog.open)closeMenu();});
+  document.addEventListener('keydown',e=>{
+    const tab = e.target.closest('[data-install-source]');
+    if (tab && ['ArrowLeft','ArrowRight','Home','End'].includes(e.key)) {
+      const tabs = [...tab.closest('[data-install-switcher]').querySelectorAll('[data-install-source]')];
+      const index = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (tabs.indexOf(tab) + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      e.preventDefault();selectInstallSource(tabs[index], {focus:true});return;
+    }
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}if(e.key==='Escape'&&!searchDialog.open)closeMenu();
+  });
   searchInput.addEventListener('input',search);
   searchDialog.addEventListener('cancel',e=>{e.preventDefault();closeSearch();});
   searchDialog.addEventListener('click',e=>{if(e.target===searchDialog){const r=searchDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSearch();}});
