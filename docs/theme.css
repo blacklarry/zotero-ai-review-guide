@@ -630,6 +630,77 @@
     .search-dialog-head { padding: 14px 16px; }
     .search-dialog-head input { font-size: 16px; }
   }
+  /* 桌面进场：短暂光晕与掠光只作一遍，文字和按钮始终可操作。 */
+  @media (min-width: 1001px) and (prefers-reduced-motion: no-preference) {
+    .entry-title-character { display: inline-block; transform-origin: 50% 100%; }
+    .entry-page { position: relative; isolation: isolate; }
+    .entry-page::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: 12px;
+      left: 0;
+      width: 70%;
+      max-width: 780px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(162, 205, 177, .2), rgba(210, 232, 218, .08) 42%, transparent 72%);
+      opacity: 0;
+      pointer-events: none;
+      animation: guide-entry-glow 1500ms var(--ease) 100ms backwards;
+    }
+    .entry-card { position: relative; isolation: isolate; overflow: hidden; }
+    .entry-card > * { position: relative; z-index: 2; }
+    .entry-card::before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: -15%;
+      bottom: -15%;
+      left: -45%;
+      width: 40%;
+      background: linear-gradient(110deg, transparent 8%, rgba(213, 234, 220, .22) 32%, rgba(185, 218, 197, .4) 50%, rgba(213, 234, 220, .18) 68%, transparent 92%);
+      opacity: 0;
+      pointer-events: none;
+      animation: guide-card-sheen 900ms var(--ease) 600ms backwards;
+    }
+    .entry-card:nth-child(2)::before { animation-delay: 750ms; }
+    .entry-card-action { position: relative; isolation: isolate; overflow: hidden; }
+    .entry-card-action::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: -50%;
+      bottom: -50%;
+      left: -45%;
+      width: 34%;
+      background: linear-gradient(110deg, transparent 12%, rgba(255, 255, 255, .08) 34%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .08) 66%, transparent 88%);
+      opacity: 0;
+      pointer-events: none;
+      animation: guide-action-sheen 700ms var(--ease) 950ms backwards;
+    }
+    .entry-card:nth-child(2) .entry-card-action::before { animation-delay: 1100ms; }
+    .entry-card:focus-within::before, .entry-card:focus-within .entry-card-action::before { animation: none; opacity: 0; }
+    .entry-card-action .icon { transition: transform 220ms var(--ease); }
+    .entry-card:hover .entry-card-action .icon:last-child { transform: translateX(4px); }
+    @keyframes guide-entry-glow {
+      0% { opacity: 0; transform: translate3d(0, -12px, 0) scale(.94); }
+      38% { opacity: .85; }
+      100% { opacity: 0; transform: translate3d(12%, 6px, 0) scale(1.04); }
+    }
+    @keyframes guide-card-sheen {
+      0% { opacity: 0; transform: translate3d(-20%, 0, 0) skewX(-16deg); }
+      18% { opacity: .85; }
+      76% { opacity: .55; }
+      100% { opacity: 0; transform: translate3d(370%, 0, 0) skewX(-16deg); }
+    }
+    @keyframes guide-action-sheen {
+      0% { opacity: 0; transform: translate3d(-20%, 0, 0) skewX(-16deg); }
+      18% { opacity: 1; }
+      76% { opacity: .7; }
+      100% { opacity: 0; transform: translate3d(440%, 0, 0) skewX(-16deg); }
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

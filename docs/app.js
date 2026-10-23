@@ -36,25 +36,68 @@
   let currentRoute = 'start';
   let toastTimer;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let routeAnimation = null;
+  const desktopMotion = window.matchMedia('(min-width: 1001px)');
+  const routeAnimations = new Set();
   function cancelRouteAnimation() {
-    routeAnimation?.cancel();
-    routeAnimation = null;
+    routeAnimations.forEach(animation => animation.cancel());
+    routeAnimations.clear();
+    app.getAnimations?.({subtree:true}).forEach(animation => animation.cancel());
   }
   function animateRoute() {
-    if (motionPreference.matches || typeof app.animate !== 'function') return;
-    const animation = app.animate([
-      {opacity:0,transform:'translateY(6px)'},
-      {opacity:1,transform:'translateY(0)'}
-    ], {duration:260,easing:'cubic-bezier(.22,1,.36,1)'});
-    routeAnimation = animation;
-    animation.onfinish = animation.oncancel = () => {
-      if (routeAnimation === animation) routeAnimation = null;
+    if (motionPreference.matches || !desktopMotion.matches || selectedPromptId || typeof app.animate !== 'function') return;
+    const reveal = (target, frames, delay = 0, duration = 640) => {
+      if (!target) return;
+      const animation = target.animate(frames, {duration,delay,easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'});
+      routeAnimations.add(animation);
+      animation.onfinish = animation.oncancel = () => routeAnimations.delete(animation);
     };
+    const rise = [{opacity:0,transform:'translateY(24px)',filter:'blur(4px)'},{opacity:1,transform:'none',filter:'blur(0px)'}];
+    reveal(app.querySelector('.breadcrumb'), [{opacity:0,transform:'translateX(-12px)'},{opacity:1,transform:'none'}], 0, 420);
+    if (currentRoute === 'start') {
+      const title = app.querySelector('.entry-intro h1');
+      if (title) {
+        const text = title.textContent;
+        title.setAttribute('aria-label', text);
+        const characters = Array.from(text, character => {
+          const span = document.createElement('span');
+          span.className = 'entry-title-character';
+          span.setAttribute('aria-hidden','true');
+          span.textContent = character;
+          return span;
+        });
+        title.replaceChildren(...characters);
+        characters.forEach((character,index) => reveal(character, [
+          {opacity:0,transform:'perspective(450px) translateY(55%) rotateX(-40deg)',filter:'blur(8px)'},
+          {opacity:1,transform:'none',filter:'blur(0px)'}
+        ], 60 + index * 26, 740));
+      }
+      reveal(app.querySelector('.entry-description'), rise, 240, 700);
+      app.querySelectorAll('.entry-card').forEach((card,index) => reveal(card, [
+        {opacity:0,transform:`perspective(1000px) translateY(58px) rotateX(9deg) rotateY(${index ? -6 : 6}deg) scale(.94)`,filter:'blur(5px)'},
+        {offset:.78,opacity:1,transform:'perspective(1000px) translateY(-4px) rotateX(0deg) rotateY(0deg) scale(1.005)',filter:'blur(0px)'},
+        {opacity:1,transform:'none',filter:'blur(0px)'}
+      ], 320 + index * 140, 920));
+      reveal(app.querySelector('.entry-skip-area'), rise, 660, 680);
+      return;
+    }
+    const targets = [...app.querySelectorAll('.page-intro,.hero-copy,.hero-evidence,.intro-strip,.learning-row,.resource-card,.prompt-library-card,.integration-downloads,.callout,.lesson-step,.lesson-aside')]
+      .filter(element => { const rect = element.getBoundingClientRect();return rect.top < innerHeight + 24 && rect.bottom > 0; });
+    targets.slice(0,10).forEach((target,index) => reveal(target, rise, Math.min(index * 65, 300)));
   }
   motionPreference.addEventListener('change',event => {
     if (event.matches) cancelRouteAnimation();
   });
+  desktopMotion.addEventListener('change',event => {
+    if (!event.matches) cancelRouteAnimation();
+  });
+  const settleFocusedEntrance = event => {
+    routeAnimations.forEach(animation => {
+      const target = animation.effect?.target;
+      if (target instanceof Element && target.contains(event.target)) animation.cancel();
+    });
+  };
+  app.addEventListener('focusin',settleFocusedEntrance);
+  app.addEventListener('pointerdown',settleFocusedEntrance);
   window.addEventListener('beforeprint',cancelRouteAnimation);
   const saveProgress = () => {
     try { localStorage.setItem('research-notes-progress', JSON.stringify({completed,checked})); }
