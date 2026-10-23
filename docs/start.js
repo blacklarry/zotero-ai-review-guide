@@ -31,15 +31,14 @@
     return `${crumb('选择接入')}
       <section class="entry-page" aria-labelledby="entry-title">
         <header class="entry-intro">
-          <p class="entry-kicker">开始之前 · 可选接入</p>
           <h1 id="entry-title">先选一个文献助手。</h1>
           <p class="entry-description">把 Zotero 文献库接入你常用的助手。选择一种接入方式，或先阅读教程。</p>
         </header>
+        <div class="entry-grid">${cards}</div>
         <div class="entry-skip-area">
           <a class="entry-skip" href="#home">跳过，直接阅读教程 ${icon('book')}</a>
           <p>无需先安装，接入也可稍后从目录进入。</p>
         </div>
-        <div class="entry-grid">${cards}</div>
       </section>`;
   }
 
