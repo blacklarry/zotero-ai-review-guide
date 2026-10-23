@@ -10,7 +10,9 @@
 
 ## 内容
 
-六章学习路径、六组 AI 提示词、两篇真实论文的完整案例、五条证据的 15 字段填写样例、三组 Zotero 官方操作截图，以及 Word 插件排障。
+六章学习路径、18 组 AI 提示词（选题检索、精读提取、主题综合、写作核查）、两篇真实论文的完整案例、五条证据的 15 字段填写样例、三组 Zotero 官方操作截图，以及 Word 插件排障。
+
+新增 [浙江师范大学 LaTeX 论文模板](https://github.com/blacklarry/zjnu-latex-paper-template)入口：资源页和第 5 章均可前往公开模板仓库、查看编译说明。模板面向课程论文、研究报告等场景，为非官方 XeLaTeX 模板，提交格式以学院或教师要求为准。
 
 新增 [WorkBuddy 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#workbuddy)：通用 Zotero MCP 配置、中文检索技能、安装包下载、可复制的自助安装指令、首次信任授权与排障。公开下载文件位于 `docs/downloads/workbuddy-zotero/`，只包含配置、技能和说明；未包含本机路径、用户文献或凭据。
 

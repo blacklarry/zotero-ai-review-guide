@@ -30,7 +30,7 @@
     completed = Array.isArray(saved.completed) ? saved.completed.filter(id => Number.isInteger(id) && id >= 1 && id <= 6) : [];
     checked = saved.checked && typeof saved.checked === 'object' ? saved.checked : {};
   } catch { /* 浏览器不提供存储时，当前会话仍可学习。 */ }
-  const promptCategories = ['全部','精读提取','主题综合','写作核查'];
+  const promptCategories = ['全部',...new Set(data.prompts.map(prompt => prompt.category))];
   let promptFilter = '全部';
   let selectedPromptId = null;
   let currentRoute = 'start';
@@ -140,7 +140,7 @@
     <div class="intro-strip"><div class="intro-item">${icon('folder')}<div><b>Zotero 管好文献</b><span>收集、分类、批注与引用</span></div></div><div class="intro-item">${icon('spark')}<div><b>AI 辅助深度阅读</b><span>提取证据，发现研究关联</span></div></div><div class="intro-item">${icon('shield')}<div><b>让判断有据可循</b><span>回到原文，保留证据出处</span></div></div></div>
     <section aria-labelledby="path-title"><div class="section-heading"><div><h2 id="path-title">一条清晰的综述路径</h2><p>不急着生成全文。先建立证据，再组织你的观点。</p></div><span class="section-counter">THE LEARNING PATH / 06</span></div><div class="learning-path">${data.chapters.map(ch => `<a class="learning-row${completed.includes(ch.id) ? ' is-complete' : ''}" href="#chapter/${ch.id}"><span class="learning-number">${String(ch.id).padStart(2,'0')}</span><div class="learning-summary"><h3>${esc(ch.title)}</h3><p>${esc(ch.subtitle)}</p>${completed.includes(ch.id) ? `<span class="learning-complete">${icon('check')} 已完成</span>` : ''}</div><span class="learning-duration">${icon('clock')} ${esc(ch.duration)}</span><span class="learning-arrow"><span class="sr-only">进入章节</span>${icon('arrow')}</span></a>`).join('')}</div><details class="path-reference"><summary>查看六步流程图</summary><figure class="path-figure"><img src="assets/six-steps.svg" alt="六步研读流程：明确问题与准备、收集与整理文献、精读与证据提取、主题归纳与比较、搭建结构与写作、引用质量核查" width="480" height="760" loading="lazy"></figure></details></section>
     <section class="home-updates" aria-labelledby="home-updates-title"><div class="section-heading"><h2 id="home-updates-title">实操与工具更新</h2></div><div class="home-updates-grid"><article class="home-update"><h3>新增完整实操案例 · 2026-10-14</h3><p>用两篇真实论文走完原文、批注、证据矩阵、主题比较与综述成品。<a href="#chapter/3">从第3章开始 →</a> · <a href="#resources">适用版本与纠错</a></p></article><article class="home-update"><h3>${icon('link')} 新增工具接入 · 2026-10-15</h3><p>让 WorkBuddy 或 Codex 检索本机 Zotero 文献库，附配置、中文技能和自助安装指令。<a href="#workbuddy">WorkBuddy 教程 →</a> · <a href="#codex">Codex 教程 →</a></p></article><article class="home-update"><h3>${icon('folder')} 搭建科研知识库 · 2026-10-19</h3><p>把阅读笔记、实验记录和论文章节连起来。参考 learning-of-zjnu 的实际目录与模板，附通用起步包。<a href="#knowledge">开始搭建知识库 →</a></p></article></div></section>
-    <section class="prompt-banner" aria-labelledby="prompt-banner-title"><div><div class="banner-label">${icon('spark')} YOUR RESEARCH COPILOT</div><h2 id="prompt-banner-title">好问题，让 AI 更懂你的研究。</h2><p>从单篇精读到跨文献比较，六组可直接修改的提示词。<br>让每次对话，都回到你提供的真实文献。</p><a class="banner-link" href="#prompts">打开 AI 提示词库 ${icon('arrow')}</a></div><div class="banner-example"><div class="example-top"><span>单篇文献 · 证据提取</span>${icon('copy')}</div><p>“请仅根据我提供的论文内容，提取研究问题、方法、主要发现与局限。<strong>每条结论附原文位置；没有依据时标记‘未提及’。</strong>”</p></div></section>
+    <section class="prompt-banner" aria-labelledby="prompt-banner-title"><div><div class="banner-label">${icon('spark')} YOUR RESEARCH COPILOT</div><h2 id="prompt-banner-title">好问题，让 AI 更懂你的研究。</h2><p>从选题检索到段落核查，${data.prompts.length} 组可直接修改的提示词。<br>让每次对话，都回到你提供的真实文献。</p><a class="banner-link" href="#prompts">打开 AI 提示词库 ${icon('arrow')}</a></div><div class="banner-example"><div class="example-top"><span>单篇文献 · 证据提取</span>${icon('copy')}</div><p>“请仅根据我提供的论文内容，提取研究问题、方法、主要发现与局限。<strong>每条结论附原文位置；没有依据时标记‘未提及’。</strong>”</p></div></section>
     <section class="resource-teaser"><div><h2>准备好了，就从你的第一篇文献开始。</h2><p>把模板带走，让阅读笔记真正积累成写作素材。</p><div class="resource-chips"><span class="chip">${icon('grid')} 文献矩阵</span><span class="chip">${icon('shield')} 综述核查清单</span><span class="chip">${icon('spark')} 提示词合集</span></div></div><a class="btn btn-secondary" href="#resources">查看配套资源 ${icon('download')}</a></section>`;
   }
   function renderChapter(ch) {
@@ -148,6 +148,7 @@
     return `${crumb(`第 ${ch.id} 章`)}
     <div class="chapter-layout"><article class="lesson-body"><header class="page-intro"><div class="eyebrow">CHAPTER ${String(ch.id).padStart(2,'0')} / 06</div><h1>${esc(ch.title)}</h1><p>${esc(ch.lead)}</p><div class="page-meta"><span>${icon('clock')} 建议练习 ${esc(ch.duration)}</span><span>${icon('file')} 边读边做 · 完成一份小成果</span>${done ? `<span>${icon('check')} 你已完成本章</span>` : ''}</div></header>${ch.steps.map((step,i) => `<section class="lesson-step"><span class="lesson-step-number">${i+1}</span><h2>${esc(step.title)}</h2><p>${esc(step.body)}</p></section>`).join('')}
     ${window.GUIDE_EXTRAS.chapter(ch.id)}
+    ${ch.id === 5 ? `<div class="callout"><strong>${icon('file')} 论文排版模板</strong>需要用 LaTeX 整理论文时，可使用 <a href="https://github.com/blacklarry/zjnu-latex-paper-template" target="_blank" rel="noopener noreferrer">浙江师范大学 LaTeX 论文模板</a>。这是面向课程论文、研究报告等场景的非官方模板，提交格式以学院或教师要求为准。</div>` : ''}
     <div class="callout"><strong>${icon('info')} 研究者的小提醒</strong>${esc(ch.tip)}</div>
     <section class="prompt-box"><div class="prompt-box-head"><span>${icon('spark')} 本章可用的 AI 提示词</span><button class="copy-btn" data-copy-chapter="${ch.id}">${icon('copy')} 复制提示词</button></div><pre>${esc(ch.prompt)}</pre></section>
     <section class="lesson-checklist"><h2>离开这一章前，检查一下</h2>${ch.checklist.map((text,i) => {const key = `${ch.id}-${i}`; return `<div class="check-item"><input id="check-${key}" type="checkbox" data-check="${key}" ${checked[key] ? 'checked' : ''}><label for="check-${key}">${esc(text)}</label></div>`;}).join('')}<div class="lesson-sources"><p>操作参考 · Zotero 官方文档</p>${ch.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)} ↗</a>`).join('')}</div></section>
@@ -165,7 +166,7 @@
         <div class="prompt-card-bottom"><button class="prompt-expand" type="button" data-expand-prompt="${esc(p.id)}" aria-controls="prompt-text-${esc(p.id)}" aria-expanded="${expanded}"><span>${expanded ? '收起全文' : '展开全文'}</span>${icon('arrow')}</button><span>按研究需要修改</span></div>
       </article>`;
     }).join('');
-    return `${crumb('AI 提示词库')}<header class="page-intro"><div class="eyebrow">THE PROMPT LIBRARY</div><h1>把问题问清楚，让证据说话。</h1><p>复制一份提示词，替换方括号中的内容，并附上你的文献材料。这里提供可修改的模板，实际分析在你选择的 AI 工具中完成。</p><div class="page-meta"><span>${icon('spark')} 6 组实用模板</span><span>${icon('shield')} 仅依据你提供的材料</span></div></header>
+    return `${crumb('AI 提示词库')}<header class="page-intro"><div class="eyebrow">THE PROMPT LIBRARY</div><h1>把问题问清楚，让证据说话。</h1><p>复制一份提示词，替换方括号中的内容，并附上你的文献材料。这里提供可修改的模板，实际分析在你选择的 AI 工具中完成。</p><div class="page-meta"><span>${icon('spark')} ${data.prompts.length} 组实用模板</span><span>${icon('shield')} 仅依据你提供的材料</span></div></header>
       <div class="callout prompt-preparation"><strong>${icon('info')} 使用前准备</strong><span>为每篇文献分配稳定编号（如 P001），保留题名、DOI 和页码。只提供你有权使用的材料；提交前检查所用 AI 工具的数据政策，并去除个人或未公开的敏感信息。</span></div>
       <div class="prompt-toolbar"><div class="prompt-filters" role="group" aria-label="按用途筛选提示词">${promptCategories.map(type => { const count = data.prompts.filter(p => type === '全部' || p.category === type).length; return `<button class="filter-btn ${promptFilter === type ? 'active' : ''}" data-filter="${type}" aria-pressed="${promptFilter === type}">${type}<span class="filter-count">${count}</span></button>`; }).join('')}</div><span class="prompt-results" role="status" aria-live="polite" aria-atomic="true">显示 ${filtered.length} / ${data.prompts.length} 组</span></div>
       <div class="prompt-grid">${cards}</div>
@@ -175,11 +176,15 @@
     return `${crumb('模板与资源')}<header class="page-intro"><div class="eyebrow">YOUR RESEARCH TOOLKIT</div><h1>让每一次阅读，都有积累。</h1><p>下载可编辑的轻量模板，把它们放进你的研究流程。你可以用 Excel 打开文献矩阵，用文本编辑器修改提示词和核查清单。</p><div class="page-meta"><span>${icon('download')} 直接下载，无需填写信息</span><span>${icon('file')} 通用格式，自由修改</span></div></header><div class="callout repository-strip"><strong>${icon('folder')} 项目源码</strong><a href="https://github.com/blacklarry/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a> · <a href="https://gitee.com/larry_17/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">Gitee 国内仓库 ↗</a></div>
       <section class="resource-group resource-templates" aria-labelledby="resource-templates-title">
         <div class="section-heading"><div><h2 id="resource-templates-title">阅读与写作模板</h2><p>先看填写样例，再开始记录。</p></div></div>
-        <div class="resource-grid"><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('grid')}</span><div><div class="resource-format">CSV / 文献整理</div><h2>文献证据矩阵</h2></div></div><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-primary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('shield')}</span><div><div class="resource-format">TXT / 提交前核查</div><h2>综述质量检查清单</h2></div></div><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-primary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('spark')}</span><div><div class="resource-format">TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2></div></div><p>一次带走六组提示词。覆盖证据提取、主题比较、结构规划与引用核查，按需要替换研究背景。</p><button class="btn btn-primary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>
+        <div class="resource-grid"><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('grid')}</span><div><div class="resource-format">CSV / 文献整理</div><h2>文献证据矩阵</h2></div></div><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-primary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('shield')}</span><div><div class="resource-format">TXT / 提交前核查</div><h2>综述质量检查清单</h2></div></div><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-primary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('spark')}</span><div><div class="resource-format">TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2></div></div><p>一次带走 ${data.prompts.length} 组提示词。覆盖选题检索、精读提取、主题比较与写作核查，按需要替换研究背景。</p><button class="btn btn-primary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>
       </section>
       <section class="resource-group" aria-labelledby="resource-tools-title">
         <div class="section-heading"><div><h2 id="resource-tools-title">接入工具包</h2></div></div>
         <div class="resource-tools">${workbuddy.resourceCard(icon)}${codex.resourceCard(icon)}${knowledge.resourceCard(icon)}</div>
+      </section>
+      <section class="resource-group" id="resource-latex" tabindex="-1" aria-labelledby="resource-latex-title">
+        <div class="section-heading"><div><h2 id="resource-latex-title">论文排版模板</h2><p>把整理好的证据与段落，接到可编辑的论文源码中。</p></div></div>
+        <div class="resource-tools"><article class="resource-card"><div class="resource-card-icon">${icon('file')}</div><span class="resource-format">LaTeX / XeLaTeX · 非官方模板</span><h2>浙江师范大学 LaTeX 论文模板</h2><p>面向课程论文、研究报告和一般学术文稿，提供封面、双语摘要、目录、图表与 BibTeX 示例。具体格式以学院或教师要求为准。</p><a class="btn btn-secondary" href="https://github.com/blacklarry/zjnu-latex-paper-template" target="_blank" rel="noopener noreferrer">查看模板仓库 ${icon('up')}</a><div class="example-actions"><a href="https://github.com/blacklarry/zjnu-latex-paper-template#使用方法" target="_blank" rel="noopener noreferrer">使用与编译说明</a><a href="https://github.com/blacklarry/zjnu-latex-paper-template/archive/refs/heads/main.zip" target="_blank" rel="noopener noreferrer">下载模板源码 ZIP</a></div></article></div>
       </section>
       ${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>从官方文档，找到操作细节</h2><p>教程中的 Zotero 操作以官方文档为依据。界面名称可能随语言或版本变化。</p></div><span class="section-counter">OFFICIAL REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
   }
@@ -187,6 +192,8 @@
     cancelRouteAnimation();
     window.GUIDE_READING?.cleanup();
     let hash = location.hash.slice(1) || 'start';
+    const resourceSection = hash === 'resources/latex' ? 'resource-latex' : null;
+    if (resourceSection) hash = 'resources';
     let promptId = '';
     try { if (hash.startsWith('prompts/')) promptId = decodeURIComponent(hash.slice(8)); }
     catch { /* 无效编码按未知路由处理。 */ }
@@ -214,11 +221,15 @@
       const target = document.getElementById(`prompt-${prompt.id}`);
       target?.scrollIntoView({block:'start',behavior:'instant'});
       target?.focus({preventScroll:true});
+    } else if (resourceSection) {
+      const target = document.getElementById(resourceSection);
+      target?.scrollIntoView({block:'start',behavior:'instant'});
+      target?.focus({preventScroll:true});
     } else {
       if (scroll) window.scrollTo({top:0,behavior:'instant'});
       if (focus) document.querySelector('#main').focus({preventScroll:true});
     }
-    if (animate) animateRoute();
+    if (animate && !resourceSection) animateRoute();
     if (chapter) window.GUIDE_READING?.mount();
   }
   function resetCopied(button) {
@@ -268,7 +279,7 @@
       body='研读手册 | 纠错报告\n教程版本：1.1（内容核验：2026-10-14）\n网址：'+location.href+'\n页面 / 步骤：'+document.querySelector('#feedback-location').value+'\n系统与软件版本：'+document.querySelector('#feedback-version').value+'\n复现步骤、实际结果与预期结果：\n'+document.querySelector('#feedback-description').value+'\n\n请将本报告发给提供教程链接的维护者；本网站未自动提交。\n';
     } else if (type === 'prompts') {
       name='Zotero与AI_文献综述提示词合集.txt';
-      body='研读手册 | Zotero + AI 文献综述提示词合集\n\n使用方法：替换方括号中的内容，附上已核实的材料，逐条核查 AI 的输出。\n\n'+data.prompts.map((p,i)=>`${i+1}. ${p.title}\n用途：${p.description}\n\n${p.text}`).join('\n\n'+'—'.repeat(32)+'\n\n');
+      body='研读手册 | Zotero + AI 文献综述提示词合集\n\n使用方法：替换方括号中的内容，附上已核实的材料，逐条核查 AI 的输出。\n\n'+data.prompts.map((p,i)=>`${i+1}. ${p.title}\n分类：${p.category}\n用途：${p.description}\n\n${p.text}`).join('\n\n'+'—'.repeat(32)+'\n\n');
     } else {
       name='文献综述质量核查清单.txt';
       body='研读手册 | 文献综述质量核查清单\n\n研究题目：________________\n核查日期：________________\n\n'+data.chapters.map(ch=>`${String(ch.id).padStart(2,'0')} ${ch.title}\n`+ch.checklist.map(t=>'[ ] '+t).join('\n')).join('\n\n')+'\n\n[ ] 每条引用与原文对应，作者、年份、题名、DOI 已核对。\n[ ] 数值、样本量、实验条件与局限已回到原文确认。\n[ ] 已按学校或期刊要求说明 AI 的使用情况。\n\n说明：本清单不替代系统综述或 Meta 分析的专业方法规范。\n';
@@ -307,6 +318,7 @@
     ...knowledge.searchItems,
     ...data.chapters.map(ch=>({title:ch.title,type:`第 ${ch.id} 章`,body:[ch.lead,ch.subtitle,...ch.steps.map(s=>s.title+' '+s.body)].join(' '),href:`#chapter/${ch.id}`})),
     ...data.prompts.map(p=>({title:p.title,type:p.category,body:p.description+' '+p.text,href:`#prompts/${encodeURIComponent(p.id)}`})),
+    {title:'浙江师范大学 LaTeX 论文模板',type:'论文排版',body:'浙师大 zjnu latex xelatex 模板 课程论文 研究报告 BibTeX 参考文献 源码',href:'#resources/latex'},
     {title:'文献矩阵、质量核查清单与提示词下载',type:'配套资源',body:'CSV Excel 模板 Word 引用 下载 Zotero 官方 文档',href:'#resources'}
   ];
   function search() {
