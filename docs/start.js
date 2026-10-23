@@ -21,10 +21,9 @@
 
     const cards = choices.map(choice => `
       <a class="entry-card" href="#${choice.id}" aria-labelledby="entry-${choice.id}-title" aria-describedby="entry-${choice.id}-description">
-        <div class="entry-card-top"><span class="entry-card-icon">${icon(choice.symbol)}</span><span class="entry-platform">${esc(choice.platform)}</span></div>
-        <h2 id="entry-${choice.id}-title">${esc(choice.name)}</h2>
+        <div class="entry-card-top"><span class="entry-card-icon">${icon(choice.symbol)}</span><div class="entry-card-heading"><span class="entry-platform">${esc(choice.platform)}</span><h2 id="entry-${choice.id}-title">${esc(choice.name)}</h2></div></div>
         <p id="entry-${choice.id}-description" class="entry-card-description">${esc(choice.description)}</p>
-        <ul class="entry-features"><li>${icon('copy')} 自助安装指令</li><li>${icon('download')} 配置与技能下载包</li></ul>
+        <ul class="entry-features"><li>${icon('copy')}<div><strong>自助安装指令</strong><small>复制安装指令，按步骤完成接入。</small></div></li><li>${icon('download')}<div><strong>配置与技能下载包</strong><small>下载配置与中文技能，按需使用。</small></div></li></ul>
         <span class="entry-card-action">查看 ${esc(choice.name)} 接入教程 ${icon('arrow')}</span>
       </a>`).join('');
 

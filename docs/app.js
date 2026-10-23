@@ -35,6 +35,7 @@
   let selectedPromptId = null;
   let currentRoute = 'start';
   let toastTimer;
+  const copyFeedback = new WeakMap();
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktopMotion = window.matchMedia('(min-width: 1001px)');
   const routeAnimations = new Set();
@@ -151,17 +152,40 @@
     <section class="prompt-box"><div class="prompt-box-head"><span>${icon('spark')} 本章可用的 AI 提示词</span><button class="copy-btn" data-copy-chapter="${ch.id}">${icon('copy')} 复制提示词</button></div><pre>${esc(ch.prompt)}</pre></section>
     <section class="lesson-checklist"><h2>离开这一章前，检查一下</h2>${ch.checklist.map((text,i) => {const key = `${ch.id}-${i}`; return `<div class="check-item"><input id="check-${key}" type="checkbox" data-check="${key}" ${checked[key] ? 'checked' : ''}><label for="check-${key}">${esc(text)}</label></div>`;}).join('')}<div class="lesson-sources"><p>操作参考 · Zotero 官方文档</p>${ch.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)} ↗</a>`).join('')}</div></section>
     <div class="lesson-navigation"><button class="btn btn-primary completion-btn ${done ? 'is-done' : ''}" data-complete="${ch.id}" aria-pressed="${done}">${icon('check')} ${done ? '已完成本章 · 点击撤销' : '标记本章已完成'}</button><div class="chapter-pager">${ch.id > 1 ? `<a class="prev-chapter" href="#chapter/${ch.id-1}">${icon('arrow')} 上一章：${esc(data.chapters[ch.id-2].title)}</a>` : ''}${ch.id < 6 ? `<a class="next-chapter" href="#chapter/${ch.id+1}">下一章：${esc(data.chapters[ch.id].title)} ${icon('arrow')}</a>` : `<a class="next-chapter" href="#resources">带走模板，开始你的综述 ${icon('arrow')}</a>`}</div></div></article>
-    <aside class="lesson-aside" aria-label="本章学习目标"><div class="output-box"><div class="eyebrow">本章小成果</div><h3>读完，也动手做。</h3><p>${esc(ch.deliverable)}</p></div><div class="output-box"><div class="eyebrow">始终记住</div><h3>Zotero 存证据，<br>AI 帮你理线索。</h3><p>论点由你判断，引用回到原文核实。</p></div><a class="chapter-jump" href="#resources">${icon('download')} 下载配套模板 ${icon('up')}</a><a class="chapter-jump" href="#home">${icon('grid')} 返回学习路径</a></aside></div>`;
+    <aside class="lesson-aside" aria-label="本章目录与学习目标"><nav class="lesson-toc" aria-label="本章目录"><h2>本章目录</h2><div data-chapter-toc></div></nav><div class="output-box"><div class="eyebrow">本章小成果</div><h3>读完，也动手做。</h3><p>${esc(ch.deliverable)}</p></div><p class="lesson-principle">Zotero 存证据，AI 帮你理线索。论点由你判断，引用回到原文核实。</p><a class="chapter-jump" href="#resources">${icon('download')} 下载配套模板 ${icon('up')}</a><a class="chapter-jump" href="#home">${icon('grid')} 返回学习路径</a></aside></div>`;
   }
   function renderPrompts() {
     const filtered = data.prompts.filter(p => promptFilter === '全部' || p.category === promptFilter);
-    return `${crumb('AI 提示词库')}<header class="page-intro"><div class="eyebrow">THE PROMPT LIBRARY</div><h1>把问题问清楚，让证据说话。</h1><p>复制一份提示词，替换方括号中的内容，并附上你的文献材料。这里提供可修改的模板，实际分析在你选择的 AI 工具中完成。</p><div class="page-meta"><span>${icon('spark')} 6 组实用模板</span><span>${icon('shield')} 仅依据你提供的材料</span></div></header><div class="callout"><strong>${icon('info')} 使用前准备</strong>为每篇文献分配稳定编号（如 P001），保留题名、DOI 和页码。只提供你有权使用的材料；提交前检查所用 AI 工具的数据政策，并去除个人或未公开的敏感信息。</div><div class="prompt-toolbar" aria-label="按用途筛选提示词">${promptCategories.map(type=>`<button class="filter-btn ${promptFilter === type ? 'active' : ''}" data-filter="${type}" aria-pressed="${promptFilter === type}">${type}${type === '全部' ? ' · 6' : ''}</button>`).join('')}</div><div class="prompt-grid">${filtered.map(p=>`<article id="prompt-${esc(p.id)}" class="prompt-library-card ${selectedPromptId === p.id ? 'is-highlighted' : ''}" tabindex="-1" aria-labelledby="prompt-title-${esc(p.id)}"><header><span class="prompt-type">${esc(p.category)}</span><h2 id="prompt-title-${esc(p.id)}"><a class="prompt-permalink" href="#prompts/${encodeURIComponent(p.id)}">${esc(p.title)}</a></h2><p>${esc(p.description)}</p></header><pre class="prompt-preview" tabindex="0" aria-label="${esc(p.title)}完整提示词">${esc(p.text)}</pre><div class="prompt-card-bottom"><span>复制后，按你的研究需要修改</span><button class="copy-btn" data-copy="${esc(p.id)}">${icon('copy')} 复制提示词</button></div></article>`).join('')}</div><section class="faq"><h2>让 AI 输出更可靠</h2><details><summary>AI 给出了原文里找不到的结论，怎么办？</summary><p>将该结论标记为待核查，要求 AI 提供原文片段及位置，再由你打开原文逐条确认。无法找到依据时删除该结论，不把 AI 的回答本身当作论文证据。</p></details><details><summary>可以只给题名，让 AI 写文献综述吗？</summary><p>题名与摘要不能替代全文证据。先用数据库与 Zotero 建立真实文献集，再提供经过核对的笔记或原文。方法细节、数值与局限尤其需要回到全文核实。</p></details><details><summary>一次放很多篇论文，会不会更好？</summary><p>不一定。先分批精读，统一提取字段与文献编号，再基于已核验的矩阵做跨文献比较。检查 AI 是否遗漏材料、混淆文献或把不同条件的结果直接比较。</p></details></section>`;
+    const cards = filtered.map(p => {
+      const expanded = selectedPromptId === p.id;
+      return `<article id="prompt-${esc(p.id)}" class="prompt-library-card${expanded ? ' is-highlighted is-expanded' : ''}" tabindex="-1" aria-labelledby="prompt-title-${esc(p.id)}">
+        <header><div class="prompt-card-heading"><h2 id="prompt-title-${esc(p.id)}"><a class="prompt-permalink" href="#prompts/${encodeURIComponent(p.id)}">${esc(p.title)}</a></h2><span class="prompt-type">${esc(p.category)}</span></div><button class="copy-btn" data-copy="${esc(p.id)}" aria-label="复制${esc(p.title)}">${icon('copy')} 复制</button></header>
+        <p class="prompt-description">${esc(p.description)}</p>
+        <div class="prompt-preview-wrap"><pre id="prompt-text-${esc(p.id)}" class="prompt-preview" tabindex="${expanded ? '0' : '-1'}" aria-label="${esc(p.title)}完整提示词">${esc(p.text)}</pre></div>
+        <div class="prompt-card-bottom"><button class="prompt-expand" type="button" data-expand-prompt="${esc(p.id)}" aria-controls="prompt-text-${esc(p.id)}" aria-expanded="${expanded}"><span>${expanded ? '收起全文' : '展开全文'}</span>${icon('arrow')}</button><span>按研究需要修改</span></div>
+      </article>`;
+    }).join('');
+    return `${crumb('AI 提示词库')}<header class="page-intro"><div class="eyebrow">THE PROMPT LIBRARY</div><h1>把问题问清楚，让证据说话。</h1><p>复制一份提示词，替换方括号中的内容，并附上你的文献材料。这里提供可修改的模板，实际分析在你选择的 AI 工具中完成。</p><div class="page-meta"><span>${icon('spark')} 6 组实用模板</span><span>${icon('shield')} 仅依据你提供的材料</span></div></header>
+      <div class="callout prompt-preparation"><strong>${icon('info')} 使用前准备</strong><span>为每篇文献分配稳定编号（如 P001），保留题名、DOI 和页码。只提供你有权使用的材料；提交前检查所用 AI 工具的数据政策，并去除个人或未公开的敏感信息。</span></div>
+      <div class="prompt-toolbar"><div class="prompt-filters" role="group" aria-label="按用途筛选提示词">${promptCategories.map(type => { const count = data.prompts.filter(p => type === '全部' || p.category === type).length; return `<button class="filter-btn ${promptFilter === type ? 'active' : ''}" data-filter="${type}" aria-pressed="${promptFilter === type}">${type}<span class="filter-count">${count}</span></button>`; }).join('')}</div><span class="prompt-results" role="status" aria-live="polite" aria-atomic="true">显示 ${filtered.length} / ${data.prompts.length} 组</span></div>
+      <div class="prompt-grid">${cards}</div>
+      <section class="faq"><h2>让 AI 输出更可靠</h2><details><summary>AI 给出了原文里找不到的结论，怎么办？</summary><p>将该结论标记为待核查，要求 AI 提供原文片段及位置，再由你打开原文逐条确认。无法找到依据时删除该结论，不把 AI 的回答本身当作论文证据。</p></details><details><summary>可以只给题名，让 AI 写文献综述吗？</summary><p>题名与摘要不能替代全文证据。先用数据库与 Zotero 建立真实文献集，再提供经过核对的笔记或原文。方法细节、数值与局限尤其需要回到全文核实。</p></details><details><summary>一次放很多篇论文，会不会更好？</summary><p>不一定。先分批精读，统一提取字段与文献编号，再基于已核验的矩阵做跨文献比较。检查 AI 是否遗漏材料、混淆文献或把不同条件的结果直接比较。</p></details></section>`;
   }
   function renderResources() {
-    return `${crumb('模板与资源')}<header class="page-intro"><div class="eyebrow">YOUR RESEARCH TOOLKIT</div><h1>让每一次阅读，都有积累。</h1><p>下载可编辑的轻量模板，把它们放进你的研究流程。你可以用 Excel 打开文献矩阵，用文本编辑器修改提示词和核查清单。</p><div class="page-meta"><span>${icon('download')} 直接下载，无需填写信息</span><span>${icon('file')} 通用格式，自由修改</span></div></header><div class="callout"><strong>${icon('folder')} 项目源码</strong><a href="https://github.com/blacklarry/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a> · <a href="https://gitee.com/larry_17/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">Gitee 国内仓库 ↗</a></div><div class="resource-grid">${workbuddy.resourceCard(icon)}${codex.resourceCard(icon)}${knowledge.resourceCard(icon)}<article class="resource-card"><div class="resource-format">${icon('grid')} CSV / 文献整理</div><h2>文献证据矩阵</h2><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button><button class="btn btn-secondary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button></article><article class="resource-card"><div class="resource-format">${icon('shield')} TXT / 提交前核查</div><h2>综述质量检查清单</h2><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-secondary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-format">${icon('spark')} TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2><p>一次带走六组提示词。覆盖证据提取、主题比较、结构规划与引用核查，按需要替换研究背景。</p><button class="btn btn-secondary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>从官方文档，找到操作细节</h2><p>教程中的 Zotero 操作以官方文档为依据。界面名称可能随语言或版本变化。</p></div><span class="section-counter">OFFICIAL REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
+    return `${crumb('模板与资源')}<header class="page-intro"><div class="eyebrow">YOUR RESEARCH TOOLKIT</div><h1>让每一次阅读，都有积累。</h1><p>下载可编辑的轻量模板，把它们放进你的研究流程。你可以用 Excel 打开文献矩阵，用文本编辑器修改提示词和核查清单。</p><div class="page-meta"><span>${icon('download')} 直接下载，无需填写信息</span><span>${icon('file')} 通用格式，自由修改</span></div></header><div class="callout repository-strip"><strong>${icon('folder')} 项目源码</strong><a href="https://github.com/blacklarry/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a> · <a href="https://gitee.com/larry_17/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">Gitee 国内仓库 ↗</a></div>
+      <section class="resource-group resource-templates" aria-labelledby="resource-templates-title">
+        <div class="section-heading"><div><h2 id="resource-templates-title">阅读与写作模板</h2><p>先看填写样例，再开始记录。</p></div></div>
+        <div class="resource-grid"><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('grid')}</span><div><div class="resource-format">CSV / 文献整理</div><h2>文献证据矩阵</h2></div></div><p>统一记录研究问题、对象、方法、发现、局限与证据位置。先把表格填扎实，再开始跨文献综合。</p><button class="btn btn-primary" data-download="matrix-example">${icon('download')} 下载完整填写样例</button><button class="btn btn-secondary" data-download="matrix">${icon('download')} 下载空白模板</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('shield')}</span><div><div class="resource-format">TXT / 提交前核查</div><h2>综述质量检查清单</h2></div></div><p>从问题边界到参考文献，逐项检查论证、证据与引用，带着清单回到原文做最后一轮核查。</p><button class="btn btn-primary" data-download="checklist">${icon('download')} 下载检查清单</button></article><article class="resource-card"><div class="resource-card-head"><span class="resource-card-icon">${icon('spark')}</span><div><div class="resource-format">TXT / AI 辅助阅读</div><h2>AI 提示词合集</h2></div></div><p>一次带走六组提示词。覆盖证据提取、主题比较、结构规划与引用核查，按需要替换研究背景。</p><button class="btn btn-primary" data-download="prompts">${icon('download')} 下载提示词合集</button></article></div>
+      </section>
+      <section class="resource-group" aria-labelledby="resource-tools-title">
+        <div class="section-heading"><div><h2 id="resource-tools-title">接入工具包</h2></div></div>
+        <div class="resource-tools">${workbuddy.resourceCard(icon)}${codex.resourceCard(icon)}${knowledge.resourceCard(icon)}</div>
+      </section>
+      ${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>从官方文档，找到操作细节</h2><p>教程中的 Zotero 操作以官方文档为依据。界面名称可能随语言或版本变化。</p></div><span class="section-counter">OFFICIAL REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
   }
   function route({focus = true,scroll = true,animate = scroll} = {}) {
     cancelRouteAnimation();
+    window.GUIDE_READING?.cleanup();
     let hash = location.hash.slice(1) || 'start';
     let promptId = '';
     try { if (hash.startsWith('prompts/')) promptId = decodeURIComponent(hash.slice(8)); }
@@ -183,6 +207,7 @@
     const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
     app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : renderHome();
+    app.dataset.route = currentRoute;
     updateNavigation();
     closeMenu();
     if (prompt) {
@@ -194,8 +219,25 @@
       if (focus) document.querySelector('#main').focus({preventScroll:true});
     }
     if (animate) animateRoute();
+    if (chapter) window.GUIDE_READING?.mount();
   }
-  async function copy(text, message = '提示词已复制，粘贴后替换你的研究材料。') {
+  function resetCopied(button) {
+    const state = button && copyFeedback.get(button);
+    if (!state) return;
+    clearTimeout(state.timer);
+    button.innerHTML = state.html;
+    button.classList.remove('is-copied');
+    copyFeedback.delete(button);
+  }
+  function showCopied(button) {
+    if (!button?.isConnected) return;
+    const html = copyFeedback.get(button)?.html || button.innerHTML;
+    resetCopied(button);
+    button.innerHTML = `${icon('check')} 已复制`;
+    button.classList.add('is-copied');
+    copyFeedback.set(button, {html,timer:setTimeout(() => resetCopied(button), 2000)});
+  }
+  async function copy(text, message = '提示词已复制，粘贴后替换你的研究材料。', button = null) {
     try {
       if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
       else {
@@ -207,8 +249,9 @@
         const ok = document.execCommand('copy');field.remove();
         if (!ok) throw new Error('Clipboard unavailable');
       }
+      showCopied(button);
       toast(message);
-    } catch { toast('浏览器未允许自动复制，请选中内容手动复制。'); }
+    } catch { resetCopied(button);toast('浏览器未允许自动复制，请选中内容手动复制。'); }
   }
   function download(type) {
     let name,body,mime='text/plain;charset=utf-8';
@@ -289,11 +332,20 @@
     const el=event.target.closest('button,a');
     if (!el) return;
     if (el.classList.contains('skip-link')) { event.preventDefault();document.querySelector('#main').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'}); }
-    else if (el.hasAttribute('data-copy')) { const p=data.prompts.find(p=>p.id===el.dataset.copy);if(p)copy(p.text); }
-    else if (el.hasAttribute('data-copy-chapter')) { const ch=data.chapters.find(ch=>ch.id===Number(el.dataset.copyChapter));if(ch)copy(ch.prompt); }
-    else if (el.hasAttribute('data-copy-workbuddy')) { const key=el.dataset.copyWorkbuddy;if(Object.hasOwn(workbuddy.copyTexts,key))copy(workbuddy.copyTexts[key],workbuddy.copyLabels[key]+'已复制。'); }
-    else if (el.hasAttribute('data-copy-codex')) { const key=el.dataset.copyCodex;if(Object.hasOwn(codex.copyTexts,key))copy(codex.copyTexts[key],codex.copyLabels[key]+'已复制。'); }
-    else if (el.hasAttribute('data-copy-knowledge')) { const key=el.dataset.copyKnowledge;if(Object.hasOwn(knowledge.copyTexts,key))copy(knowledge.copyTexts[key],knowledge.copyLabels[key]+'已复制。'); }
+    else if (el.hasAttribute('data-copy')) { const p=data.prompts.find(p=>p.id===el.dataset.copy);if(p)copy(p.text,undefined,el); }
+    else if (el.hasAttribute('data-copy-chapter')) { const ch=data.chapters.find(ch=>ch.id===Number(el.dataset.copyChapter));if(ch)copy(ch.prompt,undefined,el); }
+    else if (el.hasAttribute('data-copy-workbuddy')) { const key=el.dataset.copyWorkbuddy;if(Object.hasOwn(workbuddy.copyTexts,key))copy(workbuddy.copyTexts[key],workbuddy.copyLabels[key]+'已复制。',el); }
+    else if (el.hasAttribute('data-copy-codex')) { const key=el.dataset.copyCodex;if(Object.hasOwn(codex.copyTexts,key))copy(codex.copyTexts[key],codex.copyLabels[key]+'已复制。',el); }
+    else if (el.hasAttribute('data-copy-knowledge')) { const key=el.dataset.copyKnowledge;if(Object.hasOwn(knowledge.copyTexts,key))copy(knowledge.copyTexts[key],knowledge.copyLabels[key]+'已复制。',el); }
+    else if (el.hasAttribute('data-expand-prompt')) {
+      const card = el.closest('.prompt-library-card');
+      const expanded = el.getAttribute('aria-expanded') !== 'true';
+      card.classList.toggle('is-expanded',expanded);
+      el.setAttribute('aria-expanded',String(expanded));
+      el.querySelector('span').textContent = expanded ? '收起全文' : '展开全文';
+      card.querySelector('.prompt-preview').tabIndex = expanded ? 0 : -1;
+      if (!expanded && el.getBoundingClientRect().top < document.querySelector('.header').getBoundingClientRect().bottom) card.scrollIntoView({block:'start',behavior:'instant'});
+    }
     else if (el.hasAttribute('data-install-source')) selectInstallSource(el);
     else if (el.hasAttribute('data-filter')) { promptFilter=el.dataset.filter;history.replaceState({...history.state,promptFilter},'','#prompts');const y=scrollY;route({focus:false,scroll:false});window.scrollTo(0,y);const active=[...document.querySelectorAll('[data-filter]')].find(b=>b.dataset.filter===promptFilter);active?.focus({preventScroll:true}); }
     else if (el.hasAttribute('data-download')) download(el.dataset.download);

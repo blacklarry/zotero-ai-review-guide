@@ -630,6 +630,30 @@
     .search-dialog-head { padding: 14px 16px; }
     .search-dialog-head input { font-size: 16px; }
   }
+  /* 工具交互的基础状态；桌面排版由 desktop.css 统一。 */
+  .entry-features strong, .entry-features small { display: block; }
+  .entry-features small { font-size: 13px; font-weight: 400; }
+  .lesson-toc { display: none; }
+  .lesson-principle { margin: 16px 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+  .prompt-library-card header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .prompt-card-heading { min-width: 0; }
+  .prompt-library-card header .copy-btn { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .prompt-description { margin: 0 24px 16px; }
+  .prompt-preview-wrap { position: relative; }
+  .prompt-preview { max-height: 180px; margin-block: 0; overflow: hidden; }
+  .prompt-preview-wrap::after { content: ''; position: absolute; inset: auto 24px 0; height: 46px; background: linear-gradient(transparent, var(--surface-muted)); pointer-events: none; border-radius: 0 0 8px 8px; }
+  .prompt-library-card.is-expanded .prompt-preview { max-height: none; overflow: visible; }
+  .prompt-library-card.is-expanded .prompt-preview-wrap::after { display: none; }
+  .prompt-card-bottom { justify-content: space-between; }
+  .prompt-expand { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--green); font: 15px/1.6 var(--sans); cursor: pointer; }
+  .prompt-expand .icon { width: 16px; height: 16px; transform: rotate(90deg); }
+  .prompt-expand[aria-expanded='true'] .icon { transform: rotate(-90deg); }
+  .prompt-filters { display: flex; flex-wrap: wrap; gap: 4px; }
+  .filter-count { margin-left: 8px; font-variant-numeric: tabular-nums; }
+  .prompt-results { margin-left: auto; color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .copy-btn.is-copied { color: var(--green); background: var(--soft); border-color: #9cbeab; }
+  .resource-group { margin: 28px 0 36px; }
+  .resource-tools { display: grid; gap: 16px; }
   /* 桌面进场：短暂光晕与掠光只作一遍，文字和按钮始终可操作。 */
   @media (min-width: 1001px) and (prefers-reduced-motion: no-preference) {
     .entry-title-character { display: inline-block; transform-origin: 50% 100%; }
