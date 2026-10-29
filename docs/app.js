@@ -214,7 +214,7 @@
       promptFilter = prompt?.category || (promptCategories.includes(savedFilter) ? savedFilter : '全部');
       history.replaceState({...history.state,promptFilter},'',location.href);
     }
-    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库','knowledge/obsidian':'Obsidian 科研知识库','knowledge/ima':'ima 嵌入式知识库','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
+    const title = chapter?.title || ({start:'选择开始方式',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库','knowledge/obsidian':'Obsidian 科研知识库','knowledge/ima':'ima 嵌入式知识库','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
     app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : (hash === 'knowledge' || hash.startsWith('knowledge/')) ? knowledge.render({icon,esc,crumb}, hash.slice('knowledge/'.length)) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
     app.dataset.route = currentRoute;
@@ -314,7 +314,7 @@
   const searchInput=document.querySelector('#search-input');
   let searchReturnFocus = null;
   const searchItems=[
-    {title:'选择接入：WorkBuddy 或 Codex',type:'开始使用',body:'入口 文献助手 Zotero 接入 选择 跳过 直接阅读 教程',href:'#start'},
+    {title:'选择开始方式：工具接入与知识库',type:'开始使用',body:'WorkBuddy Codex Zotero 插件 Obsidian ima 知识库 入口 接入 选择 跳过 直接阅读 教程',href:'#start'},
     {title:'教程概览',type:'学习路径',body:'Zotero AI 文献综述 教程 六步 入门',href:'#home'},
     {title:'WorkBuddy 接入 Zotero 本地文献检索',type:'工具接入',body:'WorkBuddy MCP Skill 技能 安装 下载 uv uvx 本地 API 信任 连接 检索 全文 引用键 citekey 排障',href:'#workbuddy'},
     {title:'Codex 接入 Zotero 本地文献检索',type:'工具接入',body:'Codex MCP Skill 技能 TOML config.toml CLI 安装 下载 uv uvx 本地 API 自助安装 检索 全文 引用键 citekey 排障',href:'#codex'},

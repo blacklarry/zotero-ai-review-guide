@@ -20,9 +20,9 @@
 
 新增 [Codex 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#codex)：TOML 与 CLI 配置、可选中文技能、自助安装指令，以及本机/远程运行边界和实际工具验证。专用公开包位于 `docs/downloads/codex-zotero/`。
 
-[搭建知识库专题](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge)分为两块：原有 [Obsidian 教程](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/obsidian)保留 learning-of-zjnu 的目录、模板和证据链约定；新增 [ima 嵌入式系统示例](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/ima)，按 RK3588、STM32、FPGA 三类组织，以 STM32 的最小工程、GPIO 和 UART 学习资料为重点。原起步包继续位于 `docs/downloads/knowledge-base/`；3 份 STM32 公开原创学习资料与新 ZIP 位于 `docs/downloads/ima-embedded/`，RK3588 与 FPGA 保留分类、不补资料；已在本机 ima 新建个人示例库并导入三篇 STM32 Markdown，已补入新建入口、创建弹窗、新增菜单，以及目录、列表和正文共六张真实截图；前三张带网页操作编号，截图外框、图例与正文统一左对齐，版本号未单独记录。未执行 ima 问答、WorkBuddy 接入或硬件上板测试，不包含私人笔记、账号配置或凭据。
+[搭建知识库专题](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge)分为两块：原有 [Obsidian 教程](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/obsidian)保留 learning-of-zjnu 的目录、模板和证据链约定；新增 [ima 嵌入式系统示例](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/ima)，按 RK3588、STM32、FPGA 三类组织，以 STM32 的最小工程、GPIO 和 UART 学习资料为重点。原起步包继续位于 `docs/downloads/knowledge-base/`；3 份 STM32 公开原创学习资料与新 ZIP 位于 `docs/downloads/ima-embedded/`，RK3588 与 FPGA 保留分类、不补资料；已在本机 ima 新建个人示例库并导入三篇 STM32 Markdown，已补入新建入口、创建弹窗、新增菜单，以及目录、列表和正文共六张真实截图；前三张带网页操作编号，截图外框、图例与正文统一左对齐，版本号未单独记录。另附五张用户提供的 WorkBuddy 连接器与对话截图，演示“专家·技能·连接器 → 连接器 → ima”和任务整理流程，附可复制的 STM32 指令；未核验该对话的最终入库、报告技术结论或 STM32 指令执行结果。未执行 ima 问答或硬件上板测试，不包含私人笔记、账号配置或凭据。
 
-网站默认先展示“选择接入”页：可进入 WorkBuddy 或 Codex 接入教程，也可进入 Zotero 插件指南，或选择“跳过，直接阅读教程”。品牌与面包屑统一返回教程概览，侧栏可返回选择页；已有章节、提示词和接入教程的深链接仍可直接访问，不记录接入选择。
+网站默认先展示“选择开始方式”页：可进入 WorkBuddy 或 Codex 接入教程，也可进入 Zotero 插件指南、搭建知识库（Obsidian / ima），或选择“跳过，直接阅读教程”。品牌与面包屑统一返回教程概览，侧栏可返回选择页；已有章节、提示词和接入教程的深链接仍可直接访问，不记录接入选择。
 
 全站屏幕界面采用白底、浅灰绿导航与深绿操作按钮，使用 `docs/theme.css` 管理配色、排版和组件样式，`docs/desktop.css` 统一桌面的标题层级、控件、卡片与截图对齐。学习路径采用可点击条目，六步流程图可展开查看；正文使用开放的阅读布局。路由切换、菜单、搜索与卡片反馈使用短动画；系统开启“减少动态效果”时关闭动画，打印继续使用独立样式。
 

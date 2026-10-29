@@ -75,7 +75,7 @@
   .entry-intro { margin-bottom: 28px; }
   .entry-intro h1 { margin-bottom: 16px; }
   .entry-description { font-size: 18px; line-height: 1.9; }
-  .entry-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .entry-page > .entry-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .entry-card { min-width: 0; min-height: 430px; padding: 24px; border: 1px solid var(--line); border-top: 3px solid var(--green); box-shadow: var(--surface-shadow); background: #fff; }
   .entry-card-top { flex-direction: row; align-items: center; gap: 16px; margin-bottom: 16px; }
   .entry-card-icon { width: 48px; height: 48px; border-radius: 12px; background: #edf6f0; flex-shrink: 0; }

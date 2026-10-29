@@ -28,6 +28,18 @@
           {symbol:'grid',title:'插件市场与中文社区',description:'按实际用途查找插件与使用资料。'},
           {symbol:'check',title:'安装与兼容核查',description:'核对安装步骤、来源和适用版本。'}
         ]
+      },
+      {
+        id: 'knowledge',
+        name: '搭建知识库',
+        platform: 'Obsidian / ima + WorkBuddy',
+        symbol: 'folder',
+        description: '用 Obsidian 管理本地目录与模板，或用 ima + WorkBuddy 整理资料、按知识库提问。',
+        action: '选择知识库搭建方式',
+        features: [
+          {symbol:'folder',title:'Obsidian 本地知识库',description:'保留目录、模板与科研证据链。'},
+          {symbol:'book',title:'ima + WorkBuddy',description:'从 STM32 示例整理资料与来源。'}
+        ]
       }
     ];
 
@@ -43,16 +55,16 @@
         <span class="entry-card-action">${esc(choice.action || `查看 ${choice.name} 接入教程`)} ${icon('arrow')}</span>
       </a>`).join('');
 
-    return `${crumb('选择接入')}
+    return `${crumb('选择开始方式')}
       <section class="entry-page" aria-labelledby="entry-title">
         <header class="entry-intro">
-          <h1 id="entry-title">先选一个文献助手。</h1>
-          <p class="entry-description">选择文献助手接入方式，或查看 Zotero 插件指南。也可以先阅读教程，再按需要配置工具。</p>
+          <h1 id="entry-title">选择你的开始方式。</h1>
+          <p class="entry-description">接入 WorkBuddy 或 Codex，查看 Zotero 插件，或搭建 Obsidian / ima 知识库。也可以先阅读教程，再按需要配置工具。</p>
         </header>
         <div class="entry-grid">${cards}</div>
         <div class="entry-skip-area">
           <a class="entry-skip" href="#home">跳过，直接阅读教程 ${icon('book')}</a>
-          <p>无需先安装，接入也可稍后从目录进入。</p>
+          <p>无需先安装，工具接入与知识库搭建都可稍后从目录进入。</p>
         </div>
       </section>`;
   }
