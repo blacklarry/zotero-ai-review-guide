@@ -11,7 +11,7 @@ window.GUIDE_DATA = {
       ],
       deliverable: '一份包含主问题、关键词、数据库、范围与纳排条件的检索计划。',
       tip: '开始前区分叙述性综述与系统综述。本文提供通用的阅读整理流程；系统综述还需要完整的方法设计与报告规范。上传材料前检查权限及所用 AI 工具的数据政策。',
-      sources: [{label: 'Zotero 入门',url: 'https://www.zotero.org/support/quick_start_guide'},{label:'添加文献与 Connector',url:'https://www.zotero.org/support/adding_items_to_zotero'}],
+      sources: [{label:'中文社区：安装与 Connector',url:'https://zotero-chinese.com/user-guide/install'},{label: 'Zotero 官方入门',url: 'https://www.zotero.org/support/quick_start_guide'},{label:'官方：添加文献与 Connector',url:'https://www.zotero.org/support/adding_items_to_zotero'}],
       prompt: '我的研究方向是：[方向]。综述对象是：[对象]，研究情境是：[情境]。\n请帮我将问题收窄为一个主问题和三个可讨论的子问题，给出中英文检索词、同义词和一份可修改的纳排条件草案。\n区分“我已提供的事实”和“你的建议”。不要生成论文、作者或 DOI；请标明还需要我决定的研究边界。',
       checklist: ['我能用一句话说清主问题，并列出讨论边界。','我已准备 Zotero、Connector 和一篇可用全文。','我已记录关键词、数据库、检索日期和纳排条件。','我已写出一条可复用的中英文检索式，并记录了检索条件。']
     },
@@ -25,7 +25,7 @@ window.GUIDE_DATA = {
       ],
       deliverable: '一个完成基本去重、核对元数据并标注阅读状态的 Zotero 分类。',
       tip: '自动导入不等于自动正确。重复检测也只提供候选项，合并前要核对。文献编号 P001 是本教程建议的人工编号，并非 Zotero 自动生成的引用键。',
-      sources: [{label:'添加文献',url:'https://www.zotero.org/support/adding_items_to_zotero'},{label:'分类与标签',url:'https://www.zotero.org/support/collections_and_tags'},{label:'重复条目合并',url:'https://www.zotero.org/support/duplicate_detection'}],
+      sources: [{label:'中文社区：添加条目',url:'https://zotero-chinese.com/user-guide/add-items'},{label:'中文社区：附件与文件名',url:'https://zotero-chinese.com/user-guide/add-attachments'},{label:'官方：添加文献',url:'https://www.zotero.org/support/adding_items_to_zotero'},{label:'官方：分类与标签',url:'https://www.zotero.org/support/collections_and_tags'},{label:'官方：重复条目合并',url:'https://www.zotero.org/support/duplicate_detection'}],
       prompt: '下面是我的选题和当前标签清单：[粘贴内容]。\n请提出一套简洁的分类与标签规则，分别覆盖主题、方法和阅读状态，并说明每个标签何时使用。只根据我提供的信息提出整理建议，不补造文献元数据，不把题名相似直接判定为重复。\n输出：分类结构、标签表、需要人工确认的问题。',
       checklist: ['纳入文献的作者、题名、年份和 DOI 或来源已核对。','疑似重复条目已人工确认，分类和标签有明确规则。','每篇纳入文献都有稳定编号，排除项有记录原因。']
     },
@@ -39,7 +39,7 @@ window.GUIDE_DATA = {
       ],
       deliverable:'一篇经过人工复核的结构化阅读笔记，以及对应的文献矩阵记录。',
       tip:'AI 摘要不等于证据。摘要中没有出现的实验细节，不能自动视为全文未报告；“未提及”只表示本次提供的材料中没有找到。',
-      sources:[{label:'PDF 批注与笔记',url:'https://www.zotero.org/support/pdf_reader'},{label:'Zotero 入门：笔记',url:'https://www.zotero.org/support/quick_start_guide'}],
+      sources:[{label:'中文社区：阅读与笔记',url:'https://zotero-chinese.com/user-guide/take-notes'},{label:'官方：PDF 批注与笔记',url:'https://www.zotero.org/support/pdf_reader'},{label:'官方入门：笔记',url:'https://www.zotero.org/support/quick_start_guide'}],
       prompt:'文献编号：[P001]\n书目信息：[作者、年份、题名、DOI]\n材料：[粘贴带有页码或章节标识的原文/笔记]\n请仅根据上述材料提取：研究问题、对象与样本、方法、评价指标、主要发现、局限。每项发现附原文短片段及材料中的位置。缺失信息写“所给材料未提及”；不要推测页码、数值或结论。区分作者明确报告与需要人工核查的解释，最后列出核查清单。',
       checklist:['提取记录区分了问题、方法、发现与局限。','关键结果均有文献编号、原文片段与位置。','数值、条件与 AI 的概括已由我回到原文复核。']
     },
@@ -81,7 +81,7 @@ window.GUIDE_DATA = {
       ],
       deliverable:'一份引用与原文对应、关键主张已复核，并保留可编辑引用字段的综述草稿。',
       tip:'能生成规范格式，不代表参考文献内容正确。也不要将 AI 自动列出的参考文献直接粘贴到最终文稿；先查到真实条目，再核对它是否支持论点。',
-      sources:[{label:'Word 引用、刷新与参考文献',url:'https://www.zotero.org/support/word_processor_plugin_usage'},{label:'Zotero 8 起的引用对话框',url:'https://www.zotero.org/support/kb/classic_citation_dialog'},{label:'元数据核对',url:'https://www.zotero.org/support/adding_items_to_zotero'}],
+      sources:[{label:'中文社区：Word 引用操作',url:'https://zotero-chinese.com/user-guide/ms-word-plugin'},{label:'中文社区：引文样式',url:'https://zotero-chinese.com/user-guide/citation-styles'},{label:'官方：Word 引用、刷新与参考文献',url:'https://www.zotero.org/support/word_processor_plugin_usage'},{label:'官方：Zotero 8 起的引用对话框',url:'https://www.zotero.org/support/kb/classic_citation_dialog'},{label:'官方：元数据核对',url:'https://www.zotero.org/support/adding_items_to_zotero'}],
       prompt:'草稿：[粘贴含文献编号的文本]\n证据矩阵：[粘贴已核验记录]\n请逐条检查草稿的事实主张，输出“主张｜对应编号｜材料中的支持证据｜可能问题｜需要人工核查的动作”。重点找无依据概括、遗漏条件、数值不一致和引用不匹配。不要补造参考文献，也不要凭你记忆判定论文内容；材料不足时写“无法据此核实”。',
       checklist:['临时文献编号已替换为对应真实条目的正式引用。','关键主张与原文匹配，元数据已修正并刷新。','参考文献、适用边界与 AI 使用说明已按要求核查。']
     }
@@ -107,7 +107,10 @@ window.GUIDE_DATA = {
     {id:'abstract-check',category:'写作核查',title:'核查摘要与正文一致性',description:'检查摘要是否准确概括正文，并定位范围或结论被夸大的地方。',text:'综述题目与摘要：[粘贴待核查内容]\n正文材料：[粘贴研究范围、检索与筛选说明、主要论证、结论和局限]\n已核验证据：[相关矩阵及文献编号、位置]\n请把摘要拆成事实或判断单元，输出“摘要表述、正文对应位置、支持证据、是否一致、问题类型、建议修改、待核查项”。检查研究对象、时间范围、方法表述、纳入数量、主要发现与结论强度是否一致；正文未提供的信息标“无法据此核实”。\n只使用输入，不假定实施过正文没有报告的检索、筛选或质量评价，不把叙述性综述改称系统综述。不得补造论文、DOI、页码、数量或效果值，不把局部结果概括为全领域结论。先列核查表，再给出保守修订版摘要；需新增证据的句子保留待补标记，并说明应补哪段正文或原文材料。'}
   ],
   sources:[
-    {label:'Zotero 快速入门',url:'https://www.zotero.org/support/quick_start_guide',description:'了解条目、附件、笔记与引用的基本概念。'},
+    {label:'Zotero 中文社区百科全书',url:'https://zotero-chinese.com/user-guide/',description:'中文操作说明入口，可按安装、收集、阅读、引用和备份查找。'},
+    {label:'中文社区：添加附件与文件管理',url:'https://zotero-chinese.com/user-guide/add-attachments',description:'区分存储附件、链接附件，以及附件显示名和磁盘文件名。'},
+    {label:'中文社区：完整备份',url:'https://zotero-chinese.com/user-guide/backup',description:'找到实际数据目录，理解数据库、附件和用户配置的备份范围。'},
+    {label:'Zotero 官方快速入门',url:'https://www.zotero.org/support/quick_start_guide',description:'了解条目、附件、笔记与引用的基本概念。'},
     {label:'收集文献与标识符导入',url:'https://www.zotero.org/support/adding_items_to_zotero',description:'Connector、DOI、PDF 与元数据核对。'},
     {label:'分类与标签',url:'https://www.zotero.org/support/collections_and_tags',description:'组织项目结构、主题与阅读状态。'},
     {label:'重复条目检测与合并',url:'https://www.zotero.org/support/duplicate_detection',description:'确认重复项、选择字段并保留已有组织信息。'},

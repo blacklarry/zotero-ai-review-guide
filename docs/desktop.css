@@ -187,6 +187,11 @@
   .workbuddy-content > .page-intro + .worked-example { margin-top: 0; padding-top: 0; border-top: 0; }
   .workbuddy-downloads { padding: 24px; }
   .operation-guide figure, .worked-example figure:has(.tutorial-shot) { margin: 24px 0; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+  /* 抵消步骤列表的 24px 缩进与 4px 内边距，让截图共用章节边线。 */
+  .worked-example > .practice-steps > li > figure { margin-left: -28px; }
+  .operation-guide figure > a { width: fit-content; max-width: 100%; }
+  .worked-example .tutorial-shot { margin-inline: 0; }
+  .operation-guide figure img, .worked-example figure:has(.tutorial-shot) img { width: auto; max-width: 100%; max-height: 660px; height: auto; margin-inline: 0; }
   .operation-guide figcaption, .worked-example figure:has(.tutorial-shot) figcaption { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.85; }
   .worked-example .tutorial-key > li { margin: 0; padding-left: 0; font-size: 15px; line-height: 1.8; }
   .worked-example .case-scope, .worked-example .evidence-location { font-size: 14px; }
@@ -196,6 +201,8 @@
   .learning-row { padding-block: 20px; }
   .learning-row:hover { background: #eaf3ed; }
   .home-updates, .workbuddy-downloads, .install-source-switcher { background: #fff; }
+  .home-update a { white-space: nowrap; }
+  #app[data-route='resources'] > .maintenance + section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
   .workbuddy-content p, .workbuddy-content li { font-size: 18px; line-height: 1.9; }
   .workbuddy-content .integration-repo-note, .workbuddy-content .install-source-note { font-size: 14px; }
 

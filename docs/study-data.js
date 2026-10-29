@@ -267,8 +267,8 @@ window.GUIDE_STUDY = {
   }
 };
 window.GUIDE_OPERATIONS = {
-  "verificationDate": "2026-10-14",
-  "verificationMethod": "对照 Zotero 官方文档与官方发布说明核验；图片为官方现有截图的原文件下载。未执行本机 Zotero、Connector 或 Word 端到端操作实测。",
+  "verificationDate": "2026-10-29",
+  "verificationMethod": "对照 Zotero 中文社区用户指南、Zotero 官方文档与发布说明核验；图片按图注分别来自中文社区公开示例、官方文档与发布说明，均保留原文件。未执行本机 Zotero、Connector 或 Word 端到端操作实测。",
   "localApplicationTested": false,
   "groups": [
     {
@@ -276,33 +276,22 @@ window.GUIDE_OPERATIONS = {
       "title": "跟着截图：用 Connector 保存文献",
       "steps": [
         "安装 Zotero 桌面程序与对应浏览器的 Connector，并打开桌面 Zotero。",
-        "进入论文的出版商详情页或摘要页，找到浏览器工具栏中的 Connector。图中红圈标出的是论文图标；点击它保存条目。",
-        "在保存提示中选择目标分类；有权限取得的 PDF 通常会一并保存。检索结果页出现文件夹图标时，先勾选所需文献再确认。",
+        "进入论文的出版商详情页或摘要页，找到浏览器工具栏中的 Connector；论文详情页通常显示论文图标，点击保存条目。",
+        "在保存提示的“保存到”区域选择目标分类，按需要填写标签，再点“完成”；有权限取得的 PDF 通常会一并保存。检索结果页出现文件夹图标时，先勾选所需文献再确认；下图展示的是保存目标与附件列表。",
         "返回 Zotero，检查题名、作者、年份、DOI 和附件；网页元数据仍可能出错，保存成功不等于信息已核实。"
       ],
       "images": [
         {
-          "path": "assets/operations/connector-save.png",
-          "originalUrl": "https://www.zotero.org/support/_media/connector_firefox.png",
-          "sourcePage": "https://www.zotero.org/support/adding_items_to_zotero",
-          "alt": "Zotero 官方 Firefox 工具栏截图，红圈标出 Connector 的论文保存图标",
-          "caption": "先看图标再保存：论文详情页会显示论文图标。红圈由官方原图提供。来源：Zotero 官方文档。",
-          "versionNote": "官方保留的 Firefox 界面示例，具体截图版本未标明；Chrome、Edge、Safari 的位置和外观可能不同。",
-          "width": 774,
-          "height": 52,
-          "licenseScope": "official-documentation",
-          "modified": false
-        },
-        {
-          "path": "assets/operations/connector-select-items.png",
-          "originalUrl": "https://www.zotero.org/support/_media/zotero-item-selector.png",
-          "sourcePage": "https://www.zotero.org/support/adding_items_to_zotero",
-          "alt": "Zotero 官方多条目选择窗口，含文献复选框及 OK 按钮",
-          "caption": "结果列表批量保存：勾选要保存的条目，然后确认。来源：Zotero 官方文档。",
-          "versionNote": "官方保留的旧 Windows 外观截图，仅演示勾选条目的动作；当前浏览器弹窗样式可能不同。",
-          "width": 354,
-          "height": 226,
-          "licenseScope": "official-documentation",
+          "path": "assets/operations/community-connector-save.png",
+          "originalUrl": "https://zotero-chinese.com/assets/%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B7%BB%E5%8A%A0%E6%9D%A1%E7%9B%AE-%E5%AF%B9%E8%AF%9D%E6%A1%86.D7DUdzJX.png",
+          "sourcePage": "https://zotero-chinese.com/user-guide/add-items",
+          "sourceLabel": "Zotero 中文社区原图来源",
+          "alt": "Connector 中文保存提示，包含保存到分类、标签输入框及已抓取条目和 PDF 附件列表",
+          "caption": "在“保存到”选择目标分类，按需填写标签；下方列表显示正在保存的条目与附件。图中的分类与论文是中文社区原作者的公开演示。",
+          "versionNote": "中文社区截图未标明 Zotero / Connector 具体版本；示例附件列表不能代替实际检查保存结果。资料核对：2026-10-29，未作本机保存实测。",
+          "width": 710,
+          "height": 824,
+          "licenseScope": "chinese-community-documentation-cc-by-sa-4.0",
           "modified": false
         }
       ],
@@ -313,21 +302,22 @@ window.GUIDE_OPERATIONS = {
       "title": "跟着截图：把批注生成一条笔记",
       "steps": [
         "在 Zotero 内置阅读器打开 PDF，选中关键原文做高亮，并在批注中写清这是结果、方法还是局限。",
-        "回到文献列表，右键文献的父条目，选择 Add Note from Annotations（从批注添加笔记）。图中蓝色选中行即是该命令。",
+        "回到文献列表，右键文献的父条目，选择“从注释中添加笔记”（Add Note from Annotations）。下图的目标命令位于蓝色“添加笔记”下一行；“添加笔记”本身是空白笔记入口。",
         "打开生成的子笔记，检查引文及页码；点击批注并使用 Show on Page（在页面中显示）回到原文核查。",
         "在阅读器中也可打开右侧笔记面板，点加号并选择 Add Item Note from Annotations；只需要部分批注时，可选中批注后 Add to Note 或拖入已打开的笔记。"
       ],
       "images": [
         {
-          "path": "assets/operations/annotations-to-note.png",
-          "originalUrl": "https://www.zotero.org/static/images/blog/6.0/add-note-from-annotations.png",
-          "sourcePage": "https://www.zotero.org/support/pdf_reader",
-          "alt": "Zotero 官方右键菜单截图，Add Note from Annotations 命令被选中",
-          "caption": "对父条目点右键，再选 Add Note from Annotations。来源：Zotero 官方 PDF Reader 文档。",
-          "versionNote": "原图来自 Zotero 6.0（2022）界面；2026-10-14 官方 PDF Reader 文档仍说明此命令。当前版本菜单外观可能不同。",
-          "width": 620,
-          "height": 600,
-          "licenseScope": "official-documentation-linked-blog-image",
+          "path": "assets/operations/community-annotations-menu.png",
+          "originalUrl": "https://zotero-chinese.com/assets/%E6%B7%BB%E5%8A%A0%E7%AC%94%E8%AE%B0%E8%8F%9C%E5%8D%95.oSwpAzYe.png",
+          "sourcePage": "https://zotero-chinese.com/user-guide/take-notes",
+          "sourceLabel": "Zotero 中文社区原图来源",
+          "alt": "Zotero 中文条目右键菜单，“从注释中添加笔记”位于蓝色高亮的“添加笔记”下一行",
+          "caption": "用“从注释中添加笔记”汇总已有批注；蓝色高亮的“添加笔记”用于新建空白笔记。菜单下部的 DOI、翻译等命令来自原作者已有的第三方插件，不属于本节内置操作。",
+          "versionNote": "中文社区截图未注明具体版本；当前版本可能显示“从批注添加笔记”等相近译名。资料核对：2026-10-29，未作本机生成笔记实测。",
+          "width": 421,
+          "height": 829,
+          "licenseScope": "chinese-community-documentation-cc-by-sa-4.0",
           "modified": false
         }
       ],
@@ -344,15 +334,16 @@ window.GUIDE_OPERATIONS = {
       ],
       "images": [
         {
-          "path": "assets/operations/word-zotero-toolbar.png",
-          "originalUrl": "https://www.zotero.org/support/_media/word_integration_tab.png",
-          "sourcePage": "https://www.zotero.org/support/word_processor_plugin_usage",
-          "alt": "Word 中 Zotero 选项卡，含 Add/Edit Citation、Bibliography 和 Refresh 按钮",
-          "caption": "入口在 Word 的 Zotero 选项卡：插入引用用 Add/Edit Citation，更新用 Refresh。来源：Zotero 官方文档。",
-          "versionNote": "官方保留的旧 Word 工具栏截图；新版本可能另有 Add Note、Add Annotation 等按钮，本文所示核心命令仍适用。",
-          "width": 300,
-          "height": 200,
-          "licenseScope": "official-documentation",
+          "path": "assets/operations/community-word-toolbar.png",
+          "originalUrl": "https://zotero-chinese.com/assets/word-zotero%E7%AA%97%E6%A0%BC.CCT-CRnr.png",
+          "sourcePage": "https://zotero-chinese.com/user-guide/ms-word-plugin",
+          "sourceLabel": "Zotero 中文社区原图来源",
+          "alt": "Mac Word 的 Zotero 选项卡，含 Add/Edit Citation、Add/Edit Bibliography、Document Preferences、Refresh 和 Unlink Citations",
+          "caption": "在 Word 的 Zotero 选项卡插入引用和书目：Add/Edit Citation 插入引文，Add/Edit Bibliography 生成书目，Document Preferences 选择样式，Refresh 更新内容。",
+          "versionNote": "中文社区的 Mac Word 界面示例，未注明 Word / Zotero 具体版本；Windows 的按钮排列可能不同。资料核对：2026-10-29，未作本机 Word 实测。",
+          "width": 1022,
+          "height": 298,
+          "licenseScope": "chinese-community-documentation-cc-by-sa-4.0",
           "modified": false
         },
         {
@@ -404,33 +395,24 @@ window.GUIDE_OPERATIONS = {
         ],
         "url": "https://www.zotero.org/support/word_processor_plugin_troubleshooting",
         "manualInstallationUrl": "https://www.zotero.org/support/word_processor_plugin_manual_installation",
-        "images": [
-          {
-            "path": "assets/operations/word-plugin-settings.png",
-            "originalUrl": "https://www.zotero.org/support/_media/preferences_cite_processors.png",
-            "sourcePage": "https://www.zotero.org/support/preferences/cite",
-            "alt": "旧版 Zotero Cite 设置中的 Word Processors 标签和 Reinstall Microsoft Word Add-in 按钮",
-            "caption": "找不到 Zotero 选项卡时，先到 Zotero 的 Cite 设置重新安装 Word 插件。来源：Zotero 官方文档。",
-            "versionNote": "官方 Cite 页保留的 2017 旧 macOS 设置图；当前设置布局不同，应按 Cite 中的 Word Processors/Word Processor Plugins 区域查找安装按钮。图中的 Use classic Add Citation dialog 已不适用于 Zotero 8–10。",
-            "width": 797,
-            "height": 813,
-            "licenseScope": "official-documentation",
-            "modified": false
-          }
-        ]
+        "images": []
       }
     }
   ],
   "compatibility": [
-    "核验基准：2026-10-14 官方文档及发布记录；当前稳定版记录为 Zotero 10.0.6（2026-10-07 发布），没有进行本机 Zotero/Word 全流程实测。",
+    "版本记录：本机截图于 2026-10-29 显示 Zotero 10.0.6（64-bit）；软件当前版本以官方更新日志为准。中文社区资料与替换图片于 2026-10-29 核对，没有进行本机 Zotero/Word 全流程实测。",
     "本教程涉及的内置 PDF 批注与批注转笔记功能从 Zotero 6 起具备；Zotero 8–10 的引用对话框为 List/Library 统一界面，旧版红条与 classic 对话框已被替换。",
     "当前 Zotero 官方系统要求：Windows 10+、macOS 10.15+，或满足 Firefox 140 库要求的 Linux。",
     "官方 Word 插件支持范围：Windows Word 2010–2024 或 Office 365（不含 Word 2010 Starter）；Mac Word 2016–2024 或 Office 365。本教程的 Word 路径针对桌面版。",
     "Connector 当前支持 Chrome/Edge 稳定版或扩展稳定版、Firefox 115+；Safari 18+ 要求 macOS 13+，macOS 11/12 使用功能较少的旧 Connector。",
-    "截图来自官方保留配图，部分为旧版；每张图已注明界面年代。点击来源页可核对最新说明，不能将文档核验或下载官方截图称为本机实测。"
+    "截图按图注分别来自本机记录、Zotero 中文社区、官方文档与发布说明；未注明具体版本的图片只用于定位命令。中文社区部分文章明确尚未按 Zotero 7 更新；Word 引用演示继续采用 Zotero 8 起的统一对话框，文档核对不等于本机实测。"
   ],
-  "licenseNote": "截图来自 Zotero 官方文档与发布说明，图片原文件未修改，每图附有来源与界面版本。文档材料归属 Zotero，按 CC BY-SA 4.0 复用；博客截图保留原权利人的版权。",
+  "licenseNote": "截图按各图来源归属 Zotero 中文社区及其贡献者、Zotero 文档维护者或原发布者；原图文件未修改，每图附有来源与版本范围。中文社区与 Zotero 文档材料按 CC BY-SA 4.0 署名复用；博客截图保留原权利人的版权。本机截图另按各自图注说明。",
   "licenseSources": [
+    {
+      "url": "https://zotero-chinese.com/user-guide/",
+      "label": "Zotero 中文社区与贡献者（页底许可）"
+    },
     {
       "url": "https://github.com/zotero/zotero-docs",
       "label": "Zotero 官方文档源库许可说明"
@@ -445,6 +427,10 @@ window.GUIDE_OPERATIONS = {
     }
   ],
   "versionSources": [
+    {
+      "url": "https://zotero-chinese.com/user-guide/",
+      "label": "Zotero 中文社区用户指南与来源许可"
+    },
     {
       "url": "https://www.zotero.org/support/changelog",
       "label": "当前 Zotero 版本与发布日期"
