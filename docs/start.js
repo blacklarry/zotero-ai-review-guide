@@ -16,22 +16,38 @@
         platform: '桌面本机任务 / 同机 CLI',
         symbol: 'layers',
         description: '检索 Zotero 文献，核对引用键，定位论文中的证据。'
+      },
+      {
+        id: 'zotero-plugins',
+        name: 'Zotero 插件',
+        platform: '插件管理 / 中文社区',
+        symbol: 'grid',
+        description: '查找桌面插件与中文社区资料，核对来源、版本和安装方法。',
+        action: '查看 Zotero 插件指南',
+        features: [
+          {symbol:'grid',title:'插件市场与中文社区',description:'按实际用途查找插件与使用资料。'},
+          {symbol:'check',title:'安装与兼容核查',description:'核对安装步骤、来源和适用版本。'}
+        ]
       }
     ];
 
+    const assistantFeatures = [
+      {symbol:'copy',title:'自助安装指令',description:'复制安装指令，按步骤完成接入。'},
+      {symbol:'download',title:'配置与技能下载包',description:'下载配置与中文技能，按需使用。'}
+    ];
     const cards = choices.map(choice => `
       <a class="entry-card" href="#${choice.id}" aria-labelledby="entry-${choice.id}-title" aria-describedby="entry-${choice.id}-description">
         <div class="entry-card-top"><span class="entry-card-icon">${icon(choice.symbol)}</span><div class="entry-card-heading"><span class="entry-platform">${esc(choice.platform)}</span><h2 id="entry-${choice.id}-title">${esc(choice.name)}</h2></div></div>
         <p id="entry-${choice.id}-description" class="entry-card-description">${esc(choice.description)}</p>
-        <ul class="entry-features"><li>${icon('copy')}<div><strong>自助安装指令</strong><small>复制安装指令，按步骤完成接入。</small></div></li><li>${icon('download')}<div><strong>配置与技能下载包</strong><small>下载配置与中文技能，按需使用。</small></div></li></ul>
-        <span class="entry-card-action">查看 ${esc(choice.name)} 接入教程 ${icon('arrow')}</span>
+        <ul class="entry-features">${(choice.features || assistantFeatures).map(feature => `<li>${icon(feature.symbol)}<div><strong>${esc(feature.title)}</strong><small>${esc(feature.description)}</small></div></li>`).join('')}</ul>
+        <span class="entry-card-action">${esc(choice.action || `查看 ${choice.name} 接入教程`)} ${icon('arrow')}</span>
       </a>`).join('');
 
     return `${crumb('选择接入')}
       <section class="entry-page" aria-labelledby="entry-title">
         <header class="entry-intro">
           <h1 id="entry-title">先选一个文献助手。</h1>
-          <p class="entry-description">把 Zotero 文献库接入你常用的助手。选择一种接入方式，或先阅读教程。</p>
+          <p class="entry-description">选择文献助手接入方式，或查看 Zotero 插件指南。也可以先阅读教程，再按需要配置工具。</p>
         </header>
         <div class="entry-grid">${cards}</div>
         <div class="entry-skip-area">

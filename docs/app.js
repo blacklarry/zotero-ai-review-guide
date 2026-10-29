@@ -9,7 +9,6 @@
   const codex = window.GUIDE_CODEX;
   const entry = window.GUIDE_START;
   const knowledge = window.GUIDE_KNOWLEDGE;
-  const roadmap = window.GUIDE_ROADMAP;
   const zoteroGuides = window.GUIDE_ZOTERO_GUIDES;
   const zoteroPlugins = window.GUIDE_ZOTERO_PLUGINS;
   if (!app) return;
@@ -19,7 +18,6 @@
       typeof workbuddy?.render !== 'function' || typeof workbuddy.resourceCard !== 'function' || !workbuddy.copyTexts || !workbuddy.copyLabels ||
       typeof codex?.render !== 'function' || typeof codex.resourceCard !== 'function' || !codex.copyTexts || !codex.copyLabels ||
       typeof entry?.render !== 'function' ||
-      typeof roadmap?.render !== 'function' || !Array.isArray(roadmap.searchItems) ||
       typeof zoteroGuides?.chapter !== 'function' || typeof zoteroPlugins?.render !== 'function' || !Array.isArray(zoteroPlugins.searchItems) ||
       typeof knowledge?.render !== 'function' || typeof knowledge.resourceCard !== 'function' || !knowledge.copyTexts || !knowledge.copyLabels || !Array.isArray(knowledge.searchItems) ||
       typeof extras?.chapter !== 'function' || typeof extras.resources !== 'function' || typeof extras.caseText !== 'function') {
@@ -205,7 +203,7 @@
     const prompt = data.prompts.find(p => p.id === promptId);
     const isPromptRoute = hash === 'prompts' || Boolean(prompt);
     const chapter = data.chapters.find(ch => `chapter/${ch.id}` === hash);
-    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge','roadmap','zotero-plugins'].includes(hash)) {
+    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge','zotero-plugins'].includes(hash)) {
       history.replaceState(null,'','#start');
       hash = 'start';
     }
@@ -216,9 +214,9 @@
       promptFilter = prompt?.category || (promptCategories.includes(savedFilter) ? savedFilter : '全部');
       history.replaceState({...history.state,promptFilter},'',location.href);
     }
-    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库',roadmap:'项目路线图','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
+    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
-    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : hash === 'roadmap' ? roadmap.render({icon,esc,crumb}) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
+    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
     app.dataset.route = currentRoute;
     updateNavigation();
     closeMenu();
@@ -321,7 +319,6 @@
     {title:'WorkBuddy 接入 Zotero 本地文献检索',type:'工具接入',body:'WorkBuddy MCP Skill 技能 安装 下载 uv uvx 本地 API 信任 连接 检索 全文 引用键 citekey 排障',href:'#workbuddy'},
     {title:'Codex 接入 Zotero 本地文献检索',type:'工具接入',body:'Codex MCP Skill 技能 TOML config.toml CLI 安装 下载 uv uvx 本地 API 自助安装 检索 全文 引用键 citekey 排障',href:'#codex'},
     ...knowledge.searchItems,
-    ...roadmap.searchItems,
     ...zoteroPlugins.searchItems,
     {title:'Zotero 安装与 Connector 图文入门',type:'第 1 章',body:'下载 安装 首次启动 浏览器扩展 配置 图文',href:'#chapter/1'},
     {title:'Zotero 分类、PDF、去重、备份与同步',type:'第 2 章',body:'元数据 智能分类 标签 全文 备份 同步 WebDAV',href:'#chapter/2'},
