@@ -630,6 +630,39 @@
     .search-dialog-head { padding: 14px 16px; }
     .search-dialog-head input { font-size: 16px; }
   }
+  /* 项目路线图复用正文、表格与提醒组件，不写入学习进度。 */
+  .roadmap-page > section > h2 { color: var(--ink); font-size: 26px; line-height: 1.5; margin: 0 0 18px; }
+  .roadmap-phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 0; margin: 0; list-style: none; }
+  .roadmap-phases li { padding: 20px; border: 1px solid var(--line); border-top: 3px solid var(--green); border-radius: var(--radius); background: var(--white); }
+  .roadmap-phases span { color: var(--muted); font-size: 14px; }
+  .roadmap-phases h3 { margin: 6px 0 12px; color: var(--ink); font-size: 18px; line-height: 1.65; }
+  .roadmap-phases b { color: var(--green); font-size: 15px; }
+  .roadmap-page .roadmap-tasks { min-width: 840px; }
+  .roadmap-tasks th[scope='row'] { background: var(--surface-muted); font-weight: 400; }
+  .roadmap-tasks th[scope='row'] :is(b, span, small) { display: block; }
+  .roadmap-tasks th[scope='row'] b { color: var(--green); margin-bottom: 5px; }
+  .roadmap-tasks th[scope='row'] small { color: var(--muted); margin-top: 8px; font-size: 13px; }
+  .roadmap-page .roadmap-tasks p { margin: 0 0 12px; font-size: 15px; line-height: 1.85; }
+  .roadmap-page .roadmap-tasks p:last-child { margin-bottom: 0; }
+  .roadmap-status { display: inline-block; margin-bottom: 12px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--soft); color: var(--green); font-size: 14px; line-height: 1.65; }
+  .roadmap-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px 32px; padding-left: 24px; margin: 24px 0; }
+  .roadmap-flow li { padding-left: 4px; }
+  .roadmap-flow li::marker { color: var(--green); font-weight: 600; }
+  .roadmap-flow b { color: var(--ink); }
+  .roadmap-flow p { margin: 6px 0 0; }
+
+  /* 真实软件截图的网页编号标注，原始图片保持不变。 */
+  .zotero-walkthrough .practice-steps > li > p { margin-block: 8px 14px; }
+  .tutorial-shot { position: relative; width: fit-content; max-width: 100%; margin-inline: auto; }
+  .tutorial-shot > a { display: block; }
+  .tutorial-shot img { display: block; max-width: 100%; height: auto; }
+  .tutorial-pin { position: absolute; display: grid; place-items: center; width: 28px; height: 28px; transform: translate(-50%,-50%); border: 2px solid #fff; border-radius: 50%; background: var(--green); color: #fff; font: 700 15px/1 var(--sans); box-shadow: 0 1px 5px #0005; pointer-events: none; }
+  .tutorial-key { display: flex; flex-wrap: wrap; gap: 8px 30px; margin: 16px 0 8px; padding-left: 24px; color: var(--green); font-size: 15px; line-height: 1.8; }
+  .tutorial-key li { padding-left: 2px; }
+  .tutorial-shot-zoom { width: 480px; max-width: 100%; height: 430px; overflow: hidden; }
+  .tutorial-shot-zoom img { width: 300%; max-width: none; transform: translateX(-66.6667%); margin: 0; }
+  .screenshot-pending { padding: 12px 16px; border-left: 3px solid var(--line); background: var(--surface-muted); color: var(--muted); font-size: 14px !important; line-height: 1.8 !important; }
+
   /* 工具交互的基础状态；桌面排版由 desktop.css 统一。 */
   .entry-features strong, .entry-features small { display: block; }
   .entry-features small { font-size: 13px; font-weight: 400; }

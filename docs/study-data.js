@@ -59,7 +59,7 @@ window.GUIDE_STUDY = {
       "metadataUrl": "https://arxiv.org/abs/1805.08974v3",
       "version": "arXiv:1805.08974v3，2019-06-17",
       "location": "v3 作者稿 PDF 第 3 页，§4.1 第一段；另见第 6 页 §4.5 和第 7 页 §4.6 / Figure 8。",
-      "excerpt": "ImageNet top-1 accuracy is highly correlated with accuracy on transfer tasks",
+      "excerpt": "ImageNet top-1 accuracy was highly correlated with accuracy on transfer tasks",
       "annotation": "E03｜这里指统一预训练设置下，固定特征加逻辑回归的比较。整体相关性不保证每个数据集或任意公开模型都按同样顺序表现。",
       "note": "P002｜问题：更好的 ImageNet 模型能否更好迁移？｜E03：统一设置下，固定特征分类表现与 ImageNet 表现相关。｜E04：Stanford Cars 与 FGVC Aircraft 上，预训练对最终表现增益较小。｜E05：预训练仍可加快收敛。｜位置：v3 PDF 第 3 页 §4.1、第 6 页 §4.5、第 7 页 §4.6 / Figure 8。",
       "boundary": "教学分析：这是分类实验；不能从所测数据集直接推断全部视觉任务的收益。"
@@ -127,7 +127,7 @@ window.GUIDE_STUDY = {
       "统一预训练设置；固定倒数第二层特征加逻辑回归",
       "ImageNet top-1 与跨数据集迁移指标；按论文 §3 处理比较",
       "E03｜统一设置下，ImageNet 表现与固定特征分类的迁移表现相关。",
-      "ImageNet top-1 accuracy is highly correlated with accuracy on transfer tasks",
+      "ImageNet top-1 accuracy was highly correlated with accuracy on transfer tasks",
       "v3 作者稿 PDF 第3页，§4.1 第一段；Figure 2 在第4页",
       "作者说明：公开模型训练设置的差异会影响这一关系（§4.1 第二段）。",
       "固定特征；训练设置；相关性",
@@ -258,7 +258,7 @@ window.GUIDE_STUDY = {
     "P002": {
       "uniqueWordsQuoted": 22,
       "excerpts": [
-        "ImageNet top-1 accuracy is highly correlated with accuracy on transfer tasks",
+        "ImageNet top-1 accuracy was highly correlated with accuracy on transfer tasks",
         "the improvement was unexpectedly small",
         "Networks pretrained on ImageNet converge faster"
       ]

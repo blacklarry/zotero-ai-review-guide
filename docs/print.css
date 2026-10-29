@@ -36,7 +36,7 @@
   .breadcrumb, .lesson-aside, .lesson-navigation, .case-nav,
   .case-next, .example-actions, .prompt-toolbar, .prompt-card-bottom,
   .hero-art, .hero-actions, .feedback-entry, .toast, dialog, .diagram-hint,
-  button, .btn, .banner-link, .icon {
+  button, .btn, .banner-link, .icon, .tutorial-pin {
     display: none !important;
   }
 

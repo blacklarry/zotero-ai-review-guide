@@ -9,6 +9,9 @@
   const codex = window.GUIDE_CODEX;
   const entry = window.GUIDE_START;
   const knowledge = window.GUIDE_KNOWLEDGE;
+  const roadmap = window.GUIDE_ROADMAP;
+  const zoteroGuides = window.GUIDE_ZOTERO_GUIDES;
+  const zoteroPlugins = window.GUIDE_ZOTERO_PLUGINS;
   if (!app) return;
   if (!data?.chapters?.length || !Array.isArray(data.prompts) || !Array.isArray(data.sources) ||
       !study?.matrixColumns?.length || !Array.isArray(study.matrixRows) ||
@@ -16,6 +19,8 @@
       typeof workbuddy?.render !== 'function' || typeof workbuddy.resourceCard !== 'function' || !workbuddy.copyTexts || !workbuddy.copyLabels ||
       typeof codex?.render !== 'function' || typeof codex.resourceCard !== 'function' || !codex.copyTexts || !codex.copyLabels ||
       typeof entry?.render !== 'function' ||
+      typeof roadmap?.render !== 'function' || !Array.isArray(roadmap.searchItems) ||
+      typeof zoteroGuides?.chapter !== 'function' || typeof zoteroPlugins?.render !== 'function' || !Array.isArray(zoteroPlugins.searchItems) ||
       typeof knowledge?.render !== 'function' || typeof knowledge.resourceCard !== 'function' || !knowledge.copyTexts || !knowledge.copyLabels || !Array.isArray(knowledge.searchItems) ||
       typeof extras?.chapter !== 'function' || typeof extras.resources !== 'function' || typeof extras.caseText !== 'function') {
     app.innerHTML = '<div class="page-intro"><h1>教程内容暂时未能加载</h1><p>请刷新页面重试，或先查看 <a href="https://www.zotero.org/support/">Zotero 官方文档</a>。</p></div>';
@@ -147,7 +152,7 @@
     const done = completed.includes(ch.id);
     return `${crumb(`第 ${ch.id} 章`)}
     <div class="chapter-layout"><article class="lesson-body"><header class="page-intro"><div class="eyebrow">CHAPTER ${String(ch.id).padStart(2,'0')} / 06</div><h1>${esc(ch.title)}</h1><p>${esc(ch.lead)}</p><div class="page-meta"><span>${icon('clock')} 建议练习 ${esc(ch.duration)}</span><span>${icon('file')} 边读边做 · 完成一份小成果</span>${done ? `<span>${icon('check')} 你已完成本章</span>` : ''}</div></header>${ch.steps.map((step,i) => `<section class="lesson-step"><span class="lesson-step-number">${i+1}</span><h2>${esc(step.title)}</h2><p>${esc(step.body)}</p></section>`).join('')}
-    ${window.GUIDE_EXTRAS.chapter(ch.id)}
+    ${zoteroGuides.chapter(ch.id,{esc})}${window.GUIDE_EXTRAS.chapter(ch.id)}
     ${ch.id === 5 ? `<div class="callout"><strong>${icon('file')} 论文排版模板</strong>需要用 LaTeX 整理论文时，可使用 <a href="https://github.com/blacklarry/zjnu-latex-paper-template" target="_blank" rel="noopener noreferrer">浙江师范大学 LaTeX 论文模板</a>。这是面向课程论文、研究报告等场景的非官方模板，提交格式以学院或教师要求为准。</div>` : ''}
     <div class="callout"><strong>${icon('info')} 研究者的小提醒</strong>${esc(ch.tip)}</div>
     <section class="prompt-box"><div class="prompt-box-head"><span>${icon('spark')} 本章可用的 AI 提示词</span><button class="copy-btn" data-copy-chapter="${ch.id}">${icon('copy')} 复制提示词</button></div><pre>${esc(ch.prompt)}</pre></section>
@@ -200,7 +205,7 @@
     const prompt = data.prompts.find(p => p.id === promptId);
     const isPromptRoute = hash === 'prompts' || Boolean(prompt);
     const chapter = data.chapters.find(ch => `chapter/${ch.id}` === hash);
-    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge'].includes(hash)) {
+    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge','roadmap','zotero-plugins'].includes(hash)) {
       history.replaceState(null,'','#start');
       hash = 'start';
     }
@@ -211,9 +216,9 @@
       promptFilter = prompt?.category || (promptCategories.includes(savedFilter) ? savedFilter : '全部');
       history.replaceState({...history.state,promptFilter},'',location.href);
     }
-    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库'})[currentRoute];
+    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库',roadmap:'项目路线图','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
-    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : renderHome();
+    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : hash === 'roadmap' ? roadmap.render({icon,esc,crumb}) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
     app.dataset.route = currentRoute;
     updateNavigation();
     closeMenu();
@@ -316,6 +321,10 @@
     {title:'WorkBuddy 接入 Zotero 本地文献检索',type:'工具接入',body:'WorkBuddy MCP Skill 技能 安装 下载 uv uvx 本地 API 信任 连接 检索 全文 引用键 citekey 排障',href:'#workbuddy'},
     {title:'Codex 接入 Zotero 本地文献检索',type:'工具接入',body:'Codex MCP Skill 技能 TOML config.toml CLI 安装 下载 uv uvx 本地 API 自助安装 检索 全文 引用键 citekey 排障',href:'#codex'},
     ...knowledge.searchItems,
+    ...roadmap.searchItems,
+    ...zoteroPlugins.searchItems,
+    {title:'Zotero 安装与 Connector 图文入门',type:'第 1 章',body:'下载 安装 首次启动 浏览器扩展 配置 图文',href:'#chapter/1'},
+    {title:'Zotero 分类、PDF、去重、备份与同步',type:'第 2 章',body:'元数据 智能分类 标签 全文 备份 同步 WebDAV',href:'#chapter/2'},
     ...data.chapters.map(ch=>({title:ch.title,type:`第 ${ch.id} 章`,body:[ch.lead,ch.subtitle,...ch.steps.map(s=>s.title+' '+s.body)].join(' '),href:`#chapter/${ch.id}`})),
     ...data.prompts.map(p=>({title:p.title,type:p.category,body:p.description+' '+p.text,href:`#prompts/${encodeURIComponent(p.id)}`})),
     {title:'浙江师范大学 LaTeX 论文模板',type:'论文排版',body:'浙师大 zjnu latex xelatex 模板 课程论文 研究报告 BibTeX 参考文献 源码',href:'#resources/latex'},
