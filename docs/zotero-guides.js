@@ -2,8 +2,11 @@
   'use strict';
   const docs = 'https://www.zotero.org/support/';
   const community = 'https://zotero-chinese.com/user-guide/';
-  const communityPages = {'zt-install':'install','zt-connector':'add-items','zt-metadata':'edit-items','zt-reference-import':'add-items','zt-organize':'organize-library','zt-pdf-import':'add-items','zt-backup':'backup','zt-sync':'sync','zt-reader':'take-notes','zt-word-style':'ms-word-plugin'};
+  const communityPages = {'zt-install':'install','zt-connector':'install','zt-metadata':'edit-items','zt-reference-import':'add-items','zt-organize':'organize-library','zt-pdf-import':'add-items','zt-backup':'backup','zt-sync':'sync','zt-reader':'take-notes','zt-word-style':'ms-word-plugin'};
   const images = {
+    download:{file:'community-download.png',source:community+'install',community:true,note:'中文社区的 Zotero 7 时期下载页示例，原图明确写有 Zotero 7；这里只区分桌面程序与 Connector 两个入口，实际版本和按钮以官方下载页为准，不是 Windows 安装向导截图。'},
+    connectorEdge:{file:'community-connector-edge-pin.png',source:community+'install',community:true,note:'macOS Edge 的固定图标示例；浏览器与 Connector 的小版本未标明。红框和数字为原作者标注，网页仅局部放大右侧菜单；不是浏览器商店安装确认记录。'},
+    connectorFirefox:{file:'community-connector-firefox-pin.png',source:community+'install',community:true,note:'macOS Firefox 的齿轮菜单与“固定到工具栏”示例；浏览器与 Connector 的小版本未标明。红框和数字为原作者标注，网页仅局部放大右侧菜单。'},
     search:{file:'zotero-10-advanced-search.png',source:'https://www.zotero.org/blog/zotero-10/',checked:'2026-10-29',note:'Zotero 10 官方高级搜索演示；原图是作者与批注颜色条件，不是本教程的标签示例。原发布图保留原权利人的版权。'},
     duplicates:{file:'community-duplicates.png',source:community+'organize-library',community:true,note:'中文社区原有整理示例；来源页明确尚未按 Zotero 7 更新，只用于辨认主记录和合并入口。原图中的插件图标不属于教程必装项。'},
     sync:{file:'community-sync-account.png',source:community+'sync',community:true,note:'只展示关联账户的入口，用户名与密码为空；文件同步选项须登录后另行检查。原图红框与编号由来源作者添加。'},
@@ -23,8 +26,8 @@
     1:[
       {id:'zt-install',title:'图文入门：安装 Zotero，认清三个工作区',purpose:'先让桌面程序正常启动，并能找到分类、条目和题录信息。Windows 作为操作示例，其他系统按官方下载页选择安装程序。',source:docs+'installation',
         steps:[
-          {text:'打开 Zotero 官方下载页，下载与你的操作系统相符的桌面安装程序。浏览器 Connector 是另一个安装入口，先不要把两者混用。',link:['https://www.zotero.org/download/','打开官方下载页']},
-          {text:'Windows 运行刚下载的安装程序，按向导完成安装，然后从开始菜单启动 Zotero。打开“帮助 → 关于 Zotero”记录完整版本号；遇到系统拦截时核对下载来源和系统要求，不绕过安全警告。',pending:'Windows 安装向导；本机已安装，未为截图重新安装。'},
+          {text:'打开 Zotero 官方下载页，下载与你的操作系统相符的桌面安装程序。浏览器 Connector 是另一个安装入口，先不要把两者混用。',image:'download',caption:'先分清入口：左侧下载 Zotero 桌面程序，右侧安装浏览器 Connector；图中版本是来源文档的历史示例。',link:['https://www.zotero.org/download/','打开官方下载页']},
+          {text:'Windows 运行刚下载的安装程序，按向导完成安装，然后从开始菜单启动 Zotero。打开“帮助 → 关于 Zotero”记录完整版本号；遇到系统拦截时核对下载来源和系统要求，不绕过安全警告。'},
           {text:'首次启动后，点击菜单栏“帮助”，再点击“关于 Zotero”。先确认桌面版本，再选择兼容的插件。',image:'localHelp',caption:'帮助菜单中的“关于 Zotero”入口。',pins:[[88,75,'点击关于 Zotero']]},
           {text:'在弹出的窗口记录完整版本号。本机截图显示 Zotero 10.0.6（64-bit）；你的版本可能不同，请以自己的窗口为准，不能用教程截图代替兼容核对。',image:'localAbout',caption:'本机“关于 Zotero”窗口：10.0.6（64-bit）。',pins:[[88,27,'记录完整版本与位数']]},
           {text:'在文库主界面：左侧选择分类，中间选择文献父条目，右侧查看题录。父条目下缩进的 PDF 是附件；不要把 PDF 文件名当成已核实题名。',link:[community+'quick-start','查看中文快速入门']},
@@ -32,7 +35,9 @@
         ],expected:'能重新启动 Zotero，知道自己的版本，并在一个试验分类中找到条目与附件。',errors:['下载了 Connector 却没有桌面程序：返回官方下载页，分别安装桌面程序与浏览器扩展。','启动失败：核对官方系统要求和安装包平台；保留错误文本，不先删除文献库或重装系统。']},
       {id:'zt-connector',title:'图文入门：安装并检查浏览器 Connector',purpose:'让学术网页的保存按钮能找到本机 Zotero。Connector 安装在浏览器，不通过 Zotero 的 .xpi 插件管理器安装。',source:docs+'connector_preferences',
         steps:[
-          {text:'在将要检索文献的浏览器中打开官方下载页，点击该浏览器的 Connector 安装入口，并在浏览器商店完成添加。Chrome/Edge 可从扩展菜单固定图标；Firefox 可从工具栏扩展菜单找到它。',link:['https://www.zotero.org/download/connectors','按浏览器安装 Connector'],pending:'当前浏览器商店的安装确认页与固定扩展图标操作；浏览器版本待实机记录。'},
+          {text:'在将要检索文献的浏览器中打开官方下载页，选择右侧对应浏览器的 Connector 入口，再按浏览器商店提示完成添加。桌面程序与浏览器扩展需要分别安装；上方下载示例中的两个入口不要混用。',link:['https://www.zotero.org/download/connectors','按浏览器安装 Connector']},
+          {text:'Chrome/Edge 等浏览器安装后，点击右上角的扩展菜单，找到 Zotero Connector，再使用图钉或“在工具栏中显示”控件固定图标。下图为 Edge 示例，不同版本的按钮外观可能不同。',image:'connectorEdge',zoom:true,caption:'Edge 固定扩展图标：原图编号 1 是扩展菜单，2 是 Zotero Connector 行旁的图钉。此处放大右侧菜单，点击可看完整原图。'},
+          {text:'使用 Firefox 时，打开右上角扩展菜单，在 Zotero Connector 旁点齿轮，再选择“固定到工具栏”。此步骤只控制图标是否显示，不代表已经保存过文献。',image:'connectorFirefox',zoom:true,caption:'Firefox 固定扩展图标：按原图编号打开扩展、找到 Connector、点齿轮，再选“固定到工具栏”。点击可看完整原图。'},
           {text:'先打开 Zotero 桌面程序，再打开 Connector 的扩展选项/设置，查看 General 中的 Zotero Status。Save to Zotero.org 区的选项只影响桌面程序关闭、保存到云端时的附件选项。桌面保存的自动关联 PDF 设置需在 Zotero 自身设置中检查。先保持桌面运行，再用一篇有权限的论文试存。',link:[docs+'connector_preferences','核对 Connector 状态与设置']},
           {text:'在论文详情页使用保存按钮，再回到 Zotero 检查目标分类和附件；第 2 章已有“保存到分类、标签与附件检查”的图文示范。',link:['#chapter/2','继续看网页保存示范']}
         ],expected:'Connector 状态可识别本机 Zotero，保存试验条目出现在预期分类中。',errors:['状态不可用：确认桌面 Zotero 已启动，刷新网页与状态；仍失败按官方保存排障逐项检查。','只出现网页图标：先进入论文详情页，确认数据库支持；可用 DOI 或数据库导出的 RIS/BibTeX 回退导入。','有条目没有 PDF：先核对全文权限与保存提示。桌面保存时检查 Zotero 设置 General → File Handling 下的 Automatically attach associated PDFs and other files when saving items；不要仅修改 Connector 的云端保存选项。']}
@@ -67,7 +72,7 @@
       {id:'zt-backup',title:'图文维护：完整备份文献库',purpose:'保留可恢复的本地数据库和附件副本，避免把导出或同步误当成完整备份。',source:docs+'zotero_data#backing_up_your_zotero_data',
         steps:[
           {text:'打开 Zotero 设置的 Advanced → Files and Folders（高级 → 文件和文件夹），点击 Show Data Directory（显示数据文件夹）。记下实际位置；不要把 Linked Attachment Base Directory（链接附件根目录）误认为整个数据库目录。',link:[community+'backup','查看数据目录与备份说明']},
-          {text:'退出 Zotero 后，复制整个数据目录（包括 zotero.sqlite、storage 和其他子目录）到带日期的备份位置，优先放另一存储设备。链接附件在数据目录之外的，还要单独备份；按需下载且尚未落地的附件不在本地备份中。检查备份大小和关键文件是否存在，不在唯一原库上演练恢复。',pending:'干净演示库的完整目录备份与校验截图；不得公开个人库路径、账户或未授权文献。'}
+          {text:'退出 Zotero 后，复制整个数据目录（包括 zotero.sqlite、storage 和其他子目录）到带日期的备份位置，优先放另一存储设备。链接附件在数据目录之外的，还要单独备份；按需下载且尚未落地的附件不在本地备份中。检查备份大小和关键文件是否存在，不在唯一原库上演练恢复。'}
         ],expected:'拥有注明日期的完整副本，知道哪些附件不在本地备份中。',errors:['只导出 BibTeX/RIS：这是文献交换材料，不能完整保留数据库状态及现有 Word 引用关联。','程序运行时直接复制数据库：先退出程序再复制；不要在运行时移动或替换数据库。','把数据目录放进普通网盘同步目录：可能损坏数据库，使用 Zotero 自身同步或关闭程序后的完整备份。']},
       {id:'zt-sync',title:'图文维护：分别验证数据同步与附件同步',purpose:'确认两台设备不仅能看到题录，也能打开所需 PDF；同步仍需配合独立备份。',source:docs+'sync',
         steps:[
@@ -102,7 +107,7 @@
     const source=meta.local
       ? `本机截图 · ${esc(meta.environment || 'Windows / Zotero 10.0.6（64-bit）')} · ${esc(meta.captured || '2026-10-29')}<br>${esc(meta.note)} 编号为网页叠加标注；界面像素未重绘。${esc(meta.scope || '仅核对界面与安装入口，未执行插件安装或软件全流程实测。')} · <a href="${path}" target="_blank" rel="noopener noreferrer">查看截图</a>`
       : meta.community
-        ? `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 中文社区及其贡献者</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note)} 来源未注明截图具体版本；界面随版本与系统变化。原图按 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> 署名复用，原有标注保留，网页编号另行叠加。资料核对：2026-10-29；未完成本机全流程实测。`
+        ? `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 中文社区及其贡献者</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note)} 来源未注明截图具体版本；界面随版本与系统变化。原图按 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> 署名复用，原有标注保留${step.pins?.length ? '，网页编号另行叠加' : ''}。资料核对：2026-10-29；未完成本机全流程实测。`
         : `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 官方来源</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note || '官方文档保留截图，原页未标明截图版本；当前菜单外观可能不同。文档图片按 CC BY-SA 4.0 署名复用。')} 编号为本页叠加标注，原图文件未改。文档核对：${esc(meta.checked || '2026-10-28')}；未完成本机全流程实测。`;
     return `<figure><div class="tutorial-shot${step.zoom ? ' tutorial-shot-zoom' : ''}"><a href="${path}" target="_blank" rel="noopener noreferrer" aria-label="打开截图：${esc(step.caption)}"><img src="${path}" alt="${esc(step.caption)}" loading="lazy"></a>${(step.pins||[]).map(([left,top,label],i)=>`<span class="tutorial-pin" style="left:${left}%;top:${top}%" aria-hidden="true">${i+1}</span>`).join('')}</div>${step.pins?.length ? `<ol class="tutorial-key">${step.pins.map(pin=>`<li>${esc(pin[2])}</li>`).join('')}</ol>` : ''}<figcaption>${esc(step.caption)}<br>${source}</figcaption></figure>`;
   }

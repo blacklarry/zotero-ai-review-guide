@@ -285,12 +285,16 @@
 }
 .lesson-aside .chapter-jump + .chapter-jump { margin-top: 12px; background: white; color: var(--green); }
 .lesson-aside .chapter-jump .icon { width: 16px; height: 16px; }
-.lesson-checklist { border-top: 1px solid var(--line); padding-top: 28px; margin-top: 36px; }
-.lesson-checklist h2 { margin: 0 0 18px; color: var(--ink); font-size: 24px; font-weight: 650; }
-.lesson-checklist .check-item { min-height: 44px; font-size: 17px; line-height: 1.9; }
-.lesson-sources { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 28px; color: var(--muted); font-size: 14px; line-height: 1.85; }
-.lesson-sources p { margin: 0 0 8px; }
-.lesson-sources a { min-height: 30px; margin-right: 18px; color: var(--green); text-decoration: underline; text-underline-offset: 4px; }
+.lesson-body > .prompt-box > .prompt-box-head { padding-inline: 24px; }
+.lesson-body > .prompt-box pre { padding: 24px; }
+.lesson-checklist { border: 1px solid var(--line); border-radius: 10px; padding: 24px; margin-top: 36px; background: var(--white); }
+.lesson-checklist h2 { margin: 0 0 18px; color: var(--ink); font-size: 24px; font-weight: 650; line-height: 1.5; }
+.lesson-checklist .check-item { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: start; column-gap: 12px; min-height: 44px; margin: 10px 0; font-size: 17px; line-height: 1.9; }
+.lesson-checklist .check-item input { width: 18px; height: 18px; margin: 7px 0 0; }
+.lesson-checklist .check-item label { min-width: 0; min-height: 32px; padding: 0; line-height: inherit; }
+.lesson-sources { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 18px; border-top: 1px solid var(--line); padding-top: 20px; margin-top: 24px; color: var(--muted); font-size: 14px; line-height: 1.85; }
+.lesson-sources p { flex-basis: 100%; margin: 0; }
+.lesson-sources a { display: inline-flex; align-items: center; min-height: 30px; margin: 0; max-width: 100%; color: var(--green); text-decoration: underline; text-underline-offset: 4px; overflow-wrap: anywhere; }
 .lesson-navigation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid var(--line); padding-top: 28px; margin-top: 36px; }
 .next-chapter { min-height: 44px; color: var(--green); font-size: 15px; }
  .chapter-pager { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
@@ -636,10 +640,11 @@
   .tutorial-shot > a { display: block; }
   .tutorial-shot img { display: block; max-width: 100%; height: auto; }
   .tutorial-pin { position: absolute; display: grid; place-items: center; width: 28px; height: 28px; transform: translate(-50%,-50%); border: 2px solid #fff; border-radius: 50%; background: var(--green); color: #fff; font: 700 15px/1 var(--sans); box-shadow: 0 1px 5px #0005; pointer-events: none; }
-  .tutorial-key { display: flex; flex-wrap: wrap; gap: 8px 30px; margin: 16px 0 8px; padding-left: 24px; color: var(--green); font-size: 15px; line-height: 1.8; }
-  .tutorial-key li { padding-left: 2px; }
-  .tutorial-shot-zoom { width: 480px; max-width: 100%; height: 430px; overflow: hidden; }
-  .tutorial-shot-zoom img { width: 300%; max-width: none; transform: translateX(-66.6667%); margin: 0; }
+  .tutorial-key { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 30px; margin: 16px 0 8px; padding-left: 24px; color: var(--green); font-size: 15px; line-height: 1.8; }
+  /* 图例独立排版，不继承外层步骤列表的上下边距。 */
+  .worked-example .tutorial-key > li { margin: 0; padding-left: 0; font-size: 15px; line-height: 1.8; }
+  .tutorial-shot-zoom { width: 520px; max-width: 100%; height: auto; aspect-ratio: 1; overflow: hidden; margin-inline: 0; }
+  .zotero-walkthrough .tutorial-shot.tutorial-shot-zoom img { width: 300%; max-width: none; max-height: none; height: auto; transform: translateX(-66.6667%); margin: 0; }
   .screenshot-pending { padding: 12px 16px; border-left: 3px solid var(--line); background: var(--surface-muted); color: var(--muted); font-size: 14px !important; line-height: 1.8 !important; }
 
   /* 工具交互的基础状态；桌面排版由 desktop.css 统一。 */
