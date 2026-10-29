@@ -7,6 +7,7 @@
 - Gitee 国内仓库：https://gitee.com/larry_17/zotero-ai-review-guide
 - 反馈与纠错：https://github.com/blacklarry/zotero-ai-review-guide/issues
 - 案例原核验日期：2026-10-14；新增操作与插件资料核对：2026-10-28（文档核对，非软件实测）。
+- WorkBuddy 本机图文记录：2026-10-29，5.9.3 连接器配置、首次信任及 5/5 工具发现；独立 MCP 分类读取通过，模型会话内调用未验证。
 
 ## 内容
 
@@ -48,6 +49,6 @@ python -m http.server 4173 --bind 127.0.0.1 --directory docs
 
 论文案例保留原始来源链接、固定版本和证据位置；引用只用于教学所需的短摘录。
 
-界面截图来自 Zotero 官方文档和发布说明，每图附有来源和版本说明。Zotero 文档材料按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 复用；博客截图的版权归原权利人，不把整站声明为同一开放许可。详见 [Zotero 文档源库](https://github.com/zotero/zotero-docs) 和网站“适用版本、核验记录与纠错”部分。
+界面截图包含本机操作记录及 Zotero 官方文档和发布说明中的示例，各图附有来源、版本或日期与验证范围。Zotero 文档材料按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 复用；博客截图的版权归原权利人，不把整站声明为同一开放许可。详见 [Zotero 文档源库](https://github.com/zotero/zotero-docs) 和网站“适用版本、核验记录与纠错”部分。
 
 本网站为独立中文教程，非 Zotero 官方出品。

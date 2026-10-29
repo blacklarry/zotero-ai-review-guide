@@ -87,10 +87,10 @@
 
   function figure(step,{esc}) {
     if (!step.image) return '';
-    const meta=images[step.image];
+    const meta=typeof step.image === 'string' ? images[step.image] : step.image;
     const path='assets/operations/'+meta.file;
     const source=meta.local
-      ? `本机截图 · Windows / Zotero 10.0.6（64-bit） · 2026-10-29<br>${esc(meta.note)} 编号为网页叠加标注；界面像素未重绘。仅核对界面与安装入口，未执行插件安装或软件全流程实测。 · <a href="${path}" target="_blank" rel="noopener noreferrer">查看截图</a>`
+      ? `本机截图 · ${esc(meta.environment || 'Windows / Zotero 10.0.6（64-bit）')} · ${esc(meta.captured || '2026-10-29')}<br>${esc(meta.note)} 编号为网页叠加标注；界面像素未重绘。${esc(meta.scope || '仅核对界面与安装入口，未执行插件安装或软件全流程实测。')} · <a href="${path}" target="_blank" rel="noopener noreferrer">查看截图</a>`
       : `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 官方来源</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note || '官方文档保留截图，原页未标明截图版本；当前菜单外观可能不同。文档图片按 CC BY-SA 4.0 署名复用。')} 编号为本页叠加标注，原图文件未改。文档核对：2026-10-28；未完成本机全流程实测。`;
     return `<figure><div class="tutorial-shot${step.zoom ? ' tutorial-shot-zoom' : ''}"><a href="${path}" target="_blank" rel="noopener noreferrer" aria-label="打开截图：${esc(step.caption)}"><img src="${path}" alt="${esc(step.caption)}" loading="lazy"></a>${(step.pins||[]).map(([left,top,label],i)=>`<span class="tutorial-pin" style="left:${left}%;top:${top}%" aria-hidden="true">${i+1}</span>`).join('')}</div>${step.pins?.length ? `<ol class="tutorial-key">${step.pins.map(pin=>`<li>${esc(pin[2])}</li>`).join('')}</ol>` : ''}<figcaption>${esc(step.caption)}<br>${source}</figcaption></figure>`;
   }
