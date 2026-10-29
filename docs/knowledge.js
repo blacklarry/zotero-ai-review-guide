@@ -67,21 +67,24 @@
       '提示我在 Obsidian 中选择“打开文件夹为仓库”，打开 research-vault；在核心 Templates 中将模板目录设为 09_Templates。不要把文件已创建称为桌面安装已验证。'
     ].join('\n')
   };
-  const copyLabels = {tree: '知识库目录', note: '阅读笔记示例', setup: '本机搭建指令'};
+  copyTexts.imaQuestion = '请仅依据当前“嵌入式系统学习示例”知识库中的三份 STM32 学习资料，整理“最小工程 → GPIO/按键/LED → UART 调试”的学习顺序。每一步列出：先核对什么、准备做什么、怎样验证、哪些内容尚未实测。保留来源文件名称和可点击引用；材料没有给出的型号、引脚、时钟和测试结果写“资料未提供”，不要自行补齐，也不要把学习计划写成已完成实验。';
+  const copyLabels = {tree: '知识库目录', note: '阅读笔记示例', setup: '本机搭建指令', imaQuestion: 'STM32 知识库提问示例'};
   const searchItems = [
-    {title: '搭建科研知识库', type: '知识库', body: 'Obsidian learning-of-zjnu 13目录 模板 下载 起步包 本机AI搭建 ' + copyTexts.tree, href: '#knowledge'},
-    {title: '从阅读笔记到知识笔记与 MOC', type: '知识库', body: '主题地图 双向链接 inline 属性标签 来源 证据', href: '#knowledge'},
-    {title: '科研课题、实验与论文证据链', type: '知识库', body: '数据集 代码Commit 实验记录 结果图表 论文工作台 备份 同步', href: '#knowledge'}
+    {title: '搭建科研知识库', type: '知识库', body: 'Obsidian learning-of-zjnu 13目录 模板 下载 起步包 本机AI搭建 ' + copyTexts.tree, href: '#knowledge/obsidian'},
+    {title: '从阅读笔记到知识笔记与 MOC', type: '知识库', body: '主题地图 双向链接 inline 属性标签 来源 证据', href: '#knowledge/obsidian'},
+    {title: '科研课题、实验与论文证据链', type: '知识库', body: '数据集 代码Commit 实验记录 结果图表 论文工作台 备份 同步', href: '#knowledge/obsidian'},
+    {title: 'ima 嵌入式系统知识库', type: '知识库', body: '腾讯 ima RK3588 STM32 FPGA 知识库 文件夹 上传 资料 溯源 问答', href: '#knowledge/ima'}
   ];
 
   function resourceCard(icon) {
-    return `<article class="resource-card"><div class="resource-card-icon">${icon('layers')}</div><span class="resource-format">Obsidian · 目录 + 模板</span><h2>搭建科研知识库</h2><p>从文献阅读到课题、实验和论文，把笔记组织成可追溯的工作流。附公开起步包和本机搭建指令。</p><a class="btn btn-secondary" href="#knowledge">查看搭建教程 ${icon('arrow')}</a><div class="example-actions"><a href="${base}knowledge-base-starter.zip" download>下载起步包</a><a href="${base}README.md" download>文字版说明</a></div></article>`;
+    return `<article class="resource-card"><div class="resource-card-icon">${icon('layers')}</div><span class="resource-format">Obsidian / ima · 两种方法</span><h2>搭建科研知识库</h2><p>用 Obsidian 管理本地目录与模板，或用 ima 整理资料并按知识库提问。新增嵌入式系统示例，重点练习 STM32。</p><a class="btn btn-secondary" href="#knowledge">查看搭建教程 ${icon('arrow')}</a><div class="example-actions"><a href="${base}knowledge-base-starter.zip" download>Obsidian 起步包</a><a href="${base}README.md" download>Obsidian 文字说明</a></div></article>`;
   }
 
-  function render({icon, esc, crumb}) {
+  function renderObsidian({icon, esc, crumb}) {
     const copyBlock = (id, label) => `<section class="prompt-box"><div class="prompt-box-head"><span>${icon('copy')} ${esc(label)}</span><button type="button" class="copy-btn" data-copy-knowledge="${id}">复制${id === 'tree' ? '目录' : id === 'note' ? '示例' : '搭建指令'}</button></div><pre>${esc(copyTexts[id])}</pre></section>`;
     const rows = directories.map(([name, use, rule]) => `<tr><th scope="row"><code>${esc(name)}</code></th><td>${esc(use)}</td><td>${esc(rule)}</td></tr>`).join('');
-    return `${crumb('搭建科研知识库')}
+    return `${crumb('Obsidian 科研知识库')}
+      <p class="knowledge-back"><a href="#knowledge">← 返回知识库搭建目录</a></p>
       <header class="page-intro"><div class="eyebrow">OBSIDIAN / RESEARCH KNOWLEDGE BASE</div><h1>让读过的文献，接得上正在做的研究。</h1><p>从 learning-of-zjnu 的真实目录规范与模板中提炼：先归位，再保留依据，最后连接到知识、课题与论文。这里提供重新整理的公开模板和演示，不发布原私人笔记。</p><div class="page-meta"><span>${icon('layers')} 13 个目录 · 基础模板</span><span>${icon('file')} 本地 Markdown 文件</span><span>${icon('check')} 整理：2026-10-19</span></div></header>
       <section class="workbuddy-downloads" aria-labelledby="kb-download"><div><h2 id="kb-download">从一个空目录开始</h2><p>起步包包含 <code>research-vault/</code>、9 个基础模板、目录约定、入口说明、演示课题和论文工作台。先跑通一次阅读到输出，再按研究需要扩展。</p></div><div class="example-actions"><a class="btn btn-primary" href="${base}knowledge-base-starter.zip" download>下载知识库起步包 ${icon('download')}</a><a class="btn btn-secondary" href="${base}README.md" download>下载文字版说明 ${icon('file')}</a></div></section>
       <div class="callout"><strong>${icon('info')} 网站提供方法和文件</strong>本页不会读取或改动你的本地知识库。下载包不包含私人笔记、账号配置、社区插件或真实研究数据；示例中的空白需要你用真实来源补齐。</div>
@@ -96,6 +99,56 @@
       </article>
       <section class="faq" aria-labelledby="kb-faq"><h2 id="kb-faq">容易混淆的几件事</h2><details><summary>需要先搬走全部旧笔记吗？</summary><p>不需要。先用一个新库走通流程，或在备份后选择少量文件试整理。旧库按需迁移，并核对附件和链接，避免一次性批量改名。</p></details><details><summary>论文 PDF 应放进知识库还是 Zotero？</summary><p>Zotero 可继续管理文献条目和附件；知识库保存阅读理解、证据位置和关联。需要跨笔记复用的附件才放入 <code>10_Assets</code>，不用重复复制全部 PDF。</p></details><details><summary>用了模板和 MOC，是否就已经形成知识库？</summary><p>目录和模板只是入口。真正可用的内容需要来源、自己的理解、适用边界和真实相关的链接；论文与实验仍要保留可追溯的证据。</p></details></section>
       <section class="workbuddy-sources" aria-labelledby="kb-sources"><h2 id="kb-sources">来源与核验范围</h2><p>2026-10-19 已读取 learning-of-zjnu 的目录规范、知识库宪法和相关模板，按一致规则改写为公开教程；同时核对下列 Obsidian 官方说明正文。公开文件不包含私人研究正文、日记或账号配置；未代替用户完成桌面安装全流程。</p><ul><li><a href="https://help.obsidian.md/Getting+started/Create+a+vault" target="_blank" rel="noopener noreferrer">Obsidian：创建与打开仓库</a> · <a href="https://help.obsidian.md/Plugins/Templates" target="_blank" rel="noopener noreferrer">核心 Templates 与变量</a></li><li><a href="https://help.obsidian.md/Linking+notes+and+files/Internal+links" target="_blank" rel="noopener noreferrer">内部链接</a> · <a href="https://help.obsidian.md/Editing+and+formatting/Attachments" target="_blank" rel="noopener noreferrer">附件保存位置</a></li><li><a href="https://help.obsidian.md/Editing+and+formatting/Properties" target="_blank" rel="noopener noreferrer">Properties 与标签</a> · <a href="https://help.obsidian.md/Extending+Obsidian/Community+plugins" target="_blank" rel="noopener noreferrer">社区插件</a></li></ul></section>`;
+  }
+
+  const imaBase = 'downloads/ima-embedded/';
+  const imaArticle = 'https://blog.csdn.net/weixin_44251099/article/details/162903844';
+  const imaOfficial = 'https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Knowledge-Base/IMA%20Knowledge%20Base/';
+  const imaMaterials = [
+    ['STM32', 'STM32-01-最小工程学习路线.md', '先记录板卡信息，再分开验证构建、下载与运行'],
+    ['STM32', 'STM32-02-GPIO按键与LED排查.md', '按原理图核对引脚，分别学习输出、输入与中断'],
+    ['STM32', 'STM32-03-UART与调试记录.md', '从单向发送开始，保留参数、日志与排查记录']
+  ];
+  const imaShots = {
+    createEntry:{file:'ima-create-entry-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'用户提供的本机截图，裁取左侧知识库与新建入口，未包含头像和私人库内容。',scope:'用于说明个人知识库的新建入口。'},
+    createDialog:{file:'ima-create-dialog-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'用户提供的本机截图，仅裁取“创建个人知识库”弹窗。',scope:'图中名称尚未填写；输入名称后再点击“确认”。'},
+    addMenu:{file:'ima-add-menu-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'用户提供的本机截图，裁取“嵌入式系统”库的标题与新增菜单。',scope:'用于说明新建文件夹和本地文件的入口；后续示例库名为“嵌入式系统学习示例”。'},
+    folders:{file:'ima-example-folders-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'仅保留新建个人示例库的目录区域；STM32 显示 3 项，FPGA 与 RK3588 显示 0 项，私人侧栏和账号区域未纳入截图。',scope:'已创建三个分类，只有 STM32 导入学习资料；未做硬件上板测试。'},
+    materials:{file:'ima-stm32-list-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'在 ima 中收起侧栏后，仅保留新示例库的 STM32 内容区；裁去账号和无关区域，三份文件名与内容数量可见。',scope:'已将三份 Markdown 导入该文件夹，并打开首篇核对正文；未做硬件上板测试。'},
+    reading:{file:'ima-stm32-reading-20261029.png',environment:'Windows / ima（版本号未单独记录）',note:'仅展示本例 STM32 首篇学习笔记的阅读窗口，不含账号、个人目录或其它知识库。',scope:'已在 ima 中打开 Markdown 并核对正文；未做硬件上板测试。'}
+  };
+
+  function renderIndex({icon, esc, crumb}) {
+    return `${crumb('搭建知识库')}
+      <header class="page-intro"><div class="eyebrow">RESEARCH KNOWLEDGE BASE</div><h1>选择一种知识库搭建方式。</h1><p>从本地笔记到资料问答，这里分成两块。原有 Obsidian 目录、模板与下载资源继续保留；ima 用嵌入式系统做一个简单的学习示例。</p></header>
+      <div class="resource-grid knowledge-options">
+        <article class="resource-card"><div class="resource-card-icon">${icon('folder')}</div><span class="resource-format">OBSIDIAN · 本地目录与模板</span><h2>把阅读与科研过程连起来</h2><p>沿用原来的 13 个目录、基础模板和证据链方法，整理文献阅读、课题、实验与论文工作台。</p><a class="btn btn-primary" href="#knowledge/obsidian">进入 Obsidian 教程 ${icon('arrow')}</a><div class="example-actions"><a href="${base}knowledge-base-starter.zip" download>下载原有起步包</a></div></article>
+        <article class="resource-card"><div class="resource-card-icon">${icon('book')}</div><span class="resource-format">IMA · 资料整理与知识库问答</span><h2>用嵌入式资料练习建库</h2><p>分为 RK3588、STM32、FPGA 三类，重点整理 STM32 的最小工程、GPIO 与 UART 学习资料，再带着来源提问。</p><a class="btn btn-primary" href="#knowledge/ima">进入 ima 教程 ${icon('arrow')}</a><div class="example-actions"><a href="${imaArticle}" target="_blank" rel="noopener noreferrer">阅读参考教程</a></div></article>
+      </div>
+      <div class="callout"><strong>${icon('info')} 根据你的任务选择入口</strong>原有起步包面向 Obsidian 本地文件夹；ima 页面另附嵌入式学习示例资料，导入后需要检查它们是否已进入目标知识库。</div>`;
+  }
+
+  function renderIma({icon, esc, crumb}) {
+    const shot = (key, caption, pins = []) => imaShots[key] ? window.GUIDE_ZOTERO_GUIDES.figure({image:{...imaShots[key],local:true,captured:'2026-10-29',annotationNote:pins.length ? '编号为网页叠加标注；界面像素未重绘。' : '截图未添加编号；界面像素未重绘。'},caption,pins},{esc}) : '';
+    const materialRows = imaMaterials.map(([folder, file, purpose]) => `<tr><th scope="row">${esc(folder)}</th><td><a href="${imaBase}materials/${encodeURIComponent(folder)}/${encodeURIComponent(file)}" download>${esc(file)}</a></td><td>${esc(purpose)}</td></tr>`).join('');
+    return `${crumb('ima 嵌入式知识库')}
+      <p class="knowledge-back"><a href="#knowledge">← 返回知识库搭建目录</a></p>
+      <header class="page-intro"><div class="eyebrow">IMA / EMBEDDED SYSTEMS</div><h1>从 STM32 开始，搭一个能回查资料的知识库。</h1><p>以“嵌入式系统学习示例”为主题，分成 RK3588、STM32、FPGA 三类。本例只放入 STM32 资料，RK3588 和 FPGA 保留分类，重点跑通 STM32 的归档、阅读与提问。</p><div class="page-meta"><span>${icon('folder')} 3 类主题</span><span>${icon('file')} 3 份 STM32 学习示例</span><span>${icon('check')} 资料整理：2026-10-29</span></div></header>
+      <section class="workbuddy-downloads" aria-labelledby="ima-download"><div><h2 id="ima-download">先准备一小批明确的资料</h2><p>示例包包含 3 份 STM32 笔记；RK3588、FPGA 只保留空目录。笔记注明官方来源与待填写项，未做硬件上板测试。</p></div><div class="example-actions"><a class="btn btn-primary" href="${imaBase}ima-embedded-starter.zip" download>下载嵌入式示例资料 ${icon('download')}</a><a class="btn btn-secondary" href="https://ima.qq.com/download" target="_blank" rel="noopener noreferrer">打开 ima 官网 ${icon('up')}</a></div></section>
+      <article class="workbuddy-content">
+        <section class="worked-example operation-guide" aria-labelledby="ima-create"><div class="eyebrow">STEP 01 / 新建主题库</div><h2 id="ima-create">用一个具体的学习目标命名</h2><p>在 ima 中新建个人知识库，命名为“嵌入式系统学习示例”。若已有同名库，先使用新的示例名称。</p><ol class="practice-steps"><li><p>点击左侧“知识库”，再点击“个人知识库”右侧的“＋”。</p>${shot('createEntry','打开个人知识库的新建入口。',[[20,76,'点击“知识库”'],[86,14,'点击个人知识库右侧“＋”']])}</li><li><p>在弹窗中填写名称，可按需选择封面，最后点击“确认”创建。</p>${shot('createDialog','填写知识库名称后，确认创建。',[[92,16,'填写知识库名称'],[91,86,'填写后点击“确认”']])}</li></ol><p>本例先学习三个平台的基础资料，重点是 STM32。芯片完整型号、板卡、引脚与时钟仍按实际工程填写，不用通用示例代替硬件依据。</p></section>
+        <section class="worked-example operation-guide" aria-labelledby="ima-organize"><div class="eyebrow">STEP 02 / 分清主题</div><h2 id="ima-organize">三个分类，先把 STM32 做清楚</h2><p>在库内右上方的“新增”菜单选择“新建文件夹”，依次建立 RK3588、STM32、FPGA。进入 STM32 文件夹后再添加这部分材料，避免全部混在库的根目录。</p>${shot('addMenu','“嵌入式系统”库的新增菜单：先建分类，再进入 STM32 导入资料。',[[96.7,20.4,'打开右上角“新增”'],[95,92,'选择“新建文件夹”'],[95,36,'进入 STM32 后用“本地文件”导入']])}<div class="table-wrap"><table><caption>嵌入式系统学习示例的三类材料</caption><thead><tr><th scope="col">主题</th><th scope="col">首批内容</th><th scope="col">本次重点</th></tr></thead><tbody><tr><th scope="row">RK3588</th><td>仅建分类</td><td>本例未添加材料</td></tr><tr><th scope="row">STM32</th><td>最小工程、GPIO/按键/LED、UART</td><td>先学习每一步怎样验证，再保存可追溯的调试记录</td></tr><tr><th scope="row">FPGA</th><td>仅建分类</td><td>本例未添加材料</td></tr></tbody></table></div>${shot('folders','RK3588、STM32 与 FPGA 三类资料。')}</section>
+        <section class="worked-example operation-guide" aria-labelledby="ima-import"><div class="eyebrow">STEP 03 / 添加并检查</div><h2 id="ima-import">导入后，再回到目标知识库确认</h2><p>解压示例包，进入对应文件夹，从“新增 → 本地文件”添加该主题的材料。每次先处理一小批，再检查标题、正文与解析状态。如果 Markdown 先进入笔记区，还需确认它已归到目标知识库；看到文件名不能代替确认正文可读。</p><div class="table-wrap"><table><caption>可下载的三份 STM32 原创示例材料</caption><thead><tr><th scope="col">分类</th><th scope="col">文件</th><th scope="col">练习内容</th></tr></thead><tbody>${materialRows}</tbody></table></div>${shot('materials','STM32 文件夹中的三份原创学习资料。')}${shot('reading','打开首篇 Markdown，核对学习路线、待填写项和未上板说明。')}<p class="case-scope">这些文件是学习说明，未运行固件、未连接开发板，也未生成真实串口日志或波形。未知参数保留“待填写 / 待核对”。</p></section>
+        <section class="worked-example operation-guide" aria-labelledby="ima-ask"><div class="eyebrow">STEP 04 / 带着材料提问</div><h2 id="ima-ask">让回答能回到 STM32 原文</h2><p>完成资料整理后，可以在选定的知识库或资料范围内继续提问。下面给出练习提示，本次未执行问答测试。要求按文件列出依据，再打开引用检查是否匹配；没有给出的型号、引脚、时钟和实验结果，不让 AI 自行补齐。</p><section class="prompt-box"><div class="prompt-box-head"><span>${icon('spark')} 可复制 · STM32 学习顺序</span><button type="button" class="copy-btn" data-copy-knowledge="imaQuestion">复制提问</button></div><pre>${esc(copyTexts.imaQuestion)}</pre></section><p>将核对后的理解整理成学习笔记，保留来源、阅读范围和待验证项。提问生成的内容先按草稿处理，不能把“建议去验证”写成“已经测试通过”。</p></section>
+        <section class="worked-example" aria-labelledby="ima-workbuddy"><div class="eyebrow">可选方式 / 接到任务</div><h2 id="ima-workbuddy">需要 WorkBuddy 时，再按官方指引授权</h2><p>参考文章介绍了 WorkBuddy 与 ima 的配合思路。当前入口与授权步骤以官方“资料库 → ima 知识库”功能指引为准；选择库或文件添加到任务后，仍需确认实际读到的材料。这里的原生 ima 建库记录不等于已完成 WorkBuddy 接入验证。</p><p><a href="${imaOfficial}01-Workbuddy-IMA-Basic-Guide" target="_blank" rel="noopener noreferrer">查看 WorkBuddy × ima 官方功能指引</a></p></section>
+      </article>
+      <section class="workbuddy-sources" aria-labelledby="ima-sources"><h2 id="ima-sources">参考与使用范围</h2><p>本页按参考教程的主题建库思路组织，示例文字为本项目原创，STM32 资料链接来自 ST 官方渠道。2026-10-29 已在 Windows 的 ima 中新建个人示例库，建立三类文件夹，并导入 STM32 三份 Markdown、打开首篇核对正文；RK3588 与 FPGA 目录为空。截图来自本机实际界面，ima 版本号未单独记录；本次未执行 ima 问答测试，未做硬件上板测试，也未验证 WorkBuddy 接入。</p><ul><li><a href="${imaArticle}" target="_blank" rel="noopener noreferrer">参考教程：WorkBuddy+IMA 手把手教你打造自己的个人专属知识库 · 小墨同学boy</a></li><li><a href="https://ima.qq.com/download" target="_blank" rel="noopener noreferrer">ima 官方下载与产品入口</a></li><li><a href="${imaOfficial}02-Build-Knowledge-Base" target="_blank" rel="noopener noreferrer">WorkBuddy 官方：按任务建立与维护知识库</a></li><li><a href="${imaBase}README.md" download>示例资料说明与来源索引</a></li></ul></section>`;
+  }
+
+  function render(helpers, section = '') {
+    if (section === 'obsidian') return renderObsidian(helpers);
+    if (section === 'ima') return renderIma(helpers);
+    return renderIndex(helpers);
   }
 
   window.GUIDE_KNOWLEDGE = {render, resourceCard, copyTexts, copyLabels, searchItems};

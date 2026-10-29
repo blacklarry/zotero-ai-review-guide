@@ -105,7 +105,7 @@
     const meta=typeof step.image === 'string' ? images[step.image] : step.image;
     const path='assets/operations/'+meta.file;
     const source=meta.local
-      ? `本机截图 · ${esc(meta.environment || 'Windows / Zotero 10.0.6（64-bit）')} · ${esc(meta.captured || '2026-10-29')}<br>${esc(meta.note)} 编号为网页叠加标注；界面像素未重绘。${esc(meta.scope || '仅核对界面与安装入口，未执行插件安装或软件全流程实测。')} · <a href="${path}" target="_blank" rel="noopener noreferrer">查看截图</a>`
+      ? `本机截图 · ${esc(meta.environment || 'Windows / Zotero 10.0.6（64-bit）')} · ${esc(meta.captured || '2026-10-29')}<br>${esc(meta.note)} ${esc(meta.annotationNote || '编号为网页叠加标注；界面像素未重绘。')}${esc(meta.scope || '仅核对界面与安装入口，未执行插件安装或软件全流程实测。')} · <a href="${path}" target="_blank" rel="noopener noreferrer">查看截图</a>`
       : meta.community
         ? `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 中文社区及其贡献者</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note)} 来源未注明截图具体版本；界面随版本与系统变化。原图按 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> 署名复用，原有标注保留${step.pins?.length ? '，网页编号另行叠加' : ''}。资料核对：2026-10-29；未完成本机全流程实测。`
         : `<a href="${meta.source}" target="_blank" rel="noopener noreferrer">Zotero 官方来源</a> · <a href="${path}" target="_blank" rel="noopener noreferrer">查看完整原图</a><br>${esc(meta.note || '官方文档保留截图，原页未标明截图版本；当前菜单外观可能不同。文档图片按 CC BY-SA 4.0 署名复用。')} 编号为本页叠加标注，原图文件未改。文档核对：${esc(meta.checked || '2026-10-28')}；未完成本机全流程实测。`;

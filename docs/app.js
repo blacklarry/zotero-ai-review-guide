@@ -118,7 +118,7 @@
   function updateNavigation() {
     document.querySelector('#chapter-nav').innerHTML = data.chapters.map(ch => `<a class="chapter-link ${currentRoute === `chapter/${ch.id}` ? 'active' : ''} ${completed.includes(ch.id) ? 'done' : ''}" href="#chapter/${ch.id}" ${currentRoute === `chapter/${ch.id}` ? 'aria-current="page"' : ''}><span class="chapter-number">${completed.includes(ch.id) ? icon('check') : String(ch.id).padStart(2,'0')}</span><span>${esc(ch.title)}</span></a>`).join('');
     document.querySelectorAll('[data-route]').forEach(a => {
-      const active = a.dataset.route === currentRoute;
+      const active = a.dataset.route === currentRoute || (a.dataset.route === 'knowledge' && currentRoute.startsWith('knowledge/'));
       a.classList.toggle('active',active);
       if (active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
@@ -142,7 +142,7 @@
     </section>
     <div class="intro-strip"><div class="intro-item">${icon('folder')}<div><b>Zotero 管好文献</b><span>收集、分类、批注与引用</span></div></div><div class="intro-item">${icon('spark')}<div><b>AI 辅助深度阅读</b><span>提取证据，发现研究关联</span></div></div><div class="intro-item">${icon('shield')}<div><b>让判断有据可循</b><span>回到原文，保留证据出处</span></div></div></div>
     <section aria-labelledby="path-title"><div class="section-heading"><div><h2 id="path-title">一条清晰的综述路径</h2><p>不急着生成全文。先建立证据，再组织你的观点。</p></div><span class="section-counter">THE LEARNING PATH / 06</span></div><div class="learning-path">${data.chapters.map(ch => `<a class="learning-row${completed.includes(ch.id) ? ' is-complete' : ''}" href="#chapter/${ch.id}"><span class="learning-number">${String(ch.id).padStart(2,'0')}</span><div class="learning-summary"><h3>${esc(ch.title)}</h3><p>${esc(ch.subtitle)}</p>${completed.includes(ch.id) ? `<span class="learning-complete">${icon('check')} 已完成</span>` : ''}</div><span class="learning-duration">${icon('clock')} ${esc(ch.duration)}</span><span class="learning-arrow"><span class="sr-only">进入章节</span>${icon('arrow')}</span></a>`).join('')}</div><details class="path-reference"><summary>查看六步流程图</summary><figure class="path-figure"><img src="assets/six-steps.svg" alt="六步研读流程：明确问题与准备、收集与整理文献、精读与证据提取、主题归纳与比较、搭建结构与写作、引用质量核查" width="480" height="760" loading="lazy"></figure></details></section>
-    <section class="home-updates" aria-labelledby="home-updates-title"><div class="section-heading"><h2 id="home-updates-title">实操与工具更新</h2></div><div class="home-updates-grid"><article class="home-update"><h3>新增完整实操案例 · 2026-10-14</h3><p>用两篇真实论文走完原文、批注、证据矩阵、主题比较与综述成品。<a href="#chapter/3">从第3章开始 →</a> · <a href="#resources">适用版本与纠错</a></p></article><article class="home-update"><h3>${icon('link')} 新增工具接入 · 2026-10-15</h3><p>让 WorkBuddy 或 Codex 检索本机 Zotero 文献库，附配置、中文技能和自助安装指令。<a href="#workbuddy">WorkBuddy 教程 →</a> · <a href="#codex">Codex 教程 →</a></p></article><article class="home-update"><h3>${icon('folder')} 搭建科研知识库 · 2026-10-19</h3><p>把阅读笔记、实验记录和论文章节连起来。参考 learning-of-zjnu 的实际目录与模板，附通用起步包。<a href="#knowledge">开始搭建知识库 →</a></p></article></div></section>
+    <section class="home-updates" aria-labelledby="home-updates-title"><div class="section-heading"><h2 id="home-updates-title">实操与工具更新</h2></div><div class="home-updates-grid"><article class="home-update"><h3>新增完整实操案例 · 2026-10-14</h3><p>用两篇真实论文走完原文、批注、证据矩阵、主题比较与综述成品。<a href="#chapter/3">从第3章开始 →</a> · <a href="#resources">适用版本与纠错</a></p></article><article class="home-update"><h3>${icon('link')} 新增工具接入 · 2026-10-15</h3><p>让 WorkBuddy 或 Codex 检索本机 Zotero 文献库，附配置、中文技能和自助安装指令。<a href="#workbuddy">WorkBuddy 教程 →</a> · <a href="#codex">Codex 教程 →</a></p></article><article class="home-update"><h3>${icon('folder')} 搭建知识库 · 2026-10-29</h3><p>Obsidian 沿用 learning-of-zjnu 的目录与模板，连接阅读笔记、实验记录和论文章节，附原有起步包；新增 ima“嵌入式系统”示例，分 RK3588、STM32 与 FPGA，重点学习 STM32。<a href="#knowledge">选择搭建方式 →</a> · <a href="#knowledge/obsidian">Obsidian 教程 →</a> · <a href="#knowledge/ima">ima 嵌入式示例 →</a></p></article></div></section>
     <section class="prompt-banner" aria-labelledby="prompt-banner-title"><div><div class="banner-label">${icon('spark')} YOUR RESEARCH COPILOT</div><h2 id="prompt-banner-title">好问题，让 AI 更懂你的研究。</h2><p>从选题检索到段落核查，${data.prompts.length} 组可直接修改的提示词。<br>让每次对话，都回到你提供的真实文献。</p><a class="banner-link" href="#prompts">打开 AI 提示词库 ${icon('arrow')}</a></div><div class="banner-example"><div class="example-top"><span>单篇文献 · 证据提取</span>${icon('copy')}</div><p>“请仅根据我提供的论文内容，提取研究问题、方法、主要发现与局限。<strong>每条结论附原文位置；没有依据时标记‘未提及’。</strong>”</p></div></section>
     <section class="resource-teaser"><div><h2>准备好了，就从你的第一篇文献开始。</h2><p>把模板带走，让阅读笔记真正积累成写作素材。</p><div class="resource-chips"><span class="chip">${icon('grid')} 文献矩阵</span><span class="chip">${icon('shield')} 综述核查清单</span><span class="chip">${icon('spark')} 提示词合集</span></div></div><a class="btn btn-secondary" href="#resources">查看配套资源 ${icon('download')}</a></section>`;
   }
@@ -203,7 +203,7 @@
     const prompt = data.prompts.find(p => p.id === promptId);
     const isPromptRoute = hash === 'prompts' || Boolean(prompt);
     const chapter = data.chapters.find(ch => `chapter/${ch.id}` === hash);
-    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge','zotero-plugins'].includes(hash)) {
+    if (!chapter && !isPromptRoute && !['start','home','resources','workbuddy','codex','knowledge','knowledge/obsidian','knowledge/ima','zotero-plugins'].includes(hash)) {
       history.replaceState(null,'','#start');
       hash = 'start';
     }
@@ -214,9 +214,9 @@
       promptFilter = prompt?.category || (promptCategories.includes(savedFilter) ? savedFilter : '全部');
       history.replaceState({...history.state,promptFilter},'',location.href);
     }
-    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
+    const title = chapter?.title || ({start:'选择接入',home:'教程概览',prompts:'AI 提示词库',resources:'模板与资源',workbuddy:'WorkBuddy 接入',codex:'Codex 接入',knowledge:'搭建知识库','knowledge/obsidian':'Obsidian 科研知识库','knowledge/ima':'ima 嵌入式知识库','zotero-plugins':'Zotero 插件安装与推荐'})[currentRoute];
     document.title = `${prompt ? prompt.title + ' · ' : ''}${title} · 研读手册 | Zotero + AI`;
-    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : hash === 'knowledge' ? knowledge.render({icon,esc,crumb}) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
+    app.innerHTML = chapter ? renderChapter(chapter) : isPromptRoute ? renderPrompts() : hash === 'start' ? entry.render({icon,esc,crumb}) : hash === 'resources' ? renderResources() : hash === 'workbuddy' ? workbuddy.render({icon,esc,crumb}) : hash === 'codex' ? codex.render({icon,esc,crumb}) : (hash === 'knowledge' || hash.startsWith('knowledge/')) ? knowledge.render({icon,esc,crumb}, hash.slice('knowledge/'.length)) : hash === 'zotero-plugins' ? zoteroPlugins.render({icon,esc,crumb}) : renderHome();
     app.dataset.route = currentRoute;
     updateNavigation();
     closeMenu();

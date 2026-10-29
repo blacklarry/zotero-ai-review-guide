@@ -169,6 +169,21 @@
   .chip { background: var(--white); border-color: var(--line); border-radius: 6px; font-size: 13px; color: var(--muted); }
 
   .resource-grid, .prompt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .resource-grid.knowledge-options { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 32px; }
+  .knowledge-options .resource-card { min-width: 0; }
+  .knowledge-options .resource-card h2 { font-size: 24px; line-height: 1.5; }
+  .knowledge-options .resource-card > p { font-size: 17px; line-height: 1.9; }
+  .knowledge-options .example-actions { margin-top: 14px; }
+  .knowledge-back { margin: -8px 0 24px; font-size: 15px; color: var(--green); }
+  .knowledge-back a { text-decoration: underline; text-underline-offset: 4px; }
+  /* ima 截图、图例与正文共用左边线，编号换行时保留文字缩进。 */
+  #app[data-route='knowledge/ima'] .operation-guide figure { margin: 24px 0; padding: 16px; background: var(--white); }
+  #app[data-route='knowledge/ima'] .practice-steps > li > figure { margin-left: -28px; }
+  #app[data-route='knowledge/ima'] .tutorial-shot { margin-inline: 0; }
+  #app[data-route='knowledge/ima'] .tutorial-key { display: flex; flex-wrap: wrap; align-items: start; gap: 8px 24px; margin: 16px 0 8px; padding: 0; list-style: none; counter-reset: ima-marker; }
+  #app[data-route='knowledge/ima'] .tutorial-key > li { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: baseline; gap: 6px; min-width: 0; margin: 0; padding: 0; }
+  #app[data-route='knowledge/ima'] .tutorial-key > li::before { counter-increment: ima-marker; content: counter(ima-marker) "."; font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { .resource-grid.knowledge-options { grid-template-columns: minmax(0, 1fr); } }
   .resource-card, .prompt-library-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
   .resource-card { padding: 28px; display: flex; flex-direction: column; }
   .resource-card-icon { width: 40px; height: 40px; display: grid; place-items: center; margin-bottom: 16px; background: var(--soft); color: var(--green); border-radius: 8px; }
