@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#234f46">
+  <meta name="theme-color" content="#f7f5f0">
+  <script>try{var t=localStorage.getItem('research-notes-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.dataset.theme='dark';document.querySelector('meta[name="theme-color"]').content='#0f1311';}}catch(e){}</script>
   <meta name="description" content="用 Zotero 管理文献，用 AI 辅助证据提取与主题综合。六步中文教程，附可复制提示词、文献矩阵和引用核查清单。">
   <link rel="canonical" href="https://blacklarry.github.io/zotero-ai-review-guide/">
   <meta property="og:type" content="website">
@@ -23,10 +24,7 @@
   <meta name="twitter:image:alt" content="研读手册：Zotero + AI，六步完成有据可循的文献综述">
   <title>研读手册 · Zotero + AI 文献综述教程</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="start.css?v=20261015-review">
-  <link rel="stylesheet" href="theme.css?v=20261029-ima-aligned" media="screen">
-  <link rel="stylesheet" href="desktop.css?v=20261029-entry-knowledge" media="screen">
+  <link rel="stylesheet" href="site.css?v=20261121-redesign" media="screen">
   <link rel="stylesheet" href="print.css?v=20261028-teaching" media="print">
   <script type="application/ld+json">
   {
@@ -52,7 +50,8 @@
   <script src="reading-nav.js?v=20261023-polish" defer></script>
   <script src="zotero-guides.js?v=20261029-ima-meta" defer></script>
   <script src="zotero-plugins.js?v=20261029-community-order" defer></script>
-  <script src="app.js?v=20261029-entry-knowledge" defer></script>
+  <script src="ui.js?v=20261121-redesign" defer></script>
+  <script src="app.js?v=20261121-redesign" defer></script>
   <script src="print.js" defer></script>
 </head>
 <body>
@@ -77,14 +76,18 @@
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></symbol>
   </defs></svg>
   <a class="skip-link" href="#main">跳到主要内容</a>
   <header class="header">
     <a class="brand" href="#home" aria-label="研读手册首页：教程概览"><span class="brand-symbol"><svg class="icon"><use href="#i-book"/></svg></span><span>研读手册<small lang="en">RESEARCH NOTES</small></span></a>
     <div class="header-divider"></div><span class="header-caption">把阅读，变成研究。</span>
-    <nav class="top-nav" aria-label="主要导航"><a href="#home" data-top="home">学习路径</a><a href="#prompts" data-top="prompts">提示词库</a><a href="#resources" data-top="resources">资源下载</a></nav>
+    <nav class="top-nav" aria-label="主要导航"><span class="top-nav-indicator" aria-hidden="true"></span><a href="#home" data-top="home">学习路径</a><a href="#prompts" data-top="prompts">提示词库</a><a href="#resources" data-top="resources">资源下载</a></nav>
     <button class="search-trigger" type="button" data-search aria-label="搜索教程（Ctrl 或 Command + K）" title="快捷键：Ctrl / Command + K" aria-keyshortcuts="Control+K Meta+K"><svg class="icon"><use href="#i-search"/></svg><span>搜索教程</span><kbd>Ctrl K</kbd></button>
+    <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="切换深色模式" title="切换深色模式" aria-pressed="false"><svg class="icon i-moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="icon i-sun" aria-hidden="true"><use href="#i-sun"/></svg></button>
     <button class="menu-toggle icon-button" aria-label="打开学习目录" aria-expanded="false" aria-controls="sidebar"><svg class="icon"><use href="#i-menu"/></svg></button>
+    <div class="header-progress" aria-hidden="true"></div>
   </header>
   <button class="sidebar-overlay" aria-label="关闭学习目录" hidden></button>
   <aside class="sidebar" id="sidebar" aria-label="学习目录">
@@ -101,12 +104,13 @@
     <a class="side-link" href="#workbuddy" data-route="workbuddy"><svg class="icon"><use href="#i-link"/></svg>WorkBuddy 接入<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
     <a class="side-link" href="#codex" data-route="codex"><svg class="icon"><use href="#i-link"/></svg>Codex 接入<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
     <a class="side-link" href="#knowledge" data-route="knowledge"><svg class="icon"><use href="#i-folder"/></svg>搭建知识库<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
+    <a class="side-link" href="#resources/latex" data-route="resources/latex"><svg class="icon"><use href="#i-file"/></svg>论文排版模板<svg class="icon side-arrow"><use href="#i-up"/></svg></a>
     <a class="official-link" href="https://zotero-chinese.com/user-guide/" target="_blank" rel="noopener noreferrer">Zotero 中文用户指南<svg class="icon"><use href="#i-up"/></svg></a>
     </div>
     <div class="sidebar-bottom"><div class="progress-top"><span>我的学习进度</span><strong id="progress-label" aria-live="polite" aria-atomic="true">0 / 6</strong></div><div class="progress-track"><span id="progress-fill"></span></div><p id="progress-note">每读完一章，离综述更近一步。</p><span class="local-note">进度保存在当前浏览器</span></div>
   </aside>
   <main id="main" tabindex="-1"><div id="app"><section class="page-intro"><div class="eyebrow">研读手册 · 从文献接入开始</div><h1>先选一个文献助手。</h1><p>把 Zotero 文献库接入你常用的助手。选择一种接入方式，或先阅读教程。</p><p><a class="btn btn-secondary" href="#home">跳过，直接阅读教程</a></p><a class="btn btn-primary" href="#workbuddy">WorkBuddy 接入</a> <a class="btn btn-secondary" href="#codex">Codex 接入</a></section></div><footer class="footer"><span><svg class="icon"><use href="#i-book"/></svg> 研读手册 <span class="footer-dot">·</span> 让每个观点，都有出处。</span><span>独立中文教程 · 非 Zotero 官方出品<br>案例核验：2026-10-14 · <a href="#resources">适用版本与纠错</a> · <a href="https://github.com/blacklarry/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a> · <a href="https://gitee.com/larry_17/zotero-ai-review-guide" target="_blank" rel="noopener noreferrer">Gitee 国内仓库 ↗</a> · <a href="https://github.com/blacklarry/zotero-ai-review-guide/issues/new" target="_blank" rel="noopener noreferrer">反馈问题 ↗</a></span><button class="copy-btn" type="button" data-print>打印当前页面</button></footer></main>
-  <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-dialog-head"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" id="search-title" for="search-input">搜索教程、提示词与资源</label><input id="search-input" type="search" placeholder="搜索教程、提示词与资源…" autocomplete="off"><button class="icon-button" data-close-search aria-label="关闭搜索"><svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-hint">点击结果前往对应内容 <kbd>Esc 关闭</kbd></div></dialog>
+  <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-dialog-head"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" id="search-title" for="search-input">搜索教程、提示词与资源</label><input id="search-input" type="search" placeholder="搜索教程、提示词与资源…" autocomplete="off"><button class="icon-button" data-close-search aria-label="关闭搜索"><svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-hint">方向键选择 · 点击结果前往 <kbd>Esc 关闭</kbd></div></dialog>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
   <noscript><p class="noscript">请启用 JavaScript 以查看交互教程。你也可以直接阅读 <a href="https://www.zotero.org/support/">Zotero 官方文档</a>。</p></noscript>
 </body>

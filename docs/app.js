@@ -36,73 +36,30 @@
   const promptCategories = ['全部',...new Set(data.prompts.map(prompt => prompt.category))];
   let promptFilter = '全部';
   let selectedPromptId = null;
+  let activeResourceSection = null;
   let currentRoute = 'start';
   let toastTimer;
   const copyFeedback = new WeakMap();
-  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const desktopMotion = window.matchMedia('(min-width: 1001px)');
-  const routeAnimations = new Set();
-  function cancelRouteAnimation() {
-    routeAnimations.forEach(animation => animation.cancel());
-    routeAnimations.clear();
-    app.getAnimations?.({subtree:true}).forEach(animation => animation.cancel());
+  let leaveTimer = 0;
+  function cancelLeaveTransition() {
+    if (leaveTimer) {
+      clearTimeout(leaveTimer);
+      leaveTimer = 0;
+    }
+    app.classList.remove('is-leaving');
   }
-  function animateRoute() {
-    if (motionPreference.matches || !desktopMotion.matches || selectedPromptId || typeof app.animate !== 'function') return;
-    const reveal = (target, frames, delay = 0, duration = 640) => {
-      if (!target) return;
-      const animation = target.animate(frames, {duration,delay,easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'});
-      routeAnimations.add(animation);
-      animation.onfinish = animation.oncancel = () => routeAnimations.delete(animation);
-    };
-    const rise = [{opacity:0,transform:'translateY(24px)',filter:'blur(4px)'},{opacity:1,transform:'none',filter:'blur(0px)'}];
-    reveal(app.querySelector('.breadcrumb'), [{opacity:0,transform:'translateX(-12px)'},{opacity:1,transform:'none'}], 0, 420);
-    if (currentRoute === 'start') {
-      const title = app.querySelector('.entry-intro h1');
-      if (title) {
-        const text = title.textContent;
-        title.setAttribute('aria-label', text);
-        const characters = Array.from(text, character => {
-          const span = document.createElement('span');
-          span.className = 'entry-title-character';
-          span.setAttribute('aria-hidden','true');
-          span.textContent = character;
-          return span;
-        });
-        title.replaceChildren(...characters);
-        characters.forEach((character,index) => reveal(character, [
-          {opacity:0,transform:'perspective(450px) translateY(55%) rotateX(-40deg)',filter:'blur(8px)'},
-          {opacity:1,transform:'none',filter:'blur(0px)'}
-        ], 60 + index * 26, 740));
-      }
-      reveal(app.querySelector('.entry-description'), rise, 240, 700);
-      app.querySelectorAll('.entry-card').forEach((card,index) => reveal(card, [
-        {opacity:0,transform:`perspective(1000px) translateY(58px) rotateX(9deg) rotateY(${index ? -6 : 6}deg) scale(.94)`,filter:'blur(5px)'},
-        {offset:.78,opacity:1,transform:'perspective(1000px) translateY(-4px) rotateX(0deg) rotateY(0deg) scale(1.005)',filter:'blur(0px)'},
-        {opacity:1,transform:'none',filter:'blur(0px)'}
-      ], 320 + index * 140, 920));
-      reveal(app.querySelector('.entry-skip-area'), rise, 660, 680);
+  function transitionRoute(options = {}) {
+    cancelLeaveTransition();
+    if (!window.GUIDE_UI?.isMotionEnabled?.()) {
+      route(options);
       return;
     }
-    const targets = [...app.querySelectorAll('.page-intro,.hero-copy,.hero-evidence,.intro-strip,.learning-row,.resource-card,.prompt-library-card,.integration-downloads,.callout,.lesson-step,.lesson-aside')]
-      .filter(element => { const rect = element.getBoundingClientRect();return rect.top < innerHeight + 24 && rect.bottom > 0; });
-    targets.slice(0,10).forEach((target,index) => reveal(target, rise, Math.min(index * 65, 300)));
+    app.classList.add('is-leaving');
+    leaveTimer = setTimeout(() => {
+      leaveTimer = 0;
+      route(options);
+    }, 140);
   }
-  motionPreference.addEventListener('change',event => {
-    if (event.matches) cancelRouteAnimation();
-  });
-  desktopMotion.addEventListener('change',event => {
-    if (!event.matches) cancelRouteAnimation();
-  });
-  const settleFocusedEntrance = event => {
-    routeAnimations.forEach(animation => {
-      const target = animation.effect?.target;
-      if (target instanceof Element && target.contains(event.target)) animation.cancel();
-    });
-  };
-  app.addEventListener('focusin',settleFocusedEntrance);
-  app.addEventListener('pointerdown',settleFocusedEntrance);
-  window.addEventListener('beforeprint',cancelRouteAnimation);
   const saveProgress = () => {
     try { localStorage.setItem('research-notes-progress', JSON.stringify({completed,checked})); }
     catch { toast('浏览器暂不可保存进度，本次会话内仍可使用。'); }
@@ -117,8 +74,9 @@
   const crumb = label => `<nav class="breadcrumb" aria-label="面包屑导航"><a href="#home">${icon('book')} 研读手册</a><span class="slash">/</span><span>Zotero + AI</span><span class="slash">/</span><strong aria-current="page">${esc(label)}</strong></nav>`;
   function updateNavigation() {
     document.querySelector('#chapter-nav').innerHTML = data.chapters.map(ch => `<a class="chapter-link ${currentRoute === `chapter/${ch.id}` ? 'active' : ''} ${completed.includes(ch.id) ? 'done' : ''}" href="#chapter/${ch.id}" ${currentRoute === `chapter/${ch.id}` ? 'aria-current="page"' : ''}><span class="chapter-number">${completed.includes(ch.id) ? icon('check') : String(ch.id).padStart(2,'0')}</span><span>${esc(ch.title)}</span></a>`).join('');
+    const sideRoute = activeResourceSection === 'resource-latex' ? 'resources/latex' : currentRoute;
     document.querySelectorAll('[data-route]').forEach(a => {
-      const active = a.dataset.route === currentRoute || (a.dataset.route === 'knowledge' && currentRoute.startsWith('knowledge/'));
+      const active = a.dataset.route === sideRoute || (a.dataset.route === 'knowledge' && sideRoute.startsWith('knowledge/'));
       a.classList.toggle('active',active);
       if (active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
@@ -132,6 +90,7 @@
     if (progressLabel.textContent !== progressText) progressLabel.textContent = progressText;
     document.querySelector('#progress-fill').style.width = `${completed.length / 6 * 100}%`;
     document.querySelector('#progress-note').textContent = completed.length === 6 ? '六章已完成，把方法用在你的研究中。' : '每读完一章，离综述更近一步。';
+    window.GUIDE_UI?.updateNavIndicator();
   }
   function renderHome() {
     const next = data.chapters.find(ch => !completed.includes(ch.id))?.id || 1;
@@ -192,7 +151,7 @@
       ${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>查阅中文教程与官方说明</h2><p>中文社区方便按步骤查阅，官方文档用于交叉核对。社区部分页面仍含旧版示例，界面名称与外观请以自己的版本为准。</p></div><span class="section-counter">ZOTERO REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>本教程不要求额外的 AI 插件。Zotero 负责文献、PDF 批注和笔记；你可以把整理好的笔记或文献矩阵复制给能接收文本的 AI 工具。若选择第三方插件，请另外核实版本兼容性、维护状态与数据去向。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>它可用于组织阅读与证据，但不等同于完整的系统综述方法。系统综述仍需遵循适用规范，预先设计检索与纳排流程，并完成质量评价、偏倚评估等工作；Meta 分析还需适当的统计方法。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>这个网站提供教程、模板与提示词，不连接或读取你的 Zotero 文献库。章节进度与清单勾选仅保存在当前浏览器；模板由浏览器生成，WorkBuddy 安装包作为静态文件提供下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 的输出是待核查的研究草稿。真实文献、可追溯的证据，以及你对问题的判断，才是综述的基础。</div>`;
   }
   function route({focus = true,scroll = true,animate = scroll} = {}) {
-    cancelRouteAnimation();
+    cancelLeaveTransition();
     window.GUIDE_READING?.cleanup();
     let hash = location.hash.slice(1) || 'start';
     const resourceSection = hash === 'resources/latex' ? 'resource-latex' : null;
@@ -208,6 +167,7 @@
       hash = 'start';
     }
     currentRoute = isPromptRoute ? 'prompts' : hash;
+    activeResourceSection = resourceSection;
     selectedPromptId = prompt?.id || null;
     if (isPromptRoute) {
       const savedFilter = history.state?.promptFilter;
@@ -232,7 +192,7 @@
       if (scroll) window.scrollTo({top:0,behavior:'instant'});
       if (focus) document.querySelector('#main').focus({preventScroll:true});
     }
-    if (animate && !resourceSection) animateRoute();
+    window.GUIDE_UI?.mountRoute(currentRoute, {animate: animate && !resourceSection && !selectedPromptId});
     if (chapter) window.GUIDE_READING?.mount();
   }
   function resetCopied(button) {
@@ -389,6 +349,6 @@
   searchInput.addEventListener('input',search);
   searchDialog.addEventListener('cancel',e=>{e.preventDefault();closeSearch();});
   searchDialog.addEventListener('click',e=>{if(e.target===searchDialog){const r=searchDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeSearch();}});
-  window.addEventListener('hashchange',()=>route());
+  window.addEventListener('hashchange',()=>transitionRoute());
   route({focus:false,scroll:false,animate:true});
 })();
