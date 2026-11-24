@@ -115,7 +115,6 @@ html {
 body {
   position: relative;
   margin: 0;
-  min-width: 1080px;
   overflow-x: clip;
   background: var(--bg);
   background-image:
@@ -1849,7 +1848,7 @@ dialog::backdrop { background: var(--overlay); -webkit-backdrop-filter: blur(8px
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 ::view-transition-new(root) { z-index: 2; }
 
-/* ---------- 18. 桌面宽屏与窄屏微调（不做移动端适配） ---------- */
+/* ---------- 18. 响应式（桌面宽屏、平板与手机端） ---------- */
 @media (min-width: 1600px) {
   :root { --sidebar: 292px; }
   main { padding-inline: 72px; }
@@ -1866,6 +1865,194 @@ dialog::backdrop { background: var(--overlay); -webkit-backdrop-filter: blur(8px
   .learning-path { grid-template-columns: 1fr; }
   .resource-tools .resource-card { grid-template-columns: 46px minmax(0, 1fr) 210px; padding: 18px 20px; }
   .resource-tools .resource-card-icon { width: 46px; height: 46px; }
+}
+@media (max-width: 1120px) {
+  .top-nav a { padding: 0 12px; }
+  .search-trigger { width: 40px; padding: 0; justify-content: center; }
+  .search-trigger span, .search-trigger kbd { display: none; }
+  .entry-card-top { padding-right: 52px; }
+  .entry-card::after { font-size: 40px; }
+  .resource-templates .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 平板与手机：侧栏变为左滑抽屉 */
+@media (max-width: 1000px) {
+  :root { --header: 60px; --sidebar: 0px; }
+  body { font-size: 16.5px; }
+  .header { padding-inline: 16px; gap: 6px; }
+  .brand { font-size: 19px; gap: 10px; }
+  .brand-symbol { width: 32px; height: 32px; border-radius: 10px; }
+  .brand-symbol .icon { width: 19px; height: 19px; }
+  .brand small { display: none; }
+  .header .top-nav { display: none; }
+  .search-trigger { margin-left: auto; width: 40px; height: 40px; border-color: transparent; background: transparent; box-shadow: none; }
+  .search-trigger .icon { width: 19px; height: 19px; }
+  .menu-toggle { display: grid; }
+  .sidebar {
+    width: min(312px, 86vw);
+    padding-top: 16px;
+    border-right: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(-104%);
+    visibility: hidden;
+    transition: transform 440ms var(--ease-out), visibility 0s linear 440ms;
+  }
+  .sidebar.is-open {
+    transform: none;
+    visibility: visible;
+    transition: transform 440ms var(--ease-out), visibility 0s;
+  }
+  .sidebar-overlay:not([hidden]) {
+    display: block; position: fixed; z-index: 29; inset: var(--header) 0 0 0;
+    border: 0; background: var(--overlay);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    animation: fade-in 280ms ease;
+  }
+  main { margin-left: 0; padding: 24px 24px 0; }
+  .toast { left: 50%; bottom: 20px; }
+  .noscript { margin: 20px; }
+  .back-top { right: 18px; bottom: 20px; width: 44px; height: 44px; }
+
+  .entry-card, .resource-card { transform: none !important; }
+  .entry-card:hover, .resource-card:hover { transform: translateY(-2px) !important; }
+
+  .hero { grid-template-columns: 1fr; gap: 38px; padding: 4px 0 32px; }
+  .hero-evidence { max-width: 560px; transform: none; }
+  .hero-evidence::before { inset: 8px 6px -8px 6px; transform: rotate(-1.6deg); }
+  .intro-strip { margin-bottom: 44px; }
+  .home-updates-grid { grid-template-columns: 1fr; }
+  .prompt-banner { grid-template-columns: 1fr; gap: 26px; padding: 32px 26px; }
+  .banner-example { transform: none; }
+  .resource-teaser { flex-direction: column; align-items: flex-start; gap: 18px; }
+
+  .chapter-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .lesson-aside { position: static; max-height: none; overflow: visible; order: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+  .lesson-aside .lesson-toc { display: none; }
+  .lesson-aside .output-box { margin: 0; grid-row: span 3; }
+  .lesson-aside .chapter-jump + .chapter-jump { margin-top: 0; }
+  .lesson-principle { margin: 0; align-self: center; }
+
+  .prompt-toolbar { border-radius: var(--radius); }
+  .resource-tools .resource-card { grid-template-columns: 46px minmax(0, 1fr); }
+  .resource-tools .resource-card > .btn { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 12px; }
+  .resource-tools .example-actions { grid-column: 2; grid-row: auto; justify-content: flex-start; }
+}
+
+@media (max-width: 760px) {
+  .entry-grid, .resource-grid, .resource-grid.knowledge-options, .resource-templates .resource-grid, .prompt-grid, .source-list { grid-template-columns: minmax(0, 1fr); }
+  .resource-templates .resource-card { display: flex; }
+  .intro-strip { grid-template-columns: 1fr; gap: 10px; }
+  .integration-download-actions, .workbuddy-downloads .example-actions { grid-template-columns: minmax(0, 1fr); }
+  .install-source-tabs { width: 100%; }
+  .lesson-aside { grid-template-columns: minmax(0, 1fr); }
+  .lesson-aside .chapter-jump { display: none; }
+  .lesson-navigation { flex-direction: column; align-items: stretch; }
+  .chapter-pager { flex-direction: column; align-items: stretch; }
+  .prev-chapter, .next-chapter { justify-content: space-between; }
+  .field-guide > div, .evidence-details dl > div { grid-template-columns: 118px minmax(0, 1fr); gap: 14px; }
+  .section-counter { display: none; }
+  .worked-example > .practice-steps > li > figure,
+  #app[data-route="knowledge/ima"] .practice-steps > li > figure { margin-left: 0; }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .header { padding-inline: 12px 10px; gap: 4px; }
+  main { padding: 18px 16px 0; }
+  .breadcrumb { margin-bottom: 20px; font-size: 12.5px; gap: 6px; }
+  .page-intro { padding-bottom: 22px; margin-bottom: 26px; }
+  .page-intro h1 { font-size: 29px; }
+  .page-intro > p { font-size: 16px; }
+  .page-meta > span { font-size: 12.5px; padding: 3px 11px; }
+
+  .entry-intro { margin-bottom: 26px; }
+  .entry-intro::before { font-size: 11px; padding: 3px 12px; margin-bottom: 12px; }
+  .entry-intro h1 { font-size: 34px; }
+  .entry-description { font-size: 16px; }
+  .entry-card { padding: 22px 18px 18px; border-radius: var(--radius); }
+  .entry-card-top { gap: 12px; padding-right: 46px; margin-bottom: 14px; }
+  .entry-card-icon { width: 44px; height: 44px; border-radius: 13px; }
+  .entry-card-icon .icon { width: 22px; height: 22px; }
+  .entry-card h2 { font-size: 23px; }
+  .entry-card::after { top: 16px; right: 18px; font-size: 34px; }
+  .entry-card-description { font-size: 15.5px; margin-bottom: 16px; }
+  .entry-features { padding-top: 14px; margin-bottom: 18px; gap: 12px; }
+  .entry-card-action { font-size: 14.5px; padding-left: 16px; }
+  .entry-skip-area { padding: 16px 18px; border-radius: var(--radius); }
+  .entry-skip { font-size: 15.5px; }
+
+  .hero h1 { font-size: 35px; margin-bottom: 16px; }
+  .hero-description { font-size: 16px; margin-bottom: 22px; }
+  .hero-actions { gap: 10px 14px; }
+  .hero-actions .btn-primary { width: 100%; }
+  .hero-meta { gap: 8px 14px; margin-top: 20px; font-size: 12.5px; }
+  .hero-evidence { padding: 22px 18px 14px; border-radius: var(--radius); }
+  .hero-evidence::before { display: none; }
+  .hero-evidence-title { font-size: 19px; }
+  .hero-evidence .note-row { margin: 0 -6px; padding: 12px 6px; gap: 12px; }
+  .hero-evidence .note-row span { font-size: 14px; }
+  .hero-evidence .note-row b { font-size: 15px; }
+  .intro-item { padding: 16px 16px 15px; }
+
+  .learning-row { grid-template-columns: 46px minmax(0, 1fr) auto; padding: 16px; column-gap: 14px; }
+  .learning-number { width: 46px; height: 46px; font-size: 19px; border-radius: 14px; }
+  .learning-duration { display: none; }
+  .prompt-banner { padding: 28px 20px; border-radius: var(--radius); }
+  .prompt-banner h2 { font-size: 24px; }
+  .banner-example { padding: 18px; }
+  .resource-teaser .btn { width: 100%; }
+  .section-heading h2, .faq h2 { font-size: 22px; }
+
+  .lesson-step { padding: 0 0 28px 0; }
+  .lesson-step::before { display: none; }
+  .lesson-step-number { width: 40px; height: 40px; font-size: 15px; }
+  .lesson-step h2 { display: flex; align-items: center; min-height: 40px; margin-top: 0; padding-left: 52px; font-size: 20px; }
+  .lesson-step p, .worked-example p, .practice-steps { font-size: 16px; }
+  .practice-steps { padding-left: 20px; }
+  .lesson-checklist { padding: 22px 18px 18px; border-radius: var(--radius); }
+  .worked-example { margin-top: 34px; padding-top: 30px; }
+  .worked-example h2, .lesson-checklist h2, .workbuddy-sources h2 { font-size: 21px; }
+  .worked-example h3 { font-size: 18px; }
+  .field-guide > div, .evidence-details dl > div { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 12px 0; }
+  .paper-example { padding: 18px 16px; }
+  .paper-example blockquote, .review-paragraph, .worked-note { padding: 16px 18px; }
+  .paper-example blockquote { padding-left: 36px; font-size: 15.5px; }
+  .review-paragraph { font-size: 16.5px; }
+  .operation-guide figure, .worked-example figure:has(.tutorial-shot) { padding: 10px; }
+  .operation-result { padding: 14px 16px 14px 44px !important; }
+  .operation-result::before { left: 14px; top: 18px; }
+  .flow-figure { padding: 14px; border-radius: var(--radius); }
+  .prompt-box-head { flex-wrap: wrap; gap: 10px; padding: 12px 14px; }
+  .prompt-box-head > span { flex-basis: 100%; }
+  .prompt-box pre { padding: 16px; font-size: 14.5px; }
+  .workbuddy-downloads { padding: 22px 18px; border-radius: var(--radius); }
+  .workbuddy-downloads h2 { font-size: 21px; }
+  .integration-repo-label { flex-basis: 100%; }
+
+  .prompt-toolbar { position: static; padding: 6px; border-radius: var(--radius); }
+  .prompt-filters { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; padding-bottom: 1px; }
+  .prompt-filters::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; padding-inline: 13px; font-size: 14px; }
+  .prompt-results { display: none; }
+  .prompt-library-card { border-radius: var(--radius); }
+  .prompt-library-card header { padding: 18px 18px 4px; gap: 10px; }
+  .prompt-library-card h2 { font-size: 18.5px; }
+  .prompt-description { margin-inline: 18px !important; font-size: 15px !important; }
+  .prompt-preview-wrap { margin-inline: 18px; }
+  .prompt-card-bottom { padding-inline: 18px; }
+
+  .resource-card { padding: 22px 18px; border-radius: var(--radius); }
+  .resource-tools .resource-card { padding: 18px; }
+  .resource-tools .resource-card > .btn { width: 100%; justify-self: stretch; }
+  .faq details p { padding-right: 0; font-size: 15.5px; }
+  .callout { padding: 16px 18px; font-size: 15px; }
+  .footer { flex-direction: column; align-items: flex-start; margin-top: 48px; gap: 14px; }
+  .search-hint { display: none; }
+  dialog { width: calc(100vw - 20px); margin-top: 10px; max-height: calc(100dvh - 20px); border-radius: var(--radius); }
+  .lightbox-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 24px); margin: auto; }
+  .lightbox-head { padding: 10px 10px 10px 14px; }
+  .lightbox-stage { padding: 12px; }
+  .back-top { right: 14px; bottom: 16px; width: 42px; height: 42px; }
 }
 
 /* ---------- 19. 减少动态效果与打印 ---------- */
