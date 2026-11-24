@@ -1,55 +1,43 @@
 # 研读手册 · Zotero + AI 实操指南
 
-从文献收集、证据提取到主题比较、综述写作和引用核查的中文入门网站。
+用 Zotero 管好文献，用 AI 串联研究线索。从文献收集、精读批注到证据矩阵、综述写作与引用核查的中文实操教程。
 
 - 在线阅读：https://blacklarry.github.io/zotero-ai-review-guide/
 - GitHub 仓库：https://github.com/blacklarry/zotero-ai-review-guide
 - Gitee 国内仓库：https://gitee.com/larry_17/zotero-ai-review-guide
-- 反馈与纠错：https://github.com/blacklarry/zotero-ai-review-guide/issues
-- 案例原核验日期：2026-10-14；新增操作与插件资料核对：2026-10-28（文档核对，非软件实测）。
-- 中文用户指南补充：2026-10-29，对照 Zotero 中文社区核对导入、附件、批注与引用步骤；补入 13 张社区原图及 1 张 Zotero 10 高级搜索发布图，版本未注明的逐图标注，未作软件全流程实测。
-- WorkBuddy 本机图文记录：2026-10-29，5.9.3 连接器配置、首次信任及 5/5 工具发现；独立 MCP 分类读取通过，模型会话内调用未验证。
+- 问题反馈：https://github.com/blacklarry/zotero-ai-review-guide/issues
 
-## 内容
+## 网站内容
 
-六章学习路径、18 组 AI 提示词（选题检索、精读提取、主题综合、写作核查）、两篇真实论文的完整案例、五条证据的 15 字段填写样例、Connector、批注笔记与 Word 操作截图，以及 Word 插件排障。
+- **六步文献研读教程**：涵盖明确选题、Zotero 安装与文献整理、PDF 批注转笔记、15 字段证据矩阵、主题归纳与写作、Word 正式引用与质量核查，配套两篇经典论文的完整演示案例。
+- **AI 提示词库**：18 组可直接复制修改的中文提示词，按选题检索、精读提取、主题综合、写作核查四个阶段分类。
+- **工具接入专题**：
+  - [WorkBuddy 接入](https://blacklarry.github.io/zotero-ai-review-guide/#workbuddy)：通过本地只读 MCP（`zotero-fulltext`）检索本机 Zotero 文献库，附配置文件、中文 Skill 与一键安装指令（`docs/downloads/workbuddy-zotero/`）。
+  - [Codex 接入](https://blacklarry.github.io/zotero-ai-review-guide/#codex)：支持桌面本机任务与 CLI 接入，附 TOML 配置与可选中文 Skill（`docs/downloads/codex-zotero/`）。
+- **Zotero 插件指南**（`#zotero-plugins`）：区分浏览器 Connector、桌面 XPI 插件与 Word 插件，介绍插件市场及 Better BibTeX、Better Notes、ZotMoov、PDF Translate 四款常用插件。
+- **搭建知识库专题**（`#knowledge`）：
+  - [Obsidian 科研知识库](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/obsidian)：13 个规范目录、9 套基础模板与科研证据链起步包（`docs/downloads/knowledge-base/`）。
+  - [ima 嵌入式知识库](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/ima)：以嵌入式系统（RK3588 / STM32 / FPGA）为例演示建库、分类归档、溯源提问与 WorkBuddy 联动（`docs/downloads/ima-embedded/`）。
+- **论文排版模板**：集成 [浙江师范大学 LaTeX 论文模板](https://github.com/blacklarry/zjnu-latex-paper-template) 入口（支持侧栏、第 5 章及资源页直达）。
 
-新增 [浙江师范大学 LaTeX 论文模板](https://github.com/blacklarry/zjnu-latex-paper-template)入口：资源页和第 5 章均可前往公开模板仓库、查看编译说明。模板面向课程论文、研究报告等场景，为非官方 XeLaTeX 模板，提交格式以学院或教师要求为准。
+## 界面与架构
 
-新增 [WorkBuddy 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#workbuddy)：通用 Zotero MCP 配置、中文检索技能、安装包下载、可复制的自助安装指令、首次信任授权与排障。公开下载文件位于 `docs/downloads/workbuddy-zotero/`，只包含配置、技能和说明；未包含本机路径、用户文献或凭据。
+网站为纯静态 HTML、CSS 与 JavaScript，位于 `docs/` 目录，由 GitHub Pages 直接从 `main` 分支的 `/docs` 发布（`.nojekyll` 跳过 Jekyll 处理）。
 
-新增 [Codex 接入专题](https://blacklarry.github.io/zotero-ai-review-guide/#codex)：TOML 与 CLI 配置、可选中文技能、自助安装指令，以及本机/远程运行边界和实际工具验证。专用公开包位于 `docs/downloads/codex-zotero/`。
+- 界面采用「纸本研读」编辑风（暖米白纸色、森林绿主色、荧光笔黄点缀、浅色侧栏，支持跟随系统或手动切换深色模式），桌面端优先布局。
+- 屏幕样式统一收敛在 `docs/site.css`，交互与物理动效由 `docs/ui.js` 驱动，支持系统“减少动态效果”偏好；打印使用 `docs/print.css` 独立样式，打印时自动展开折叠内容。
+- 无后端服务，学习进度与清单勾选仅保存在当前浏览器 `localStorage`。
 
-[搭建知识库专题](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge)分为两块：原有 [Obsidian 教程](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/obsidian)保留 learning-of-zjnu 的目录、模板和证据链约定；新增 [ima 嵌入式系统示例](https://blacklarry.github.io/zotero-ai-review-guide/#knowledge/ima)，按 RK3588、STM32、FPGA 三类组织，以 STM32 的最小工程、GPIO 和 UART 学习资料为重点。原起步包继续位于 `docs/downloads/knowledge-base/`；3 份 STM32 公开原创学习资料与新 ZIP 位于 `docs/downloads/ima-embedded/`，RK3588 与 FPGA 保留分类、不补资料；已在本机 ima 新建个人示例库并导入三篇 STM32 Markdown，已补入新建入口、创建弹窗、新增菜单，以及目录、列表和正文共六张真实截图；前三张带网页操作编号，截图外框、图例与正文统一左对齐，版本号未单独记录。另附五张用户提供的 WorkBuddy 连接器与对话截图，演示“专家·技能·连接器 → 连接器 → ima”和任务整理流程，附可复制的 STM32 指令；未核验该对话的最终入库、报告技术结论或 STM32 指令执行结果。未执行 ima 问答或硬件上板测试，不包含私人笔记、账号配置或凭据。
+## 本地预览
 
-网站默认先展示“选择开始方式”页：可进入 WorkBuddy 或 Codex 接入教程，也可进入 Zotero 插件指南、搭建知识库（Obsidian / ima），或选择“跳过，直接阅读教程”。品牌与面包屑统一返回教程概览，侧栏可返回选择页；已有章节、提示词和接入教程的深链接仍可直接访问，不记录接入选择。
-
-全站屏幕界面采用「纸本研读」编辑风（暖米白纸色、森林绿主色、荧光笔黄点缀与浅色侧栏，支持跟随系统或手动切换深色模式），使用单一屏幕样式表 `docs/site.css` 与交互脚本 `docs/ui.js` 统一管理配色、排版、组件与动效。学习路径采用可点击卡片条目，六步流程图可展开查看；正文使用开放的阅读布局。路由切换、滚动渐显、导航胶囊、卡片光晕、折叠展开与搜索键盘导航均采用轻量物理动效；系统开启“减少动态效果”时关闭动画，打印继续使用 `docs/print.css` 独立样式。
-
-页面上的模拟 AI 错误用于演示人工核查，不是一次真实模型测试。论文内容与位置已对照原文核验，软件步骤参考 Zotero 中文社区用户指南，并按 Zotero 官方文档交叉核对，未声称完成本机 Zotero / Word 全流程实测。
-
-教程补充：在原有六章中增加 Zotero 安装、Connector、题录/PDF、分类标签/保存搜索、导入去重、阅读笔记、Word 样式、备份与同步的逐步说明，配有明确来源的真实界面图和网页编号；过时且无可靠替代的官方旧图已撤下，安装入口与 Edge / Firefox 固定图标补用中文社区原图，历史版本及局部放大范围逐图注明；来源没有提供的安装向导和备份过程保留操作文字及来源链接，不展示待补占位。`#zotero-plugins` 区分浏览器 Connector 与桌面 XPI，列出四个插件的已核验发布和包内兼容声明。WorkBuddy 专题补工作空间、手工资料包和小批量分析，第 3–5 章补矩阵到教学短综述的闭环；原 18 条提示词保留。2026-10-29 增补 DOI / RIS / BibTeX 实际导入入口、独立 PDF 的元数据重试、创建父条目与手动录入、存储附件与链接附件、带批注 PDF 导出，并修正截图与步骤的对应关系。六章章末检查区统一内边距、复选框与文字首行对齐、参考链接换行间距；截图编号说明独立排版，避免继承外层步骤列表的上下边距。勾选与本地保存行为不变。
-
-## 发布与维护
-
-网站是 HTML、CSS 和 JavaScript 静态文件，位于 `docs/`。GitHub Pages 配置为从 `main` 分支的 `/docs` 发布；修改并推送该目录后会自动更新网站。`.nojekyll` 使 GitHub 直接发布静态文件。
-
-GitHub 与 Gitee 并列保留项目源码；国内仓库地址不是网站托管地址，在线阅读仍使用上面的 GitHub Pages 链接。本地远程名 `origin` 对应 GitHub，`gitee` 对应国内仓库，更新后分别推送 `main` 分支即可同步。
-
-本地预览（Python 3）：
-
-```powershell
-python -m http.server 4173 --bind 127.0.0.1 --directory docs
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1 --directory docs
 ```
 
-打开 http://127.0.0.1:4173/ 。章节进度只保存在当前浏览器；模板下载由浏览器生成，WorkBuddy 安装包由静态文件提供，网站没有后端服务。
+打开 http://127.0.0.1:4173/ 即可预览。
 
-支持打印当前页面：打印时展开证据详情和排障步骤，结束后恢复阅读状态。首页包含静态课程简介、Course 结构化数据与分享预览图；未接入第三方访问统计。网页底部的“反馈问题”可打开 GitHub Issues，纠错表单仅在本地生成报告。
+## 来源与许可
 
-## 来源与归属
-
-论文案例保留原始来源链接、固定版本和证据位置；引用只用于教学所需的短摘录。
-
-界面截图包含本机操作记录、Zotero 中文社区及其贡献者的公开指南、Zotero 官方文档与发布说明中的示例，各图附有来源、版本或日期与验证范围。中文社区原图保留作者已有标注，按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 署名复用，参见 [中文用户指南](https://zotero-chinese.com/user-guide/)。Zotero 文档材料按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 复用；博客截图的版权归原权利人，不把整站声明为同一开放许可。详见 [Zotero 文档源库](https://github.com/zotero/zotero-docs) 和网站“适用版本、核验记录与纠错”部分。
-
-本网站为独立中文教程，非 Zotero 官方出品。
+- 案例论文保留原始来源链接与固定 PDF 版本，短摘录仅用于教学示范。
+- 操作截图包含实机截图、Zotero 中文社区指南（按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 署名复用，见 [中文用户指南](https://zotero-chinese.com/user-guide/)）以及 Zotero 官方文档与发布说明（见 [zotero-docs](https://github.com/zotero/zotero-docs)）。
+- 本网站为独立中文教程，非 Zotero 官方出品。
