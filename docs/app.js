@@ -90,6 +90,7 @@
     if (progressLabel.textContent !== progressText) progressLabel.textContent = progressText;
     document.querySelector('#progress-fill').style.width = `${completed.length / 6 * 100}%`;
     document.querySelector('#progress-note').textContent = completed.length === 6 ? '六章已完成，把方法用在你的研究中。' : '每读完一章，离综述更近一步。';
+    window.GUIDE_UI?.syncSidebarProgress?.(completed.length);
     window.GUIDE_UI?.updateNavIndicator();
   }
   function renderHome() {
@@ -150,7 +151,7 @@
       </section>
       ${window.GUIDE_EXTRAS.resources()}<section><div class="section-heading"><div><h2>查阅中文教程与官方说明</h2><p>中文社区适合按步骤快速上手，官方文档方便查细节和最新变化（界面名称可能随版本略有差异）。</p></div><span class="section-counter">ZOTERO REFERENCES</span></div><div class="source-list">${data.sources.map(s=>`<a class="source-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('book')}<span><b>${esc(s.label)}</b><small>${esc(s.description)}</small></span>${icon('up')}</a>`).join('')}</div></section><section class="faq"><h2>开始前，你可能还想知道</h2><details><summary>必须安装第三方 Zotero AI 插件吗？</summary><p>不需要。用 Zotero 管好文献、批注和笔记，再把整理好的文本或矩阵发给任意顺手的 AI 工具，就已经能跑通全部流程。</p></details><details><summary>这套流程适合系统综述或 Meta 分析吗？</summary><p>非常适合日常科研阅读与叙述性综述；如果你正在做正式的系统综述或 Meta 分析，还需在此基础上遵循 PRISMA 等专业方法规范与统计流程。</p></details><details><summary>网站会读取我的 Zotero 文献库吗？</summary><p>不会。这是一个纯静态教程网站，没有后端服务；学习进度与勾选状态只保存在你当前浏览器中，所有模板都在本地直接下载。</p></details></section><div class="callout"><strong>${icon('check')} 一条贯穿始终的原则</strong>AI 是帮你提效的研读助手，真实文献、清晰出处和你的独立判断，才是综述立得住的根本。</div>`;
   }
-  function route({focus = true,scroll = true,animate = scroll} = {}) {
+  function route({focus = true,scroll = true,animate = scroll,filterChange = false} = {}) {
     cancelLeaveTransition();
     window.GUIDE_READING?.cleanup();
     let hash = location.hash.slice(1) || 'start';
@@ -192,7 +193,7 @@
       if (scroll) window.scrollTo({top:0,behavior:'instant'});
       if (focus) document.querySelector('#main').focus({preventScroll:true});
     }
-    window.GUIDE_UI?.mountRoute(currentRoute, {animate: animate && !resourceSection && !selectedPromptId});
+    window.GUIDE_UI?.mountRoute(currentRoute, {animate: animate && !resourceSection && !selectedPromptId, filterChange});
     if (chapter) window.GUIDE_READING?.mount();
   }
   function resetCopied(button) {
@@ -326,7 +327,7 @@
       if (!expanded && el.getBoundingClientRect().top < document.querySelector('.header').getBoundingClientRect().bottom) card.scrollIntoView({block:'start',behavior:'instant'});
     }
     else if (el.hasAttribute('data-install-source')) selectInstallSource(el);
-    else if (el.hasAttribute('data-filter')) { promptFilter=el.dataset.filter;history.replaceState({...history.state,promptFilter},'','#prompts');const y=scrollY;route({focus:false,scroll:false});window.scrollTo(0,y);const active=[...document.querySelectorAll('[data-filter]')].find(b=>b.dataset.filter===promptFilter);active?.focus({preventScroll:true}); }
+    else if (el.hasAttribute('data-filter')) { promptFilter=el.dataset.filter;history.replaceState({...history.state,promptFilter},'','#prompts');const y=scrollY;route({focus:false,scroll:false,filterChange:true});window.scrollTo(0,y);const active=[...document.querySelectorAll('[data-filter]')].find(b=>b.dataset.filter===promptFilter);active?.focus({preventScroll:true}); }
     else if (el.hasAttribute('data-download')) download(el.dataset.download);
     else if (el.hasAttribute('data-complete')) { const id=Number(el.dataset.complete);const wasDone=completed.includes(id);completed=wasDone?completed.filter(n=>n!==id):[...completed,id];saveProgress();route({focus:false,scroll:false});document.querySelector('[data-complete]')?.focus({preventScroll:true});toast(wasDone?'已撤销本章完成标记。':completed.length===6?'六章全部完成，开始把方法用在你的研究中。':'已记录本章进度，继续下一步。'); }
     else if(el.hasAttribute('data-search'))openSearch(el);
